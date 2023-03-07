@@ -12,7 +12,8 @@
       {
         "namedComponents": "arrow-function"
       }
-    ]
+    ],
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
   },
   "overrides": [],
   "parserOptions": {
