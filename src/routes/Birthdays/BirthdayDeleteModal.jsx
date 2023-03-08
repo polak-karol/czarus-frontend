@@ -10,8 +10,7 @@ import {
 import agent from '../../api/agent'
 
 const BirthdayDeleteModal = ({ open, onClose, selectedBirthday, setBirthdaysList }) => {
-  const deleteBirthdaySuccess = (response) => {
-    console.log(response)
+  const deleteBirthdaySuccess = () => {
     setBirthdaysList((state) => state.filter((value) => value.userId !== selectedBirthday.userId))
     onClose()
   }
