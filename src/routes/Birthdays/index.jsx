@@ -1,12 +1,14 @@
-import { Typography } from '@mui/material'
-import * as React from 'react'
+import React from 'react'
+import { Stack, Typography } from '@mui/material'
 import BirthdaysTable from './BirthdayTable'
 
 const Birthdays = () => (
-  <>
-    <Typography>Birthdays</Typography>
+  <Stack spacing={4}>
+    <Typography variant="h2" component="h2">
+      Birthdays
+    </Typography>
     <BirthdaysTable />
-  </>
+  </Stack>
 )
 
 export default Birthdays

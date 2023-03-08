@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Paper,
   Table,
@@ -9,11 +9,14 @@ import {
   TableHead,
   TablePagination,
 } from '@mui/material'
+import agent from '../../api/agent'
 import { columns, rows } from './config'
+import { createData } from './utils'
 
 const BirthdaysTable = () => {
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [birthdaysList, setBirthdaysList] = useState([])
 
   const handleChangePage = (_, newPage) => setPage(newPage)
 
@@ -21,6 +24,21 @@ const BirthdaysTable = () => {
     setRowsPerPage(+event.target.value)
     setPage(0)
   }
+
+  const getBirthdaysSuccess = (response) => {
+    setBirthdaysList(response.data)
+  }
+
+  const getBirthdaysError = (error) => {
+    console.log(error)
+  }
+
+  const getBirthdays = () =>
+    agent.Birthdays.getBirthdays('guild_id').then(getBirthdaysSuccess, getBirthdaysError)
+
+  useEffect(() => {
+    getBirthdays()
+  }, [])
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -40,18 +58,23 @@ const BirthdaysTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                {columns.map((column) => {
-                  const value = row[column.id]
-                  return (
-                    <TableCell key={column.id} align={column.align}>
-                      {column.format && typeof value === 'number' ? column.format(value) : value}
-                    </TableCell>
-                  )
-                })}
-              </TableRow>
-            ))}
+            {birthdaysList
+              .map(({ id, date, userId, isAnonymous }) =>
+                createData(id, date, userId, isAnonymous, 'Edit Delete'),
+              )
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => (
+                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                  {columns.map((column) => {
+                    const value = row[column.id]
+                    return (
+                      <TableCell key={column.id} align={column.align}>
+                        {column.format && typeof value === 'number' ? column.format(value) : value}
+                      </TableCell>
+                    )
+                  })}
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
