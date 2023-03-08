@@ -15,7 +15,8 @@
     ],
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "react/prop-types": "off",
-    "object-curly-newline": "off"
+    "object-curly-newline": "off",
+    "import/prefer-default-export": "off"
   },
   "overrides": [],
   "parserOptions": {
