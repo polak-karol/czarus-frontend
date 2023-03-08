@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import {
   Paper,
   Table,
@@ -15,9 +15,7 @@ const BirthdaysTable = () => {
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage)
-  }
+  const handleChangePage = (_, newPage) => setPage(newPage)
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value)
@@ -26,8 +24,8 @@ const BirthdaysTable = () => {
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer sx={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label="sticky table">
+      <TableContainer sx={{ maxHeight: 800 }}>
+        <Table>
           <TableHead>
             <TableRow>
               {columns.map((column) => (

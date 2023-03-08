@@ -1,4 +1,7 @@
-export const createData = (name, code, population, size) => {
-  const density = population / size
-  return { name, code, population, size, density }
-}
+export const createData = (id, date, userId, isAnonymous, actions) => ({
+  id,
+  date,
+  userId,
+  isAnonymous,
+  actions,
+})
