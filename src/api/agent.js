@@ -30,6 +30,7 @@ const requests = {
 
 const Birthdays = {
   getBirthdays: (guildId) => requests.get(`/birthday/list/${guildId}`),
+  deleteBirthday: (guildId, userId) => requests.delete(`/birthday/${guildId}?user_id=${userId}`),
 }
 
 const agent = {

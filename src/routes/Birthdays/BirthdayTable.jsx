@@ -8,15 +8,20 @@ import {
   TableContainer,
   TableHead,
   TablePagination,
+  IconButton,
 } from '@mui/material'
+import { Delete as DeleteIcon } from '@mui/icons-material'
 import agent from '../../api/agent'
-import { columns, rows } from './config'
+import { columns } from './config'
 import { createData } from './utils'
+import BirthdayDeleteModal from './BirthdayDeleteModal'
 
 const BirthdaysTable = () => {
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [birthdaysList, setBirthdaysList] = useState([])
+  const [birthdayDeleteModalOpen, setBirthdayDeleteModalClose] = useState(false)
+  const [selectedBirthday, setSelectedBirthday] = useState({})
 
   const handleChangePage = (_, newPage) => setPage(newPage)
 
@@ -59,8 +64,26 @@ const BirthdaysTable = () => {
           </TableHead>
           <TableBody>
             {birthdaysList
-              .map(({ id, date, userId, isAnonymous }) =>
-                createData(id, date, userId, isAnonymous, 'Edit Delete'),
+              .map(({ id, date, userId, isAnonymous, createdAt, updatedAt, guildId }) =>
+                createData(
+                  id,
+                  date,
+                  userId,
+                  isAnonymous,
+                  createdAt,
+                  updatedAt,
+                  <IconButton
+                    onClick={() => {
+                      setSelectedBirthday({ userId, guildId })
+                      setBirthdayDeleteModalClose(!birthdayDeleteModalOpen)
+                    }}
+                    aria-label="delete"
+                    size="small"
+                    color="error"
+                  >
+                    <DeleteIcon />
+                  </IconButton>,
+                ),
               )
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
@@ -81,11 +104,17 @@ const BirthdaysTable = () => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={rows.length}
+        count={birthdaysList.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+      <BirthdayDeleteModal
+        open={birthdayDeleteModalOpen}
+        onClose={() => setBirthdayDeleteModalClose(false)}
+        selectedBirthday={selectedBirthday}
+        setBirthdaysList={setBirthdaysList}
       />
     </Paper>
   )
