@@ -28,14 +28,12 @@ const BirthdayEditModal = ({
     console.log(error)
   }
 
-  const editBirthdaySuccess = (response) => {
-    console.log(response)
+  const editBirthdaySuccess = () => {
     setRefreshBirthdayList(!refreshBirthdayList)
     onClose()
   }
 
   const editBirthday = ({ date, isAnonymous }) => {
-    console.log(isAnonymous)
     agent.Birthdays.updateBirthday('guild_id', {
       date: date.toISOString(),
       isAnonymous,
@@ -43,11 +41,14 @@ const BirthdayEditModal = ({
     }).then(editBirthdaySuccess, editBirthdayError)
   }
 
+  if (!open) return
+
   return (
     <Formik
       initialValues={{
         date: moment(selectedBirthday.date),
         isAnonymous: selectedBirthday.isAnonymous,
+        userId: selectedBirthday.userId,
       }}
       onSubmit={editBirthday}
     >
@@ -74,7 +75,7 @@ const BirthdayEditModal = ({
                         onChange={(event) => setFieldValue('isAnonymous', event.target.checked)}
                         aria-label="Anonymous"
                         value={values.isAnonymous}
-                        defaultValue={values.isAnonymous}
+                        checked={values.isAnonymous}
                       />
                     }
                     label="Anonymous"
