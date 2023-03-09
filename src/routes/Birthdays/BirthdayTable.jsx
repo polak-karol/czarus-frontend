@@ -10,7 +10,6 @@ import {
   TablePagination,
   IconButton,
 } from '@mui/material'
-// import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded'
 import {
   DeleteRounded as DeleteRoundedIcon,
   EditRounded as EditRoundedIcon,
@@ -28,6 +27,7 @@ const BirthdaysTable = () => {
   const [birthdayDeleteModalOpen, setBirthdayDeleteModalClose] = useState(false)
   const [birthdayEditModalOpen, setBirthdayEditModalClose] = useState(false)
   const [selectedBirthday, setSelectedBirthday] = useState({})
+  const [refreshBirthdayList, setRefreshBirthdayList] = useState(false)
 
   const handleChangePage = (_, newPage) => setPage(newPage)
 
@@ -49,7 +49,7 @@ const BirthdaysTable = () => {
 
   useEffect(() => {
     getBirthdays()
-  }, [])
+  }, [refreshBirthdayList])
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -70,29 +70,18 @@ const BirthdaysTable = () => {
           </TableHead>
           <TableBody>
             {birthdaysList
-              .map(({ id, date, userId, isAnonymous, createdAt, updatedAt, guildId }) =>
+              .map((birthday) =>
                 createData(
-                  id,
-                  date,
-                  userId,
-                  isAnonymous,
-                  createdAt,
-                  updatedAt,
+                  birthday.id,
+                  birthday.date,
+                  birthday.userId,
+                  birthday.isAnonymous,
+                  birthday.createdAt,
+                  birthday.updatedAt,
                   <>
                     <IconButton
                       onClick={() => {
-                        setSelectedBirthday({ userId, guildId })
-                        setBirthdayDeleteModalClose(!birthdayDeleteModalOpen)
-                      }}
-                      aria-label="delete"
-                      size="small"
-                      color="error"
-                    >
-                      <DeleteRoundedIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => {
-                        setSelectedBirthday({ userId, guildId })
+                        setSelectedBirthday(birthday)
                         setBirthdayEditModalClose(!birthdayEditModalOpen)
                       }}
                       aria-label="delete"
@@ -101,12 +90,23 @@ const BirthdaysTable = () => {
                     >
                       <EditRoundedIcon />
                     </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        setSelectedBirthday(birthday)
+                        setBirthdayDeleteModalClose(!birthdayDeleteModalOpen)
+                      }}
+                      aria-label="delete"
+                      size="small"
+                      color="error"
+                    >
+                      <DeleteRoundedIcon />
+                    </IconButton>
                   </>,
                 ),
               )
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                   {columns.map((column) => {
                     const value = row[column.id]
                     return (
@@ -137,7 +137,10 @@ const BirthdaysTable = () => {
       />
       <BirthdayEditModal
         open={birthdayEditModalOpen}
+        selectedBirthday={selectedBirthday}
         onClose={() => setBirthdayEditModalClose(false)}
+        setRefreshBirthdayList={setRefreshBirthdayList}
+        refreshBirthdayList={refreshBirthdayList}
       />
     </Paper>
   )

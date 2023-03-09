@@ -1,50 +1,98 @@
 import React from 'react'
-import { Formik } from 'formik'
+import { Form, Formik } from 'formik'
+import moment from 'moment'
 import Button from '@mui/material/Button'
-import TextField from '@mui/material/TextField'
-import Dialog from '@mui/material/Dialog'
-import DialogActions from '@mui/material/DialogActions'
-import DialogContent from '@mui/material/DialogContent'
-import DialogContentText from '@mui/material/DialogContentText'
-import DialogTitle from '@mui/material/DialogTitle'
+import { DatePicker } from '@mui/x-date-pickers'
+import {
+  Dialog,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
+  Stack,
+  Switch,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@mui/material'
+import agent from '../../api/agent'
 
-const BirthdayEditModal = ({ open, onClose }) => {
-  const editBirthday = () => {}
+const BirthdayEditModal = ({
+  open,
+  onClose,
+  selectedBirthday,
+  refreshBirthdayList,
+  setRefreshBirthdayList,
+}) => {
+  const editBirthdayError = (error) => {
+    console.log(error)
+  }
+
+  const editBirthdaySuccess = (response) => {
+    console.log(response)
+    setRefreshBirthdayList(!refreshBirthdayList)
+    onClose()
+  }
+
+  const editBirthday = ({ date, isAnonymous }) => {
+    console.log(isAnonymous)
+    agent.Birthdays.updateBirthday('guild_id', {
+      date: date.toISOString(),
+      isAnonymous,
+      userId: selectedBirthday.userId,
+    }).then(editBirthdaySuccess, editBirthdayError)
+  }
 
   return (
-    <div>
-      <Dialog open={open} onClose={onClose}>
-        <DialogTitle>Subscribe</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here. We will send updates
-            occasionally.
-          </DialogContentText>
-          <Formik initialValues={{ userId: '' }}>
-            {({ values, setFieldValue }) => (
-              <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Email Address"
-                type="email"
-                fullWidth
-                variant="standard"
-                onChange={(event) => {
-                  console.log(event)
-                  setFieldValue(event.target.value)
-                }}
-                value={values.userId}
-              />
-            )}
-          </Formik>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button onClick={onClose}>Subscribe</Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <Formik
+      initialValues={{
+        date: moment(selectedBirthday.date),
+        isAnonymous: selectedBirthday.isAnonymous,
+      }}
+      onSubmit={editBirthday}
+    >
+      {({ values, setFieldValue, handleSubmit }) => (
+        <Dialog open={open} onClose={onClose}>
+          <DialogTitle>Update</DialogTitle>
+          <DialogContent>
+            <Stack gap={3}>
+              <DialogContentText>Update birthday date and anonyomus property.</DialogContentText>
+              <Form>
+                <Stack gap={1.5}>
+                  <FormGroup>
+                    <FormLabel>Date</FormLabel>
+                    <DatePicker
+                      format="DD/MM/YYYY"
+                      onChange={(value) => setFieldValue('date', value)}
+                      value={values.date}
+                      disableFuture
+                    />
+                  </FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        onChange={(event) => setFieldValue('isAnonymous', event.target.checked)}
+                        aria-label="Anonymous"
+                        value={values.isAnonymous}
+                        defaultValue={values.isAnonymous}
+                      />
+                    }
+                    label="Anonymous"
+                    labelPlacement="end"
+                  />
+                </Stack>
+              </Form>
+            </Stack>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={onClose}>Cancel</Button>
+            <Button onClick={handleSubmit} color="secondary">
+              Update
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
+    </Formik>
   )
 }
 

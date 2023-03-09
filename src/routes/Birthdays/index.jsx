@@ -1,5 +1,5 @@
 import React from 'react'
-import { Stack, Typography } from '@mui/material'
+import { Card, CardContent, Stack, Typography } from '@mui/material'
 import BirthdaysTable from './BirthdayTable'
 
 const Birthdays = () => (
@@ -7,7 +7,11 @@ const Birthdays = () => (
     <Typography variant="h2" component="h2">
       Birthdays
     </Typography>
-    <BirthdaysTable />
+    <Card>
+      <CardContent>
+        <BirthdaysTable />
+      </CardContent>
+    </Card>
   </Stack>
 )
 

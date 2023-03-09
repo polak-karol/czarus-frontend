@@ -31,6 +31,7 @@ const requests = {
 const Birthdays = {
   getBirthdays: (guildId) => requests.get(`/birthday/list/${guildId}`),
   deleteBirthday: (guildId, userId) => requests.delete(`/birthday/${guildId}?user_id=${userId}`),
+  updateBirthday: (guildId, body) => requests.put(`/birthday/${guildId}`, body),
 }
 
 const agent = {
