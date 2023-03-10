@@ -46,7 +46,7 @@ const App = ({ children }) => {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap component="div">
-              Mini variant drawer
+              Czaruś
             </Typography>
           </Toolbar>
         </AppBar>
