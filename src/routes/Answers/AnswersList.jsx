@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Delete, Edit } from '@mui/icons-material'
 import {
   Button,
   Card,
@@ -7,15 +6,18 @@ import {
   CardContent,
   CardHeader,
   Grid,
-  IconButton,
   List,
   ListItem,
   ListItemText,
-  Stack,
+  TextField,
 } from '@mui/material'
+import SecondaryActionDefault from './SecondaryActionDefault'
+import SecondaryActionEdit from './SecondaryActionEdit'
 
 const AnswersList = ({ title, answers, setFilteredAnswers }) => {
-  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState()
+  const [selectedAnswerType, setSelectedAnswerType] = useState('')
+  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState('')
+  const [selectedAnswerInput, setSelectedAnswerInput] = useState('')
 
   return (
     <Grid item xs={6}>
@@ -27,12 +29,23 @@ const AnswersList = ({ title, answers, setFilteredAnswers }) => {
               <ListItem
                 key={answer}
                 secondaryAction={
-                  <Stack direction="row" spacing={2}>
-                    <IconButton color="primary" edge="end" aria-label="edit">
-                      <Edit />
-                    </IconButton>
-                    <IconButton
-                      onClick={() =>
+                  selectedAnswerType === title && selectedAnswerIndex === index ? (
+                    <SecondaryActionEdit
+                      saveAction={() => {}}
+                      cancelAction={() => {
+                        setSelectedAnswerType('')
+                        setSelectedAnswerIndex('')
+                        setSelectedAnswerInput('')
+                      }}
+                    />
+                  ) : (
+                    <SecondaryActionDefault
+                      editAction={() => {
+                        setSelectedAnswerType(title)
+                        setSelectedAnswerIndex(index)
+                        setSelectedAnswerInput(answer)
+                      }}
+                      deleteAction={() =>
                         setFilteredAnswers((state) =>
                           state.map(([key, value]) => {
                             if (key !== title) return [key, value]
@@ -42,16 +55,20 @@ const AnswersList = ({ title, answers, setFilteredAnswers }) => {
                           }),
                         )
                       }
-                      color="error"
-                      edge="end"
-                      aria-label="delete"
-                    >
-                      <Delete />
-                    </IconButton>
-                  </Stack>
+                    />
+                  )
                 }
               >
-                <ListItemText primary={answer} />
+                {selectedAnswerType === title && selectedAnswerIndex === index ? (
+                  <TextField
+                    required
+                    value={selectedAnswerInput}
+                    onChange={(event) => setSelectedAnswerInput(event.target.value)}
+                    variant="standard"
+                  />
+                ) : (
+                  <ListItemText primary={answer} />
+                )}
               </ListItem>
             ))}
           </List>
