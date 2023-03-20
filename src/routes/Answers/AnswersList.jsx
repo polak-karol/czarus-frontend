@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
   Card,
@@ -14,10 +14,19 @@ import {
 import SecondaryActionDefault from './SecondaryActionDefault'
 import SecondaryActionEdit from './SecondaryActionEdit'
 
-const AnswersList = ({ title, answers, setFilteredAnswers }) => {
+const AnswersList = ({ title, answers, setFilteredAnswers, baseAnswers }) => {
   const [selectedAnswerType, setSelectedAnswerType] = useState('')
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState('')
   const [selectedAnswerInput, setSelectedAnswerInput] = useState('')
+  const [itemActionsAllowed, setItemActionsAllowed] = useState(false)
+
+  useEffect(() => {
+    if (JSON.stringify(Object.fromEntries(answers)[title]) !== JSON.stringify(baseAnswers[title])) {
+      setItemActionsAllowed(true)
+    } else {
+      setItemActionsAllowed(false)
+    }
+  }, [JSON.stringify(Object.fromEntries(answers)[title])])
 
   return (
     <Grid item xs={6}>
@@ -31,7 +40,25 @@ const AnswersList = ({ title, answers, setFilteredAnswers }) => {
                 secondaryAction={
                   selectedAnswerType === title && selectedAnswerIndex === index ? (
                     <SecondaryActionEdit
-                      saveAction={() => {}}
+                      saveAction={() => {
+                        setFilteredAnswers((state) =>
+                          state.map(([key, value]) => {
+                            if (key !== title) return [key, value]
+
+                            return [
+                              key,
+                              value.map((item, itemIndex) => {
+                                if (itemIndex !== index) return item
+
+                                return selectedAnswerInput
+                              }),
+                            ]
+                          }),
+                        )
+                        setSelectedAnswerType('')
+                        setSelectedAnswerIndex('')
+                        setSelectedAnswerInput('')
+                      }}
                       cancelAction={() => {
                         setSelectedAnswerType('')
                         setSelectedAnswerIndex('')
@@ -74,8 +101,10 @@ const AnswersList = ({ title, answers, setFilteredAnswers }) => {
           </List>
         </CardContent>
         <CardActions>
-          <Button>Cancel</Button>
-          <Button color="secondary">Save</Button>
+          <Button disabled={itemActionsAllowed}>Cancel</Button>
+          <Button color="secondary" disabled={itemActionsAllowed}>
+            Save
+          </Button>
         </CardActions>
       </Card>
     </Grid>

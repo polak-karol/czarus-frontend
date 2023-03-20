@@ -37,12 +37,12 @@ const Answers = () => {
         Answers
       </Typography>
       <Grid container spacing={2}>
-        {filteredAnswers.map(([key, value], index) => (
+        {filteredAnswers.map(([key, value]) => (
           <AnswersList
             key={key}
             title={key}
             answers={value}
-            index={index}
+            baseAnswers={answers}
             setFilteredAnswers={setFilteredAnswers}
           />
         ))}
