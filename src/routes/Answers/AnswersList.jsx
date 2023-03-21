@@ -107,7 +107,7 @@ const AnswersList = ({ title, answers, setFilteredAnswers, baseAnswers }) => {
                 state.map(([key, value]) => {
                   if (key !== title) return [key, value]
 
-                  return [key, baseAnswers[title]]
+                  return [key, baseAnswers[title] ? [...baseAnswers[title]] : null]
                 }),
               )
             }}
