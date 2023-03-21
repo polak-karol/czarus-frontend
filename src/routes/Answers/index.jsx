@@ -32,6 +32,18 @@ const Answers = () => {
       .finally(() => setLoading(false))
   }
 
+  const updateAnswersError = (error) => {
+    console.log(error)
+  }
+
+  const updateAnswersSuccess = (response) => {
+    console.log(response)
+  }
+
+  const updateAnswers = (body) => {
+    agent.Answers.updateAnswers('guild_id', body).then(updateAnswersSuccess, updateAnswersError)
+  }
+
   useEffect(() => {
     getAnswers()
   }, [])
@@ -51,6 +63,7 @@ const Answers = () => {
             answers={value}
             baseAnswers={answers}
             setFilteredAnswers={setFilteredAnswers}
+            updateAnswers={updateAnswers}
           />
         ))}
       </Grid>

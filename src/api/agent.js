@@ -36,6 +36,7 @@ const Birthdays = {
 
 const Answers = {
   getAnswers: (guildId) => requests.get(`/answer/list/${guildId}`),
+  updateAnswers: (guildId, body) => requests.put(`/answer/${guildId}`, body),
 }
 
 const agent = {

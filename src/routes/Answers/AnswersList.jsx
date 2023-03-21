@@ -14,7 +14,7 @@ import {
 import SecondaryActionDefault from './SecondaryActionDefault'
 import SecondaryActionEdit from './SecondaryActionEdit'
 
-const AnswersList = ({ title, answers, setFilteredAnswers, baseAnswers }) => {
+const AnswersList = ({ title, answers, setFilteredAnswers, baseAnswers, updateAnswers }) => {
   const [selectedAnswerType, setSelectedAnswerType] = useState('')
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState('')
   const [selectedAnswerInput, setSelectedAnswerInput] = useState('')
@@ -115,7 +115,13 @@ const AnswersList = ({ title, answers, setFilteredAnswers, baseAnswers }) => {
           >
             Cancel
           </Button>
-          <Button color="secondary" disabled={!itemActionsAllowed}>
+          <Button
+            onClick={() => {
+              updateAnswers(Object.fromEntries([title]))
+            }}
+            color="secondary"
+            disabled={!itemActionsAllowed}
+          >
             Save
           </Button>
         </CardActions>
