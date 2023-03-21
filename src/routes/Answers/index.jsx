@@ -13,9 +13,16 @@ const Answers = () => {
   }
 
   const getAnswersSuccess = (response) => {
-    console.log(response)
-    setAnswers(response.data)
-    setFilteredAnswers(Object.entries(response.data).filter(([key]) => key.endsWith('Answers')))
+    setAnswers({ ...response.data })
+    setFilteredAnswers(
+      Object.entries({ ...response.data })
+        .filter(([key]) => key.endsWith('Answers'))
+        .map(([key, value]) => {
+          if (!value) return [key, value]
+
+          return [key, [...value]]
+        }),
+    )
   }
 
   const getAnswers = () => {

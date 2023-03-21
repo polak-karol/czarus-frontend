@@ -21,12 +21,12 @@ const AnswersList = ({ title, answers, setFilteredAnswers, baseAnswers }) => {
   const [itemActionsAllowed, setItemActionsAllowed] = useState(false)
 
   useEffect(() => {
-    if (JSON.stringify(Object.fromEntries(answers)[title]) !== JSON.stringify(baseAnswers[title])) {
+    if (JSON.stringify(answers) !== JSON.stringify(baseAnswers[title])) {
       setItemActionsAllowed(true)
     } else {
       setItemActionsAllowed(false)
     }
-  }, [JSON.stringify(Object.fromEntries(answers)[title])])
+  }, [JSON.stringify(answers)])
 
   return (
     <Grid item xs={6}>
@@ -74,7 +74,7 @@ const AnswersList = ({ title, answers, setFilteredAnswers, baseAnswers }) => {
                       }}
                       deleteAction={() =>
                         setFilteredAnswers((state) =>
-                          state.map(([key, value]) => {
+                          [...state].map(([key, value]) => {
                             if (key !== title) return [key, value]
 
                             value.splice(index, 1)
@@ -101,8 +101,21 @@ const AnswersList = ({ title, answers, setFilteredAnswers, baseAnswers }) => {
           </List>
         </CardContent>
         <CardActions>
-          <Button disabled={itemActionsAllowed}>Cancel</Button>
-          <Button color="secondary" disabled={itemActionsAllowed}>
+          <Button
+            onClick={() => {
+              setFilteredAnswers((state) =>
+                state.map(([key, value]) => {
+                  if (key !== title) return [key, value]
+
+                  return [key, baseAnswers[title]]
+                }),
+              )
+            }}
+            disabled={!itemActionsAllowed}
+          >
+            Cancel
+          </Button>
+          <Button color="secondary" disabled={!itemActionsAllowed}>
             Save
           </Button>
         </CardActions>
