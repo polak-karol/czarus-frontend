@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { FixedSizeList } from 'react-window'
 import {
   Button,
   Card,
@@ -6,7 +7,6 @@ import {
   CardContent,
   CardHeader,
   Grid,
-  List,
   ListItem,
   ListItemText,
   TextField,
@@ -33,13 +33,21 @@ const AnswersList = ({ title, answers, setFilteredAnswers, baseAnswers, updateAn
 
   return (
     <Grid item xs={6}>
-      <Card>
+      <Card style={{ flex: 1 }}>
         <CardHeader title={title} />
         <CardContent>
-          <List>
-            {answers?.map((answer, index) => (
+          {console.log(answers?.length)}
+          {console.log(answers, 'ans')}
+          <FixedSizeList
+            height={300}
+            itemSize={46}
+            itemCount={answers?.length || 0}
+            overscanCount={5}
+          >
+            {({ style, index }) => (
               <ListItem
-                key={answer}
+                style={style}
+                key={answers[index]}
                 secondaryAction={
                   selectedAnswerType === title && selectedAnswerIndex === index ? (
                     <SecondaryActionEdit
@@ -73,7 +81,7 @@ const AnswersList = ({ title, answers, setFilteredAnswers, baseAnswers, updateAn
                       editAction={() => {
                         setSelectedAnswerType(title)
                         setSelectedAnswerIndex(index)
-                        setSelectedAnswerInput(answer)
+                        setSelectedAnswerInput(answers[index])
                       }}
                       deleteAction={() =>
                         setFilteredAnswers((state) =>
@@ -97,11 +105,11 @@ const AnswersList = ({ title, answers, setFilteredAnswers, baseAnswers, updateAn
                     variant="standard"
                   />
                 ) : (
-                  <ListItemText primary={answer} />
+                  <ListItemText primary={answers[index]} />
                 )}
               </ListItem>
-            ))}
-          </List>
+            )}
+          </FixedSizeList>
         </CardContent>
         <CardActions>
           <Button
