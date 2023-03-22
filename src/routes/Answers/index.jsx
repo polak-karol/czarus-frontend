@@ -63,7 +63,7 @@ const Answers = () => {
           .map(([key, value]) => (
             <AnswersList
               key={key}
-              title={key}
+              answerType={key}
               answers={value}
               baseAnswers={answers}
               setFilteredAnswers={setFilteredAnswers}

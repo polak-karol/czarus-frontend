@@ -2,19 +2,20 @@ import React, { useEffect, useState } from 'react'
 import { FixedSizeList } from 'react-window'
 import {
   Button,
+  ButtonGroup,
   Card,
   CardActions,
   CardContent,
   CardHeader,
   Grid,
-  ListItem,
-  ListItemText,
-  TextField,
+  IconButton,
+  Stack,
 } from '@mui/material'
-import SecondaryActionDefault from './SecondaryActionDefault'
-import SecondaryActionEdit from './SecondaryActionEdit'
+import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded'
+import { answersTitle } from './config'
+import AnswerItem from './AnswerItem'
 
-const AnswersList = ({ title, answers, setFilteredAnswers, baseAnswers, updateAnswers }) => {
+const AnswersList = ({ answerType, answers, setFilteredAnswers, baseAnswers, updateAnswers }) => {
   const [selectedAnswerType, setSelectedAnswerType] = useState('')
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState('')
   const [selectedAnswerInput, setSelectedAnswerInput] = useState('')
@@ -23,118 +24,90 @@ const AnswersList = ({ title, answers, setFilteredAnswers, baseAnswers, updateAn
   useEffect(() => {
     if (
       JSON.stringify(answers?.sort((a, b) => a.localeCompare(b))) !==
-      JSON.stringify(baseAnswers[title]?.sort((a, b) => a.localeCompare(b)))
+      JSON.stringify(baseAnswers[answerType]?.sort((a, b) => a.localeCompare(b)))
     ) {
       setItemActionsAllowed(true)
     } else {
       setItemActionsAllowed(false)
     }
-  }, [JSON.stringify(answers), JSON.stringify(baseAnswers[title])])
+  }, [JSON.stringify(answers), JSON.stringify(baseAnswers[answerType])])
 
   return (
     <Grid item xs={6}>
       <Card style={{ flex: 1 }}>
-        <CardHeader title={title} />
+        <CardHeader title={answersTitle[answerType]} />
         <CardContent>
-          {console.log(answers?.length)}
-          {console.log(answers, 'ans')}
           <FixedSizeList
+            itemData={{
+              answers,
+              selectedAnswerType,
+              answerType,
+              selectedAnswerIndex,
+              selectedAnswerInput,
+              setFilteredAnswers,
+              setSelectedAnswerType,
+              setSelectedAnswerIndex,
+              setSelectedAnswerInput,
+            }}
+            itemKey={(index) => index}
             height={300}
             itemSize={46}
             itemCount={answers?.length || 0}
             overscanCount={5}
           >
-            {({ style, index }) => (
-              <ListItem
-                style={style}
-                key={answers[index]}
-                secondaryAction={
-                  selectedAnswerType === title && selectedAnswerIndex === index ? (
-                    <SecondaryActionEdit
-                      saveAction={() => {
-                        setFilteredAnswers((state) =>
-                          state.map(([key, value]) => {
-                            if (key !== title) return [key, value]
-
-                            return [
-                              key,
-                              value.map((item, itemIndex) => {
-                                if (itemIndex !== index) return item
-
-                                return selectedAnswerInput
-                              }),
-                            ]
-                          }),
-                        )
-                        setSelectedAnswerType('')
-                        setSelectedAnswerIndex('')
-                        setSelectedAnswerInput('')
-                      }}
-                      cancelAction={() => {
-                        setSelectedAnswerType('')
-                        setSelectedAnswerIndex('')
-                        setSelectedAnswerInput('')
-                      }}
-                    />
-                  ) : (
-                    <SecondaryActionDefault
-                      editAction={() => {
-                        setSelectedAnswerType(title)
-                        setSelectedAnswerIndex(index)
-                        setSelectedAnswerInput(answers[index])
-                      }}
-                      deleteAction={() =>
-                        setFilteredAnswers((state) =>
-                          [...state].map(([key, value]) => {
-                            if (key !== title) return [key, value]
-
-                            value.splice(index, 1)
-                            return [key, value]
-                          }),
-                        )
-                      }
-                    />
-                  )
-                }
-              >
-                {selectedAnswerType === title && selectedAnswerIndex === index ? (
-                  <TextField
-                    required
-                    value={selectedAnswerInput}
-                    onChange={(event) => setSelectedAnswerInput(event.target.value)}
-                    variant="standard"
-                  />
-                ) : (
-                  <ListItemText primary={answers[index]} />
-                )}
-              </ListItem>
-            )}
+            {AnswerItem}
           </FixedSizeList>
         </CardContent>
         <CardActions>
-          <Button
-            onClick={() => {
-              setFilteredAnswers((state) =>
-                state.map(([key, value]) => {
-                  if (key !== title) return [key, value]
+          <Stack style={{ flex: 1 }} justifyContent="space-between" direction="row">
+            <IconButton
+              disabled={!!selectedAnswerType}
+              onClick={() => {
+                setFilteredAnswers((state) =>
+                  state.map(([key, value]) => {
+                    if (key !== answerType) return [key, value]
 
-                  return [key, baseAnswers[title] ? [...baseAnswers[title]] : null]
-                }),
-              )
-            }}
-            disabled={!itemActionsAllowed}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={() => {
-              updateAnswers(Object.fromEntries([[title, answers]]))
-            }}
-            color="secondary"
-            disabled={!itemActionsAllowed}
-          >
-            Save
-          </Button>
+                    value.unshift('')
+
+                    return [key, value]
+                  }),
+                )
+                setSelectedAnswerType(answerType)
+                setSelectedAnswerIndex(0)
+                setSelectedAnswerInput(answers.at(0))
+              }}
+              color="primary"
+              edge="end"
+              aria-label="edit"
+            >
+              <AddCircleRoundedIcon fontSize="large" />
+            </IconButton>
+            <ButtonGroup>
+              <Button
+                onClick={() => {
+                  setFilteredAnswers((state) =>
+                    state.map(([key, value]) => {
+                      if (key !== answerType) return [key, value]
+
+                      return [key, baseAnswers[answerType] ? [...baseAnswers[answerType]] : null]
+                    }),
+                  )
+                }}
+                disabled={!itemActionsAllowed || !!selectedAnswerType}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  updateAnswers(Object.fromEntries([[answerType, answers]]))
+                }}
+                color="secondary"
+                disabled={!itemActionsAllowed || !!selectedAnswerType}
+              >
+                Save
+              </Button>
+            </ButtonGroup>
+          </Stack>
         </CardActions>
       </Card>
     </Grid>
