@@ -38,9 +38,11 @@ const Answers = () => {
 
   const updateAnswersSuccess = (response) => {
     console.log(response)
+    setAnswers({ ...response.data })
   }
 
-  const updateAnswers = (body) => {
+  const updateAnswers = (data) => {
+    const body = { ...data, channelId: 'channel_id' }
     agent.Answers.updateAnswers('guild_id', body).then(updateAnswersSuccess, updateAnswersError)
   }
 
@@ -56,16 +58,18 @@ const Answers = () => {
         Answers
       </Typography>
       <Grid container spacing={2}>
-        {filteredAnswers.map(([key, value]) => (
-          <AnswersList
-            key={key}
-            title={key}
-            answers={value}
-            baseAnswers={answers}
-            setFilteredAnswers={setFilteredAnswers}
-            updateAnswers={updateAnswers}
-          />
-        ))}
+        {filteredAnswers
+          .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
+          .map(([key, value]) => (
+            <AnswersList
+              key={key}
+              title={key}
+              answers={value}
+              baseAnswers={answers}
+              setFilteredAnswers={setFilteredAnswers}
+              updateAnswers={updateAnswers}
+            />
+          ))}
       </Grid>
     </div>
   )

@@ -21,12 +21,15 @@ const AnswersList = ({ title, answers, setFilteredAnswers, baseAnswers, updateAn
   const [itemActionsAllowed, setItemActionsAllowed] = useState(false)
 
   useEffect(() => {
-    if (JSON.stringify(answers) !== JSON.stringify(baseAnswers[title])) {
+    if (
+      JSON.stringify(answers?.sort((a, b) => a.localeCompare(b))) !==
+      JSON.stringify(baseAnswers[title]?.sort((a, b) => a.localeCompare(b)))
+    ) {
       setItemActionsAllowed(true)
     } else {
       setItemActionsAllowed(false)
     }
-  }, [JSON.stringify(answers)])
+  }, [JSON.stringify(answers), JSON.stringify(baseAnswers[title])])
 
   return (
     <Grid item xs={6}>
@@ -117,7 +120,7 @@ const AnswersList = ({ title, answers, setFilteredAnswers, baseAnswers, updateAn
           </Button>
           <Button
             onClick={() => {
-              updateAnswers(Object.fromEntries([title]))
+              updateAnswers(Object.fromEntries([[title, answers]]))
             }}
             color="secondary"
             disabled={!itemActionsAllowed}
