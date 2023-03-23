@@ -10,7 +10,7 @@ import { basicPaths, restPaths } from './config'
 import { AppBar, Drawer, DrawerHeader } from './utils'
 import MenuListSegment from './MenuListSegment'
 
-const MiniDrawer = ({ children }) => {
+const App = ({ children }) => {
   const theme = useTheme()
   const [open, setOpen] = React.useState(false)
   const darkTheme = createTheme({
@@ -46,7 +46,7 @@ const MiniDrawer = ({ children }) => {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap component="div">
-              Mini variant drawer
+              Czaruś
             </Typography>
           </Toolbar>
         </AppBar>
@@ -70,4 +70,4 @@ const MiniDrawer = ({ children }) => {
   )
 }
 
-export default MiniDrawer
+export default App

@@ -4,7 +4,7 @@ import BirthdaysTable from './BirthdayTable'
 
 const Birthdays = () => (
   <Stack spacing={4}>
-    <Typography variant="h2" component="h2">
+    <Typography variant="h3" component="h3">
       Birthdays
     </Typography>
     <Card>

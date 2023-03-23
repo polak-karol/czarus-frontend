@@ -1,15 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
-import { Mail as MailIcon } from '@mui/icons-material'
 
 const MenuListSegment = ({ paths, open }) => (
   <List>
     {paths.map(({ name, url, icon }) => (
       <ListItem key={name} disablePadding sx={{ display: 'block' }}>
         <ListItemButton
-          LinkComponent={Link}
-          href={url}
+          component={Link}
+          to={url}
           sx={{
             minHeight: 48,
             justifyContent: open ? 'initial' : 'center',
@@ -23,7 +22,7 @@ const MenuListSegment = ({ paths, open }) => (
               justifyContent: 'center',
             }}
           >
-            {icon || <MailIcon />}
+            {icon}
           </ListItemIcon>
           <ListItemText primary={name} sx={{ opacity: open ? 1 : 0 }} />
         </ListItemButton>

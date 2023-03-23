@@ -9,6 +9,7 @@
     "semi": "off",
     "react/no-unescaped-entities": "off",
     "react/jsx-wrap-multilines": "off",
+    "react/jsx-curly-newline": "off",
     "react/function-component-definition": [
       2,
       {
@@ -22,7 +23,9 @@
     "no-plusplus": "off",
     "implicit-arrow-linebreak": "off",
     "function-paren-newline": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "operator-linebreak": "off",
+    "no-confusing-arrow": "off"
   },
   "overrides": [],
   "parserOptions": {
