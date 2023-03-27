@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Button,
   Dialog,
@@ -12,9 +12,23 @@ import {
 import { DateField } from '@mui/x-date-pickers'
 import agent from '~/api/agent'
 
-const UpdateHolidayModal = ({ open, onClose, handleSubmit, date }) => {
+const UpdateHolidayModal = ({ open, onClose, date }) => {
+  const [message, setMessage] = useState('')
+
+  const updateHolidayError = (error) => {
+    console.log(error)
+  }
+
+  const updateHolidaySuccess = (response) => {
+    console.log(response)
+  }
+
   const updateHoliday = () => {
-    agent.Holidays.updateHolidays()
+    const body = {
+      message,
+      date: date.toISOString(),
+    }
+    agent.Holidays.updateHolidays('guild_id', body).then(updateHolidaySuccess, updateHolidayError)
   }
 
   return (
@@ -24,14 +38,21 @@ const UpdateHolidayModal = ({ open, onClose, handleSubmit, date }) => {
         <Stack direction="column" gap="3rem">
           <DialogContentText>Update holiday on specific day.</DialogContentText>
           <Stack direction="column" gap="2rem">
-            <DateField variant="standard" label="Controlled field" defaultValue={date} readOnly />
-            <TextField label="Message" multiline rows={4} variant="standard" />
+            <DateField variant="standard" label="Date" defaultValue={date} readOnly />
+            <TextField
+              value={message}
+              onChange={(event) => setMessage(event.target.value)}
+              label="Message"
+              multiline
+              rows={4}
+              variant="standard"
+            />
           </Stack>
         </Stack>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={handleSubmit} color="secondary">
+        <Button onClick={() => updateHoliday()} color="secondary">
           Update
         </Button>
       </DialogActions>
