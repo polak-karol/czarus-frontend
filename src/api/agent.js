@@ -39,9 +39,14 @@ const Answers = {
   updateAnswers: (guildId, body) => requests.put(`/answer/${guildId}`, body),
 }
 
+const Holidays = {
+  updateHolidays: (guildId, body) => requests.put(`/holiday/${guildId}`, body),
+}
+
 const agent = {
   Answers,
   Birthdays,
+  Holidays,
 }
 
 export default agent

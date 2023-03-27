@@ -10,12 +10,15 @@ import {
   TextField,
 } from '@mui/material'
 import { DateField } from '@mui/x-date-pickers'
+import agent from '~/api/agent'
 
 const UpdateHolidayModal = ({ open, onClose, handleSubmit, date }) => {
-  const f = 'f'
+  const updateHoliday = () => {
+    agent.Holidays.updateHolidays()
+  }
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>Update</DialogTitle>
       <DialogContent>
         <Stack direction="column" gap="3rem">
