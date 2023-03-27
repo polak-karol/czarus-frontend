@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
+import moment from 'moment'
+import { Tooltip } from '@mui/material'
 import Badge from '@mui/material/Badge'
 import { PickersDay } from '@mui/x-date-pickers/PickersDay'
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton'
-import moment from 'moment'
-import { Tooltip } from '@mui/material'
+import agent from '~/api/agent'
 import UpdateHolidayModal from './UpdateHolidayModal'
 
 function getRandomNumber(min, max) {
@@ -52,6 +53,24 @@ const Holidays = () => {
   const [selectedDate, setSelectedDate] = useState(moment())
   const [updateHolidayModalActive, setUpdateHolidayModalActive] = useState(false)
 
+  const getHolidaysError = (error) => {
+    console.log(error)
+  }
+
+  const getHolidaysSuccess = (response) => {
+    console.log(response)
+  }
+
+  const getHolidays = () => {
+    const startOfMonth = moment().startOf('month').toISOString()
+    const endOfMonth = moment().endOf('month').toISOString()
+
+    agent.Holidays.getHolidays('guild_id', { endDate: startOfMonth, startDate: endOfMonth }).then(
+      getHolidaysSuccess,
+      getHolidaysError,
+    )
+  }
+
   const fetchHighlightedDays = (date) => {
     const controller = new AbortController()
     fakeFetch(date, {
@@ -73,6 +92,7 @@ const Holidays = () => {
 
   useEffect(() => {
     fetchHighlightedDays(moment())
+    getHolidays()
     // abort request on unmount
     return () => requestAbortController.current?.abort()
   }, [])
