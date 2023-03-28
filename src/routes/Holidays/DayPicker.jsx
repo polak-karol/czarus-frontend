@@ -3,10 +3,8 @@ import moment from 'moment'
 import { Badge, Tooltip } from '@mui/material'
 import { PickersDay } from '@mui/x-date-pickers'
 
-const DayPicker = ({ highlightedDays = [], day, outsideCurrentMonth, ...other }) => {
-  const date = highlightedDays.find(
-    (highlightedDay) => moment(highlightedDay.date).date() === day.date(),
-  )
+const DayPicker = ({ holidaysData = [], day, outsideCurrentMonth, ...other }) => {
+  const date = holidaysData.find((holiday) => moment(holiday.date).date() === day.date())
 
   return (
     <Badge

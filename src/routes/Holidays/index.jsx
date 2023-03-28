@@ -9,7 +9,7 @@ import DayPicker from './DayPicker'
 
 const Holidays = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const [highlightedDays, setHighlightedDays] = useState([1, 2, 15])
+  const [holidaysData, setHolidaysData] = useState([1, 2, 15])
   const [selectedDate, setSelectedDate] = useState(moment())
   const [message, setMessage] = useState('')
   const [updateHolidayModalActive, setUpdateHolidayModalActive] = useState(false)
@@ -19,7 +19,7 @@ const Holidays = () => {
   }
 
   const getHolidaysSuccess = (response) => {
-    setHighlightedDays(response.data)
+    setHolidaysData(response.data)
   }
 
   const getHolidays = (date) => {
@@ -37,7 +37,7 @@ const Holidays = () => {
 
   const handleMonthChange = (date) => {
     setIsLoading(true)
-    setHighlightedDays([])
+    setHolidaysData([])
     getHolidays(date)
   }
 
@@ -54,9 +54,8 @@ const Holidays = () => {
               setUpdateHolidayModalActive(true)
               setSelectedDate(newValue)
               setMessage(
-                highlightedDays.find(
-                  (highlightedDay) => moment(highlightedDay.date).date() === newValue.date(),
-                )?.message,
+                holidaysData.find((holiday) => moment(holiday.date).date() === newValue.date())
+                  ?.message,
               )
             }}
             loading={isLoading}
@@ -67,7 +66,7 @@ const Holidays = () => {
             }}
             slotProps={{
               day: {
-                highlightedDays,
+                holidaysData,
               },
             }}
           />
@@ -117,7 +116,7 @@ const Holidays = () => {
       </Grid>
       <UpdateHolidayModal
         date={selectedDate}
-        highlightedDays={highlightedDays}
+        setHolidaysData={setHolidaysData}
         open={updateHolidayModalActive}
         message={message}
         setMessage={setMessage}
