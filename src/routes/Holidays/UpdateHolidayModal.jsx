@@ -12,7 +12,15 @@ import {
 import { DateField } from '@mui/x-date-pickers'
 import agent from '~/api/agent'
 
-const UpdateHolidayModal = ({ open, onClose, date, message, setMessage }) => {
+const UpdateHolidayModal = ({
+  open,
+  onClose,
+  date,
+  message,
+  setMessage,
+  setHolidaysData,
+  holidaysData,
+}) => {
   const [loading, setLoading] = useState(false)
 
   const updateHolidayError = (error) => {
@@ -20,7 +28,20 @@ const UpdateHolidayModal = ({ open, onClose, date, message, setMessage }) => {
   }
 
   const updateHolidaySuccess = (response) => {
-    console.log(response)
+    if (holidaysData.some(({ id }) => id === response.data.id)) {
+      setHolidaysData((state) =>
+        state.map((item) => {
+          if (item.id !== response.data.id) return item
+          return response.data
+        }),
+      )
+    } else {
+      setHolidaysData((state) => {
+        state.push(response.data)
+        return state
+      })
+    }
+    onClose()
   }
 
   const updateHoliday = () => {
@@ -29,7 +50,8 @@ const UpdateHolidayModal = ({ open, onClose, date, message, setMessage }) => {
       message,
       date: date.toISOString(),
     }
-    agent.Holidays.updateHolidays('guild_id', body)
+
+    return agent.Holidays.updateHolidays('guild_id', body)
       .then(updateHolidaySuccess, updateHolidayError)
       .finally(() => setLoading(false))
   }

@@ -8,7 +8,7 @@ import UpdateHolidayModal from './UpdateHolidayModal'
 import DayPicker from './DayPicker'
 
 const Holidays = () => {
-  const [isLoading, setIsLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [holidaysData, setHolidaysData] = useState([1, 2, 15])
   const [selectedDate, setSelectedDate] = useState(moment())
   const [message, setMessage] = useState('')
@@ -28,7 +28,7 @@ const Holidays = () => {
 
     agent.Holidays.getHolidays('guild_id', { endDate: endOfMonth, startDate: startOfMonth })
       .then(getHolidaysSuccess, getHolidaysError)
-      .finally(() => setIsLoading(false))
+      .finally(() => setLoading(false))
   }
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const Holidays = () => {
   }, [])
 
   const handleMonthChange = (date) => {
-    setIsLoading(true)
+    setLoading(true)
     setHolidaysData([])
     getHolidays(date)
   }
@@ -58,7 +58,7 @@ const Holidays = () => {
                   ?.message,
               )
             }}
-            loading={isLoading}
+            loading={loading}
             onMonthChange={handleMonthChange}
             renderLoading={() => <DayCalendarSkeleton />}
             slots={{
@@ -117,6 +117,7 @@ const Holidays = () => {
       <UpdateHolidayModal
         date={selectedDate}
         setHolidaysData={setHolidaysData}
+        holidaysData={holidaysData}
         open={updateHolidayModalActive}
         message={message}
         setMessage={setMessage}
