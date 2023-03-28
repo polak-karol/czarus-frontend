@@ -43,6 +43,7 @@ const Holidays = {
   updateHolidays: (guildId, body) => requests.put(`/holiday/${guildId}`, body),
   getHolidays: (guildId, dates) =>
     requests.get(`/holiday/list/${guildId}?startDate=${dates.startDate}&endDate=${dates.endDate}`),
+  getHoliday: (guildId, date) => requests.get(`/holiday/${guildId}?date=${date}`),
 }
 
 const agent = {

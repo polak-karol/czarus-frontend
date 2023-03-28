@@ -13,13 +13,17 @@ const DayPicker = ({ holidaysData = [], day, outsideCurrentMonth, ...other }) =>
       overlap="circular"
       badgeContent={date || outsideCurrentMonth ? undefined : '❌'}
     >
-      <Tooltip
-        disableFocusListener
-        disableTouchListener
-        title={<HolidayMessage>{date?.message}</HolidayMessage>}
-      >
+      {date?.message ? (
+        <Tooltip
+          disableFocusListener
+          disableTouchListener
+          title={<HolidayMessage>{date?.message}</HolidayMessage>}
+        >
+          <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
+        </Tooltip>
+      ) : (
         <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
-      </Tooltip>
+      )}
     </Badge>
   )
 }

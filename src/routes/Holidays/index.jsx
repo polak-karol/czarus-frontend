@@ -13,6 +13,7 @@ const Holidays = () => {
   const [holidaysData, setHolidaysData] = useState([1, 2, 15])
   const [selectedDate, setSelectedDate] = useState(moment())
   const [message, setMessage] = useState('')
+  const [tomorrowHoliday, setTomorrowHoliday] = useState(null)
   const [updateHolidayModalActive, setUpdateHolidayModalActive] = useState(false)
 
   const getHolidaysError = (error) => console.log(error)
@@ -28,8 +29,19 @@ const Holidays = () => {
       .finally(() => setLoading(false))
   }
 
+  const getHolidayForTomorrowError = (error) => console.log(error)
+
+  const getHolidayForTomorrowSuccess = (response) => setTomorrowHoliday(response.data)
+
+  const getHolidayForTomorrow = () =>
+    agent.Holidays.getHoliday('guild_id', moment().add(1, 'day').toISOString()).then(
+      getHolidayForTomorrowSuccess,
+      getHolidayForTomorrowError,
+    )
+
   useEffect(() => {
     getHolidays(moment())
+    getHolidayForTomorrow()
   }, [])
 
   const handleMonthChange = (date) => {
@@ -43,29 +55,39 @@ const Holidays = () => {
       <Typography variant="h3" component="h3">
         Holidays
       </Typography>
-      <Alert
-        severity="warning"
-        variant="outlined"
-        action={
-          <Button color="inherit" size="small">
-            ADD
-          </Button>
-        }
-      >
-        <AlertTitle>Warning</AlertTitle>
-        No holiday for tomorrow!
-      </Alert>
+      {!tomorrowHoliday && (
+        <Alert
+          severity="warning"
+          variant="outlined"
+          action={
+            <Button
+              onClick={() => {
+                setSelectedDate(moment().add(1, 'day'))
+                setUpdateHolidayModalActive(true)
+                setMessage('')
+              }}
+              color="inherit"
+              size="small"
+            >
+              ADD
+            </Button>
+          }
+        >
+          <AlertTitle>Warning</AlertTitle>
+          No holiday for tomorrow!
+        </Alert>
+      )}
       <Grid container gap="6rem">
         <Grid xs={3} item>
           <DateCalendar
             value={selectedDate}
             onChange={(newValue) => {
-              setUpdateHolidayModalActive(true)
               setSelectedDate(newValue)
               setMessage(
                 holidaysData.find((holiday) => moment(holiday.date).date() === newValue.date())
                   ?.message,
               )
+              setUpdateHolidayModalActive(true)
             }}
             loading={loading}
             onMonthChange={handleMonthChange}
