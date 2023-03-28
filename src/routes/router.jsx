@@ -3,6 +3,7 @@ import { Router, Routes, Route } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
+import { Container } from '@mui/material'
 import App from '../components/App'
 import Home from './Home/Home'
 import Answers from './Answers'
@@ -34,12 +35,14 @@ const BrowserRouter = ({ basename, children, window }) => {
       {children}
       <App>
         <LocalizationProvider dateAdapter={AdapterMoment}>
-          <Routes>
-            <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
-            <Route path="/answers" element={<Answers />} errorElement={<ErrorPage />} />
-            <Route path="/birthdays" element={<Birthdays />} errorElement={<ErrorPage />} />
-            <Route path="/holidays" element={<Holidays />} errorElement={<ErrorPage />} />
-          </Routes>
+          <Container fluid>
+            <Routes>
+              <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
+              <Route path="/answers" element={<Answers />} errorElement={<ErrorPage />} />
+              <Route path="/birthdays" element={<Birthdays />} errorElement={<ErrorPage />} />
+              <Route path="/holidays" element={<Holidays />} errorElement={<ErrorPage />} />
+            </Routes>
+          </Container>
         </LocalizationProvider>
       </App>
     </Router>
