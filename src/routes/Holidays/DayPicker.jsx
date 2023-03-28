@@ -2,6 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import { Badge, Tooltip } from '@mui/material'
 import { PickersDay } from '@mui/x-date-pickers'
+import { HolidayMessage } from './styles'
 
 const DayPicker = ({ holidaysData = [], day, outsideCurrentMonth, ...other }) => {
   const date = holidaysData.find((holiday) => moment(holiday.date).date() === day.date())
@@ -12,7 +13,11 @@ const DayPicker = ({ holidaysData = [], day, outsideCurrentMonth, ...other }) =>
       overlap="circular"
       badgeContent={date || outsideCurrentMonth ? undefined : '❌'}
     >
-      <Tooltip disableFocusListener disableTouchListener title={date?.message}>
+      <Tooltip
+        disableFocusListener
+        disableTouchListener
+        title={<HolidayMessage>{date?.message}</HolidayMessage>}
+      >
         <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
       </Tooltip>
     </Badge>
