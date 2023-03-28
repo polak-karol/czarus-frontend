@@ -12,8 +12,8 @@ import {
 import { DateField } from '@mui/x-date-pickers'
 import agent from '~/api/agent'
 
-const UpdateHolidayModal = ({ open, onClose, date }) => {
-  const [message, setMessage] = useState('')
+const UpdateHolidayModal = ({ open, onClose, date, message, setMessage }) => {
+  const [loading, setLoading] = useState(false)
 
   const updateHolidayError = (error) => {
     console.log(error)
@@ -24,11 +24,14 @@ const UpdateHolidayModal = ({ open, onClose, date }) => {
   }
 
   const updateHoliday = () => {
+    setLoading(true)
     const body = {
       message,
       date: date.toISOString(),
     }
-    agent.Holidays.updateHolidays('guild_id', body).then(updateHolidaySuccess, updateHolidayError)
+    agent.Holidays.updateHolidays('guild_id', body)
+      .then(updateHolidaySuccess, updateHolidayError)
+      .finally(() => setLoading(false))
   }
 
   return (
@@ -40,19 +43,21 @@ const UpdateHolidayModal = ({ open, onClose, date }) => {
           <Stack direction="column" gap="2rem">
             <DateField variant="standard" label="Date" defaultValue={date} readOnly />
             <TextField
+              rows={4}
+              multiline
+              label="Message"
               value={message}
               onChange={(event) => setMessage(event.target.value)}
-              label="Message"
-              multiline
-              rows={4}
               variant="standard"
             />
           </Stack>
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={() => updateHoliday()} color="secondary">
+        <Button disabled={loading} onClick={onClose}>
+          Cancel
+        </Button>
+        <Button disabled={loading} onClick={() => updateHoliday()} color="secondary">
           Update
         </Button>
       </DialogActions>

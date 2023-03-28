@@ -1,56 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import moment from 'moment'
-import { Tooltip } from '@mui/material'
-import Badge from '@mui/material/Badge'
-import { PickersDay } from '@mui/x-date-pickers/PickersDay'
+import { Card, CardContent, Grid, Stack, Typography } from '@mui/material'
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton'
 import agent from '~/api/agent'
 import UpdateHolidayModal from './UpdateHolidayModal'
-
-function getRandomNumber(min, max) {
-  return Math.round(Math.random() * (max - min) + min)
-}
-
-function fakeFetch(date, { signal }) {
-  return new Promise((resolve, reject) => {
-    const timeout = setTimeout(() => {
-      const daysInMonth = date.daysInMonth()
-      const daysToHighlight = [1, 2, 3].map(() => getRandomNumber(1, daysInMonth))
-
-      resolve({ daysToHighlight })
-    }, 500)
-
-    signal.onabort = () => {
-      clearTimeout(timeout)
-      reject(new DOMException('aborted', 'AbortError'))
-    }
-  })
-}
-
-const ServerDay = (props) => {
-  const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props
-
-  const isSelected = !props.outsideCurrentMonth && highlightedDays.indexOf(props.day.date()) > 0
-
-  return (
-    <Badge
-      key={props.day.toString()}
-      overlap="circular"
-      badgeContent={isSelected ? '🌚' : undefined}
-    >
-      <Tooltip disableFocusListener disableTouchListener title="Add">
-        <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
-      </Tooltip>
-    </Badge>
-  )
-}
+import DayPicker from './DayPicker'
 
 const Holidays = () => {
-  const requestAbortController = useRef(null)
   const [isLoading, setIsLoading] = useState(false)
   const [highlightedDays, setHighlightedDays] = useState([1, 2, 15])
   const [selectedDate, setSelectedDate] = useState(moment())
+  const [message, setMessage] = useState('')
   const [updateHolidayModalActive, setUpdateHolidayModalActive] = useState(false)
 
   const getHolidaysError = (error) => {
@@ -58,83 +19,111 @@ const Holidays = () => {
   }
 
   const getHolidaysSuccess = (response) => {
-    console.log(response)
+    setHighlightedDays(response.data)
   }
 
-  const getHolidays = () => {
-    const startOfMonth = moment().startOf('month').toISOString()
-    const endOfMonth = moment().endOf('month').toISOString()
+  const getHolidays = (date) => {
+    const startOfMonth = date.startOf('month').format('YYYY-MM-DD')
+    const endOfMonth = date.endOf('month').format('YYYY-MM-DD')
 
-    agent.Holidays.getHolidays('guild_id', { endDate: startOfMonth, startDate: endOfMonth }).then(
-      getHolidaysSuccess,
-      getHolidaysError,
-    )
-  }
-
-  const fetchHighlightedDays = (date) => {
-    const controller = new AbortController()
-    fakeFetch(date, {
-      signal: controller.signal,
-    })
-      .then(({ daysToHighlight }) => {
-        setHighlightedDays(daysToHighlight)
-        setIsLoading(false)
-      })
-      .catch((error) => {
-        // ignore the error if it's caused by `controller.abort`
-        if (error.name !== 'AbortError') {
-          throw error
-        }
-      })
-
-    requestAbortController.current = controller
+    agent.Holidays.getHolidays('guild_id', { endDate: endOfMonth, startDate: startOfMonth })
+      .then(getHolidaysSuccess, getHolidaysError)
+      .finally(() => setIsLoading(false))
   }
 
   useEffect(() => {
-    fetchHighlightedDays(moment())
-    getHolidays()
-    // abort request on unmount
-    return () => requestAbortController.current?.abort()
+    getHolidays(moment())
   }, [])
 
   const handleMonthChange = (date) => {
-    if (requestAbortController.current) {
-      // make sure that you are aborting useless requests
-      // because it is possible to switch between months pretty quickly
-      requestAbortController.current.abort()
-    }
-
     setIsLoading(true)
     setHighlightedDays([])
-    fetchHighlightedDays(date)
+    getHolidays(date)
   }
 
   return (
-    <>
-      <DateCalendar
-        value={selectedDate}
-        onChange={(newValue) => {
-          setUpdateHolidayModalActive(true)
-          setSelectedDate(newValue)
-        }}
-        loading={isLoading}
-        onMonthChange={handleMonthChange}
-        renderLoading={() => <DayCalendarSkeleton />}
-        slots={{
-          day: ServerDay,
-        }}
-        slotProps={{
-          day: {
-            highlightedDays,
-          },
-        }}
-      />
+    <Stack direction="column">
+      <Typography variant="h3" component="h3">
+        Holidays
+      </Typography>
+      <Grid container gap="1.6rem">
+        <Grid xs={3} item>
+          <DateCalendar
+            value={selectedDate}
+            onChange={(newValue) => {
+              setUpdateHolidayModalActive(true)
+              setSelectedDate(newValue)
+              setMessage(
+                highlightedDays.find(
+                  (highlightedDay) => moment(highlightedDay.date).date() === newValue.date(),
+                )?.message,
+              )
+            }}
+            loading={isLoading}
+            onMonthChange={handleMonthChange}
+            renderLoading={() => <DayCalendarSkeleton />}
+            slots={{
+              day: DayPicker,
+            }}
+            slotProps={{
+              day: {
+                highlightedDays,
+              },
+            }}
+          />
+        </Grid>
+        <Grid xs={8} item>
+          <Stack direction="column" gap="1.6rem">
+            <Card>
+              <CardContent>
+                Veniam exercitation sunt eu laboris consectetur sint labore sit. Lorem esse veniam
+                veniam ullamco. Aute excepteur nisi ex Lorem est aute elit irure. Tempor voluptate
+                tempor adipisicing sint quis commodo nulla qui proident velit deserunt nulla. Culpa
+                enim ex mollit adipisicing non magna ex excepteur eu id esse adipisicing. Officia
+                veniam adipisicing deserunt dolor. Proident aliqua ut amet sit incididunt enim
+                mollit sint reprehenderit adipisicing cupidatat dolore consequat tempor. Officia
+                nostrud ut voluptate qui aliquip laboris et. Irure Lorem deserunt elit tempor tempor
+                sunt non consequat commodo ullamco sit. Lorem sit occaecat duis Lorem consequat
+                ipsum sunt pariatur enim aute ullamco adipisicing mollit. Nulla nulla officia
+                occaecat nisi quis commodo aliqua proident consectetur velit exercitation. Magna
+                adipisicing qui magna amet consequat ad culpa culpa. Do reprehenderit exercitation
+                fugiat id occaecat reprehenderit eu aliquip velit sit eiusmod nisi magna. Consequat
+                quis enim non minim eiusmod. Velit pariatur est est nulla qui enim ut. Incididunt
+                laborum ipsum deserunt culpa nisi nisi irure fugiat non ea. Anim tempor non irure
+                sint laborum. Fugiat laborum velit et tempor eu aliquip incididunt.
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent>
+                Veniam exercitation sunt eu laboris consectetur sint labore sit. Lorem esse veniam
+                veniam ullamco. Aute excepteur nisi ex Lorem est aute elit irure. Tempor voluptate
+                tempor adipisicing sint quis commodo nulla qui proident velit deserunt nulla. Culpa
+                enim ex mollit adipisicing non magna ex excepteur eu id esse adipisicing. Officia
+                veniam adipisicing deserunt dolor. Proident aliqua ut amet sit incididunt enim
+                mollit sint reprehenderit adipisicing cupidatat dolore consequat tempor. Officia
+                nostrud ut voluptate qui aliquip laboris et. Irure Lorem deserunt elit tempor tempor
+                sunt non consequat commodo ullamco sit. Lorem sit occaecat duis Lorem consequat
+                ipsum sunt pariatur enim aute ullamco adipisicing mollit. Nulla nulla officia
+                occaecat nisi quis commodo aliqua proident consectetur velit exercitation. Magna
+                adipisicing qui magna amet consequat ad culpa culpa. Do reprehenderit exercitation
+                fugiat id occaecat reprehenderit eu aliquip velit sit eiusmod nisi magna. Consequat
+                quis enim non minim eiusmod. Velit pariatur est est nulla qui enim ut. Incididunt
+                laborum ipsum deserunt culpa nisi nisi irure fugiat non ea. Anim tempor non irure
+                sint laborum. Fugiat laborum velit et tempor eu aliquip incididunt.
+              </CardContent>
+            </Card>
+          </Stack>
+        </Grid>
+      </Grid>
       <UpdateHolidayModal
         date={selectedDate}
+        highlightedDays={highlightedDays}
         open={updateHolidayModalActive}
+        message={message}
+        setMessage={setMessage}
         onClose={() => setUpdateHolidayModalActive(false)}
       />
-    </>
+    </Stack>
   )
 }
 
