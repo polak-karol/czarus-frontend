@@ -1,17 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { FixedSizeList } from 'react-window'
-import {
-  Button,
-  ButtonGroup,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Grid,
-  IconButton,
-  Stack,
-} from '@mui/material'
+import { Button, ButtonGroup, Grid, IconButton, Stack } from '@mui/material'
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded'
+import CardScrollList from '~/components/CardScrollList'
 import { answersTitle } from './config'
 import AnswerItem from './AnswerItem'
 
@@ -34,31 +24,27 @@ const AnswersList = ({ answerType, answers, setFilteredAnswers, baseAnswers, upd
 
   return (
     <Grid item xs={6}>
-      <Card style={{ flex: 1 }}>
-        <CardHeader title={answersTitle[answerType]} />
-        <CardContent>
-          <FixedSizeList
-            itemData={{
-              answers,
-              selectedAnswerType,
-              answerType,
-              selectedAnswerIndex,
-              selectedAnswerInput,
-              setFilteredAnswers,
-              setSelectedAnswerType,
-              setSelectedAnswerIndex,
-              setSelectedAnswerInput,
-            }}
-            itemKey={(index) => index}
-            height={300}
-            itemSize={46}
-            itemCount={answers?.length || 0}
-            overscanCount={5}
-          >
-            {AnswerItem}
-          </FixedSizeList>
-        </CardContent>
-        <CardActions>
+      <CardScrollList
+        title={answersTitle[answerType]}
+        listConfig={{
+          itemData: {
+            answers,
+            selectedAnswerType,
+            answerType,
+            selectedAnswerIndex,
+            selectedAnswerInput,
+            setFilteredAnswers,
+            setSelectedAnswerType,
+            setSelectedAnswerIndex,
+            setSelectedAnswerInput,
+          },
+          height: 300,
+          itemSize: 46,
+          itemCount: answers?.length || 0,
+          overscanCount: 5,
+        }}
+        Item={AnswerItem}
+        Actions={
           <Stack style={{ flex: 1 }} justifyContent="space-between" direction="row">
             <IconButton
               disabled={!!selectedAnswerType}
@@ -108,8 +94,8 @@ const AnswersList = ({ answerType, answers, setFilteredAnswers, baseAnswers, upd
               </Button>
             </ButtonGroup>
           </Stack>
-        </CardActions>
-      </Card>
+        }
+      />
     </Grid>
   )
 }
