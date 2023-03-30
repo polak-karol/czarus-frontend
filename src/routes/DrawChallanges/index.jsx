@@ -1,5 +1,6 @@
 import { Grid, Stack } from '@mui/material'
 import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import agent from '~/api/agent'
 import CardScrollList from '~/components/CardScrollList'
 import SubItem from './SubItem'
@@ -8,6 +9,7 @@ import TopBar from './TopBar'
 const DrawChallanges = () => {
   const [drawConfigs, setDrawConfigs] = useState()
   const [loading, setLoading] = useState(true)
+  const { tab } = useParams()
 
   const getDrawConfigsError = (error) => {
     console.log(error)
@@ -35,7 +37,7 @@ const DrawChallanges = () => {
       <TopBar />
       <Grid container spacing={2}>
         {Object.entries(drawConfigs)
-          .filter(([key, value]) => !!value && key.startsWith('writing'))
+          .filter(([key, value]) => !!value && key.startsWith(tab))
           .map(([, drawConfigValue]) =>
             Object.entries(drawConfigValue).map(([key, value]) => (
               <Grid item xs={6}>
