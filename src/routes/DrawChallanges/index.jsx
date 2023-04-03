@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Grid, Stack } from '@mui/material'
 import agent from '~/api/agent'
-import CardScrollList from '~/components/CardScrollList'
-import SubItem from './SubItem'
 import TopBar from './TopBar'
+import Card from './Card'
 
 const DrawChallanges = () => {
   const [drawConfigs, setDrawConfigs] = useState({})
@@ -13,6 +12,7 @@ const DrawChallanges = () => {
   const [selectedDrawConfigIndex, setSelectedDrawConfigIndex] = useState(null)
   const [selectedDrawConfigType, setSelectedDrawConfigType] = useState(null)
   const [selectedDrawConfigInput, setSelectedDrawConfigInput] = useState(null)
+  const [saveActionsAllowed, setSaveActionsAllowed] = useState(false)
   const { tab } = useParams()
 
   const getDrawConfigsError = (error) => {
@@ -33,6 +33,20 @@ const DrawChallanges = () => {
       .finally(() => setLoading(false))
   }
 
+  const updateDrawConfigsError = (error) => {
+    console.log(error)
+  }
+
+  const updateDrawConfigsSuccess = (response) => {
+    console.log(response)
+  }
+
+  const updateDrawConfigs = (body) =>
+    agent.Draws.updateDrawConfigs('guild_id', body).then(
+      updateDrawConfigsSuccess,
+      updateDrawConfigsError,
+    )
+
   useEffect(() => {
     getDrawConfigs()
   }, [])
@@ -52,31 +66,36 @@ const DrawChallanges = () => {
       <TopBar />
       <Grid container spacing={2}>
         {filteredDrawConfigs.map(([drawConfigKey, drawConfigValue]) =>
-          Object.entries(drawConfigValue).map(([key, value]) => (
-            <Grid item xs={6}>
-              <CardScrollList
-                title={key}
-                listConfig={{
-                  itemData: {
-                    resources: value,
-                    resourcesKey: key,
-                    drawConfigKey,
-                    setFilteredDrawConfigs,
-                    selectedDrawConfigIndex,
-                    setSelectedDrawConfigIndex,
-                    selectedDrawConfigType,
-                    setSelectedDrawConfigType,
-                    selectedDrawConfigInput,
-                    setSelectedDrawConfigInput,
-                  },
-                  height: 300,
-                  itemSize: 46,
-                  itemCount: value.length,
-                  overscanCount: 5,
-                }}
-                Item={SubItem}
-              />
-            </Grid>
+          Object.entries(drawConfigValue).map(([drawConfigItemKey, drawConfigItemValue]) => (
+            <Card
+              drawConfigItemKey={drawConfigItemKey}
+              tab={tab}
+              drawConfigs={drawConfigs}
+              drawConfigKey={drawConfigKey}
+              updateDrawConfigs={updateDrawConfigs}
+              filteredDrawConfigs={filteredDrawConfigs}
+              setFilteredDrawConfigs={setFilteredDrawConfigs}
+              setSaveActionsAllowed={setSaveActionsAllowed}
+              saveActionsAllowed={saveActionsAllowed}
+              listConfig={{
+                itemData: {
+                  resources: drawConfigItemValue,
+                  resourcesKey: drawConfigItemKey,
+                  drawConfigKey,
+                  setFilteredDrawConfigs,
+                  selectedDrawConfigIndex,
+                  setSelectedDrawConfigIndex,
+                  selectedDrawConfigType,
+                  setSelectedDrawConfigType,
+                  selectedDrawConfigInput,
+                  setSelectedDrawConfigInput,
+                },
+                height: 300,
+                itemSize: 46,
+                itemCount: drawConfigItemValue.length,
+                overscanCount: 5,
+              }}
+            />
           )),
         )}
       </Grid>

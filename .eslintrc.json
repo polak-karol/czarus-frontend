@@ -26,12 +26,18 @@
     "function-paren-newline": "off",
     "consistent-return": "off",
     "operator-linebreak": "off",
-    "no-confusing-arrow": "off"
+    "no-confusing-arrow": "off",
+    "import/extensions": "off"
   },
   "overrides": [],
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react"]
+  "plugins": ["react"],
+  "settings": {
+    "import/resolver": {
+      "alias": [["~", "./src"]]
+    }
+  }
 }

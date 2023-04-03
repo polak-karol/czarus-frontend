@@ -48,6 +48,7 @@ const Holidays = {
 
 const Draws = {
   getDrawConfigs: (guildId) => requests.get(`/draw-config/${guildId}`),
+  updateDrawConfigs: (guildId, body) => requests.put(`/draw-config/${guildId}`, body),
 }
 
 const agent = {
