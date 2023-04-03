@@ -1,6 +1,23 @@
 import React from 'react'
-import { ListItemText } from '@mui/material'
+import { ListItemText, TextField } from '@mui/material'
 
-const SubItemContent = ({ resource }) => <ListItemText primary={resource} />
+const SubItemContent = ({
+  resources,
+  index,
+  selectedDrawConfigIndex,
+  selectedDrawConfigType,
+  selectedDrawConfigInput,
+  setSelectedDrawConfigInput,
+  resourcesKey,
+}) =>
+  selectedDrawConfigIndex === index && selectedDrawConfigType === resourcesKey ? (
+    <TextField
+      variant="standard"
+      value={selectedDrawConfigInput}
+      onChange={(event) => setSelectedDrawConfigInput(event.target.value)}
+    />
+  ) : (
+    <ListItemText primary={resources[index]} />
+  )
 
 export default SubItemContent

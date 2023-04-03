@@ -10,6 +10,9 @@ const DrawChallanges = () => {
   const [drawConfigs, setDrawConfigs] = useState({})
   const [filteredDrawConfigs, setFilteredDrawConfigs] = useState({})
   const [loading, setLoading] = useState(true)
+  const [selectedDrawConfigIndex, setSelectedDrawConfigIndex] = useState(null)
+  const [selectedDrawConfigType, setSelectedDrawConfigType] = useState(null)
+  const [selectedDrawConfigInput, setSelectedDrawConfigInput] = useState(null)
   const { tab } = useParams()
 
   const getDrawConfigsError = (error) => {
@@ -59,6 +62,12 @@ const DrawChallanges = () => {
                     resourcesKey: key,
                     drawConfigKey,
                     setFilteredDrawConfigs,
+                    selectedDrawConfigIndex,
+                    setSelectedDrawConfigIndex,
+                    selectedDrawConfigType,
+                    setSelectedDrawConfigType,
+                    selectedDrawConfigInput,
+                    setSelectedDrawConfigInput,
                   },
                   height: 300,
                   itemSize: 46,

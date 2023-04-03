@@ -6,14 +6,29 @@ import SecondaryActionDefault from './SecondaryActionDefault'
 const SubItem = ({
   index,
   style,
-  data: { resources, setFilteredDrawConfigs, drawConfigKey, resourcesKey },
+  data: {
+    resources,
+    setFilteredDrawConfigs,
+    drawConfigKey,
+    resourcesKey,
+    selectedDrawConfigIndex,
+    setSelectedDrawConfigIndex,
+    selectedDrawConfigType,
+    setSelectedDrawConfigType,
+    selectedDrawConfigInput,
+    setSelectedDrawConfigInput,
+  },
 }) => (
   <ListItem
     style={style}
     key={index}
     secondaryAction={
       <SecondaryActionDefault
-        editAction={() => {}}
+        editAction={() => {
+          setSelectedDrawConfigIndex(index)
+          setSelectedDrawConfigType(resourcesKey)
+          setSelectedDrawConfigInput(resources[index])
+        }}
         deleteAction={() => {
           setFilteredDrawConfigs((state) =>
             state.map(([key, value]) => {
@@ -34,7 +49,15 @@ const SubItem = ({
       />
     }
   >
-    <SubItemContent resource={resources[index]} />
+    <SubItemContent
+      selectedDrawConfigIndex={selectedDrawConfigIndex}
+      selectedDrawConfigType={selectedDrawConfigType}
+      selectedDrawConfigInput={selectedDrawConfigInput}
+      setSelectedDrawConfigInput={setSelectedDrawConfigInput}
+      resourcesKey={resourcesKey}
+      resources={resources}
+      index={index}
+    />
   </ListItem>
 )
 
