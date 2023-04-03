@@ -4,13 +4,11 @@ import { ListItemText, TextField } from '@mui/material'
 const SubItemContent = ({
   resources,
   index,
-  selectedDrawConfigIndex,
-  selectedDrawConfigType,
+  editMode,
   selectedDrawConfigInput,
   setSelectedDrawConfigInput,
-  resourcesKey,
 }) =>
-  selectedDrawConfigIndex === index && selectedDrawConfigType === resourcesKey ? (
+  editMode ? (
     <TextField
       variant="standard"
       value={selectedDrawConfigInput}

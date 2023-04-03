@@ -1,5 +1,5 @@
-import { ListItemText, TextField } from '@mui/material'
 import React from 'react'
+import { ListItemText, TextField } from '@mui/material'
 
 const AnswerInput = ({
   selectedAnswerType,
@@ -13,11 +13,9 @@ const AnswerInput = ({
   selectedAnswerType === answerType && selectedAnswerIndex === index ? (
     <TextField
       required
-      value={selectedAnswerInput}
-      onChange={(event) => {
-        setSelectedAnswerInput(event.target.value)
-      }}
       variant="standard"
+      value={selectedAnswerInput}
+      onChange={(event) => setSelectedAnswerInput(event.target.value)}
     />
   ) : (
     <ListItemText primary={answers[index]} />
