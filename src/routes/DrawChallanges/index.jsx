@@ -48,7 +48,7 @@ const DrawChallanges = () => {
     <Stack direction="column" gap="1rem">
       <TopBar />
       <Grid container spacing={2}>
-        {filteredDrawConfigs.map(([, drawConfigValue]) =>
+        {filteredDrawConfigs.map(([drawConfigKey, drawConfigValue]) =>
           Object.entries(drawConfigValue).map(([key, value]) => (
             <Grid item xs={6}>
               <CardScrollList
@@ -56,6 +56,9 @@ const DrawChallanges = () => {
                 listConfig={{
                   itemData: {
                     resources: value,
+                    resourcesKey: key,
+                    drawConfigKey,
+                    setFilteredDrawConfigs,
                   },
                   height: 300,
                   itemSize: 46,
