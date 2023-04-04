@@ -36,7 +36,7 @@ const BrowserRouter = ({ basename, children, window }) => {
       {children}
       <App>
         <LocalizationProvider dateAdapter={AdapterMoment}>
-          <Container fluid>
+          <Container fixed>
             <Routes>
               <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
               <Route path="/answers" element={<Answers />} errorElement={<ErrorPage />} />
