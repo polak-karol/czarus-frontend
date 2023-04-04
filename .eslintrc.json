@@ -27,7 +27,8 @@
     "consistent-return": "off",
     "operator-linebreak": "off",
     "no-confusing-arrow": "off",
-    "import/extensions": "off"
+    "import/extensions": "off",
+    "import/no-unresolved": "off"
   },
   "overrides": [],
   "parserOptions": {
@@ -37,7 +38,10 @@
   "plugins": ["react"],
   "settings": {
     "import/resolver": {
-      "alias": [["~", "./src"]]
+      "alias": [["~", "./src"]],
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
     }
   }
 }

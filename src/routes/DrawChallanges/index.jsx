@@ -12,7 +12,6 @@ const DrawChallanges = () => {
   const [selectedDrawConfigIndex, setSelectedDrawConfigIndex] = useState(null)
   const [selectedDrawConfigType, setSelectedDrawConfigType] = useState(null)
   const [selectedDrawConfigInput, setSelectedDrawConfigInput] = useState(null)
-  const [saveActionsAllowed, setSaveActionsAllowed] = useState(false)
   const { tab } = useParams()
 
   const getDrawConfigsError = (error) => {
@@ -65,39 +64,41 @@ const DrawChallanges = () => {
     <Stack direction="column" gap="1rem">
       <TopBar />
       <Grid container spacing={2}>
-        {filteredDrawConfigs.map(([drawConfigKey, drawConfigValue]) =>
-          Object.entries(drawConfigValue).map(([drawConfigItemKey, drawConfigItemValue]) => (
-            <Card
-              drawConfigItemKey={drawConfigItemKey}
-              tab={tab}
-              drawConfigs={drawConfigs}
-              drawConfigKey={drawConfigKey}
-              updateDrawConfigs={updateDrawConfigs}
-              filteredDrawConfigs={filteredDrawConfigs}
-              setFilteredDrawConfigs={setFilteredDrawConfigs}
-              setSaveActionsAllowed={setSaveActionsAllowed}
-              saveActionsAllowed={saveActionsAllowed}
-              listConfig={{
-                itemData: {
-                  resources: drawConfigItemValue,
-                  resourcesKey: drawConfigItemKey,
-                  drawConfigKey,
-                  setFilteredDrawConfigs,
-                  selectedDrawConfigIndex,
-                  setSelectedDrawConfigIndex,
-                  selectedDrawConfigType,
-                  setSelectedDrawConfigType,
-                  selectedDrawConfigInput,
-                  setSelectedDrawConfigInput,
-                },
-                height: 300,
-                itemSize: 46,
-                itemCount: drawConfigItemValue.length,
-                overscanCount: 5,
-              }}
-            />
-          )),
-        )}
+        {console.log(filteredDrawConfigs)}
+        {filteredDrawConfigs
+          .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
+          .map(([drawConfigKey, drawConfigValue]) =>
+            Object.entries(drawConfigValue).map(([drawConfigItemKey, drawConfigItemValue]) => (
+              <Card
+                key={drawConfigItemKey}
+                drawConfigItemKey={drawConfigItemKey}
+                tab={tab}
+                drawConfigs={drawConfigs}
+                drawConfigKey={drawConfigKey}
+                updateDrawConfigs={updateDrawConfigs}
+                filteredDrawConfigs={filteredDrawConfigs}
+                setFilteredDrawConfigs={setFilteredDrawConfigs}
+                listConfig={{
+                  itemData: {
+                    resources: drawConfigItemValue,
+                    resourcesKey: drawConfigItemKey,
+                    drawConfigKey,
+                    setFilteredDrawConfigs,
+                    selectedDrawConfigIndex,
+                    setSelectedDrawConfigIndex,
+                    selectedDrawConfigType,
+                    setSelectedDrawConfigType,
+                    selectedDrawConfigInput,
+                    setSelectedDrawConfigInput,
+                  },
+                  height: 300,
+                  itemSize: 46,
+                  itemCount: drawConfigItemValue.length,
+                  overscanCount: 5,
+                }}
+              />
+            )),
+          )}
       </Grid>
     </Stack>
   )

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Grid } from '@mui/material'
 import CardScrollList from '~/components/CardScrollList'
 import CardActions from './CardActions'
@@ -13,9 +13,9 @@ const Card = ({
   setFilteredDrawConfigs,
   filteredDrawConfigs,
   drawConfigKey,
-  setSaveActionsAllowed,
-  saveActionsAllowed,
 }) => {
+  const [saveActionsAllowed, setSaveActionsAllowed] = useState(false)
+
   useEffect(() => {
     if (
       JSON.stringify(drawConfigs[drawConfigKey][drawConfigItemKey]) !==
@@ -48,6 +48,13 @@ const Card = ({
               )
             }
             saveAction={() => updateDrawConfigs({})}
+            addAction={() =>
+              setFilteredDrawConfigs((state) => {
+                const copyState = Object.fromEntries(state)[drawConfigKey][drawConfigItemKey]
+                console.log(copyState)
+                return state
+              })
+            }
           />
         }
       />
