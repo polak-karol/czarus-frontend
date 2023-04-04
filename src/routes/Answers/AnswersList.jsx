@@ -54,7 +54,6 @@ const AnswersList = ({ answerType, answers, setFilteredAnswers, baseAnswers, upd
                     if (key !== answerType) return [key, value]
 
                     value.unshift('')
-
                     return [key, value]
                   }),
                 )

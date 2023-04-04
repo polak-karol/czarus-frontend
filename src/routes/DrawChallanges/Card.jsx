@@ -71,19 +71,15 @@ const Card = ({
             }
             saveAction={() => updateDrawConfigs({})}
             addAction={() => {
-              setFilteredDrawConfigs(
-                Object.entries({ ...drawConfigs })
-                  .filter(
-                    ([drawConfigsKey, drawConfigsValue]) =>
-                      !!drawConfigsValue && drawConfigsKey.endsWith('Config'),
-                  )
-                  .map(([key, value]) => {
-                    if (key !== drawConfigItemKey) return [key, value]
-                    const copyValue = { ...value }
-                    copyValue.genre.unshift('')
-                    return [key, copyValue]
-                  }),
-              )
+              setFilteredDrawConfigs((state) => {
+                const copyState = [...state]
+                copyState.map(([key, value]) => {
+                  if (key !== drawConfigKey) return [key, value]
+                  value[drawConfigItemKey].unshift('')
+                  return [key, value]
+                })
+                return copyState
+              })
               setSelectedDrawConfigIndex(0)
               setSelectedDrawConfigType(drawConfigItemKey)
               setSelectedDrawConfigInput('')
