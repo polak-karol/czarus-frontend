@@ -1,9 +1,9 @@
 import React from 'react'
 import { ListItem } from '@mui/material'
 import SubItemContent from './SubItemContent'
+import SecondaryActionEdit from './SecondaryActionEdit'
 import SecondaryActionDefault from './SecondaryActionDefault'
 import { isEditMode } from './utils'
-import SecondaryActionEdit from './SecondaryActionEdit'
 
 const SubItem = ({
   index,
@@ -59,6 +59,16 @@ const SubItem = ({
             setSelectedDrawConfigIndex(null)
             setSelectedDrawConfigType(null)
             setSelectedDrawConfigInput(null)
+            setFilteredDrawConfigs((state) => {
+              const copyState = [...state]
+
+              return copyState.map(([key, value]) => {
+                if (key !== drawConfigKey) return [key, value]
+                const copyValue = { ...value }
+                copyValue[resourcesKey] = copyValue[resourcesKey].filter((item) => !!item)
+                return [key, copyValue]
+              })
+            })
           }}
         />
       ) : (

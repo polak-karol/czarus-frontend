@@ -19,9 +19,9 @@ const DrawChallanges = () => {
   }
 
   const getDrawCofnigsSuccess = (response) => {
-    setDrawConfigs(response.data)
+    setDrawConfigs({ ...response.data })
     setFilteredDrawConfigs(
-      Object.entries(response.data).filter(([key, value]) => !!value && key.startsWith(tab)),
+      Object.entries({ ...response.data }).filter(([key, value]) => !!value && key.startsWith(tab)),
     )
   }
 
@@ -53,7 +53,7 @@ const DrawChallanges = () => {
   useEffect(() => {
     if (drawConfigs) {
       setFilteredDrawConfigs(
-        Object.entries(drawConfigs).filter(([key, value]) => !!value && key.startsWith(tab)),
+        Object.entries({ ...drawConfigs }).filter(([key, value]) => !!value && key.startsWith(tab)),
       )
     }
   }, [tab])
@@ -64,7 +64,6 @@ const DrawChallanges = () => {
     <Stack direction="column" gap="1rem">
       <TopBar />
       <Grid container spacing={2}>
-        {console.log(filteredDrawConfigs)}
         {filteredDrawConfigs
           .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
           .map(([drawConfigKey, drawConfigValue]) =>
@@ -72,30 +71,18 @@ const DrawChallanges = () => {
               <Card
                 key={drawConfigItemKey}
                 drawConfigItemKey={drawConfigItemKey}
-                tab={tab}
                 drawConfigs={drawConfigs}
                 drawConfigKey={drawConfigKey}
                 updateDrawConfigs={updateDrawConfigs}
                 filteredDrawConfigs={filteredDrawConfigs}
                 setFilteredDrawConfigs={setFilteredDrawConfigs}
-                listConfig={{
-                  itemData: {
-                    resources: drawConfigItemValue,
-                    resourcesKey: drawConfigItemKey,
-                    drawConfigKey,
-                    setFilteredDrawConfigs,
-                    selectedDrawConfigIndex,
-                    setSelectedDrawConfigIndex,
-                    selectedDrawConfigType,
-                    setSelectedDrawConfigType,
-                    selectedDrawConfigInput,
-                    setSelectedDrawConfigInput,
-                  },
-                  height: 300,
-                  itemSize: 46,
-                  itemCount: drawConfigItemValue.length,
-                  overscanCount: 5,
-                }}
+                setSelectedDrawConfigIndex={setSelectedDrawConfigIndex}
+                setSelectedDrawConfigType={setSelectedDrawConfigType}
+                setSelectedDrawConfigInput={setSelectedDrawConfigInput}
+                selectedDrawConfigType={selectedDrawConfigType}
+                selectedDrawConfigIndex={selectedDrawConfigIndex}
+                drawConfigItemValue={drawConfigItemValue}
+                selectedDrawConfigInput={selectedDrawConfigInput}
               />
             )),
           )}

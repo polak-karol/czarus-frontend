@@ -6,13 +6,18 @@ import SubItem from './SubItem'
 
 const Card = ({
   drawConfigItemKey,
-  tab,
-  listConfig,
   drawConfigs,
   updateDrawConfigs,
   setFilteredDrawConfigs,
   filteredDrawConfigs,
   drawConfigKey,
+  setSelectedDrawConfigIndex,
+  setSelectedDrawConfigType,
+  setSelectedDrawConfigInput,
+  drawConfigItemValue,
+  selectedDrawConfigIndex,
+  selectedDrawConfigType,
+  selectedDrawConfigInput,
 }) => {
   const [saveActionsAllowed, setSaveActionsAllowed] = useState(false)
 
@@ -34,27 +39,56 @@ const Card = ({
     <Grid item xs={6}>
       <CardScrollList
         title={drawConfigItemKey}
-        listConfig={listConfig}
+        listConfig={{
+          itemData: {
+            resources: drawConfigItemValue,
+            resourcesKey: drawConfigItemKey,
+            drawConfigKey,
+            setFilteredDrawConfigs,
+            selectedDrawConfigIndex,
+            setSelectedDrawConfigIndex,
+            selectedDrawConfigType,
+            setSelectedDrawConfigType,
+            selectedDrawConfigInput,
+            setSelectedDrawConfigInput,
+          },
+          height: 300,
+          itemSize: 46,
+          itemCount: drawConfigItemValue.length,
+          overscanCount: 5,
+        }}
         Item={SubItem}
         Actions={
           <CardActions
             disabledSaveActions={!saveActionsAllowed}
             cancelAction={() =>
               setFilteredDrawConfigs(
-                Object.entries(drawConfigs).filter(
+                Object.entries({ ...drawConfigs }).filter(
                   ([drawConfigsKey, drawConfigsValue]) =>
-                    !!drawConfigsValue && drawConfigsKey.startsWith(tab),
+                    !!drawConfigsValue && drawConfigsKey.endsWith('Config'),
                 ),
               )
             }
             saveAction={() => updateDrawConfigs({})}
-            addAction={() =>
-              setFilteredDrawConfigs((state) => {
-                const copyState = Object.fromEntries(state)[drawConfigKey][drawConfigItemKey]
-                console.log(copyState)
-                return state
-              })
-            }
+            addAction={() => {
+              setFilteredDrawConfigs(
+                Object.entries({ ...drawConfigs })
+                  .filter(
+                    ([drawConfigsKey, drawConfigsValue]) =>
+                      !!drawConfigsValue && drawConfigsKey.endsWith('Config'),
+                  )
+                  .map(([key, value]) => {
+                    if (key !== drawConfigItemKey) return [key, value]
+                    const copyValue = { ...value }
+                    copyValue.genre.unshift('')
+                    return [key, copyValue]
+                  }),
+              )
+              setSelectedDrawConfigIndex(0)
+              setSelectedDrawConfigType(drawConfigItemKey)
+              setSelectedDrawConfigInput('')
+            }}
+            disabledAddAction={selectedDrawConfigType === drawConfigItemKey}
           />
         }
       />
