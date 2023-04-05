@@ -3,7 +3,12 @@ import { ListItem } from '@mui/material'
 import SubItemContent from './SubItemContent'
 import SecondaryActionEdit from './SecondaryActionEdit'
 import SecondaryActionDefault from './SecondaryActionDefault'
-import { isEditMode } from './utils'
+import {
+  getCleanedFilteredDrawConfigs,
+  getFilteredDrawConfigsWithNewItemName,
+  getFilteredDrawConfigsWithoutDeletedItem,
+  isEditMode,
+} from './utils'
 
 const SubItem = ({
   index,
@@ -29,26 +34,13 @@ const SubItem = ({
         <SecondaryActionEdit
           saveAction={() => {
             setFilteredDrawConfigs((state) =>
-              state.map(([key, value]) => {
-                if (key !== drawConfigKey) return [key, value]
-
-                return [
-                  key,
-                  Object.fromEntries(
-                    Object.entries(value).map(([itemKey, itemValue]) => {
-                      if (itemKey !== resourcesKey) return [itemKey, itemValue]
-                      return [
-                        itemKey,
-                        itemValue.map((element) => {
-                          if (element !== resources[index]) return element
-
-                          return selectedDrawConfigInput
-                        }),
-                      ]
-                    }),
-                  ),
-                ]
-              }),
+              getFilteredDrawConfigsWithNewItemName(
+                state,
+                drawConfigKey,
+                resourcesKey,
+                resources[index],
+                selectedDrawConfigInput,
+              ),
             )
             setSelectedDrawConfigIndex(null)
             setSelectedDrawConfigType(null)
@@ -59,16 +51,9 @@ const SubItem = ({
             setSelectedDrawConfigIndex(null)
             setSelectedDrawConfigType(null)
             setSelectedDrawConfigInput(null)
-            setFilteredDrawConfigs((state) => {
-              const copyState = [...state]
-
-              return copyState.map(([key, value]) => {
-                if (key !== drawConfigKey) return [key, value]
-                const copyValue = { ...value }
-                copyValue[resourcesKey] = copyValue[resourcesKey].filter((item) => !!item)
-                return [key, copyValue]
-              })
-            })
+            setFilteredDrawConfigs((state) =>
+              getCleanedFilteredDrawConfigs(state, drawConfigKey, resourcesKey),
+            )
           }}
         />
       ) : (
@@ -80,19 +65,12 @@ const SubItem = ({
           }}
           deleteAction={() => {
             setFilteredDrawConfigs((state) =>
-              state.map(([key, value]) => {
-                if (key !== drawConfigKey) return [key, value]
-
-                return [
-                  key,
-                  Object.fromEntries(
-                    Object.entries(value).map(([itemKey, itemValue]) => {
-                      if (itemKey !== resourcesKey) return [itemKey, itemValue]
-                      return [itemKey, itemValue.filter((element) => element !== resources[index])]
-                    }),
-                  ),
-                ]
-              }),
+              getFilteredDrawConfigsWithoutDeletedItem(
+                state,
+                drawConfigKey,
+                resourcesKey,
+                resources[index],
+              ),
             )
           }}
         />
