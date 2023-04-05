@@ -7,6 +7,7 @@ import EditCategoryModal from './EditCategoryModal'
 import CardHeaderActions from './CardHeaderActions'
 import CardActions from './CardActions'
 import SubItem from './SubItem'
+import { DRAW_CHALLANGES_CATEGORY_SUFFIX } from './config'
 
 const Card = ({
   drawConfigItemKey,
@@ -106,7 +107,7 @@ const Card = ({
         onClose={() => setDeleteCategoryAgreementModalActive(false)}
         agreeAction={() => {
           const copyDrawConfigs = { ...drawConfigs }
-          delete copyDrawConfigs[`${tab}Config`][drawConfigItemKey]
+          delete copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`][drawConfigItemKey]
           updateDrawConfigs(copyDrawConfigs)
         }}
       />
@@ -117,7 +118,7 @@ const Card = ({
           setFilteredDrawConfigs(
             Object.entries({ ...drawConfigs }).filter(
               ([drawConfigsKey, drawConfigsValue]) =>
-                !!drawConfigsValue && drawConfigsKey.endsWith('Config'),
+                !!drawConfigsValue && drawConfigsKey.endsWith(DRAW_CHALLANGES_CATEGORY_SUFFIX),
             ),
           )
         }

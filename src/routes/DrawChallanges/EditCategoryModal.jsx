@@ -2,6 +2,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
 import agent from '~/api/agent'
+import { DRAW_CHALLANGES_CATEGORY_SUFFIX } from './config'
 
 const EditCategoryModal = ({
   open,
@@ -31,13 +32,8 @@ const EditCategoryModal = ({
     )
 
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
-      <DialogTitle id="alert-dialog-title">Edit category</DialogTitle>
+    <Dialog open={open} onClose={onClose}>
+      <DialogTitle>Edit category</DialogTitle>
       <DialogContent>
         <TextField
           fullWidth
@@ -54,12 +50,14 @@ const EditCategoryModal = ({
           disabled={!editCategoryNameInput}
           onClick={() => {
             const copyDrawConfigs = { ...drawConfigs }
-            copyDrawConfigs[`${tab}Config`] = Object.fromEntries(
-              Object.entries(copyDrawConfigs[`${tab}Config`]).map(([key, value]) => {
-                if (key !== drawConfigItemKey) return [key, value]
+            copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`] = Object.fromEntries(
+              Object.entries(copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`]).map(
+                ([key, value]) => {
+                  if (key !== drawConfigItemKey) return [key, value]
 
-                return [editCategoryNameInput, value]
-              }),
+                  return [editCategoryNameInput, value]
+                },
+              ),
             )
             updateDrawConfigs(copyDrawConfigs)
           }}

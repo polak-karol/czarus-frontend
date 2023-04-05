@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import agent from '~/api/agent'
+import { DRAW_CHALLANGES_CATEGORY_SUFFIX } from './config'
 
 const AddNewCategoryModal = ({ open, onClose, drawConfigs, setDrawConfigs }) => {
   const [categoryNameInput, setCategoryNameInput] = useState('')
@@ -24,13 +25,8 @@ const AddNewCategoryModal = ({ open, onClose, drawConfigs, setDrawConfigs }) => 
     )
 
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
-      <DialogTitle id="alert-dialog-title">New category</DialogTitle>
+    <Dialog open={open} onClose={onClose}>
+      <DialogTitle>New category</DialogTitle>
       <DialogContent>
         <TextField
           fullWidth
@@ -47,11 +43,11 @@ const AddNewCategoryModal = ({ open, onClose, drawConfigs, setDrawConfigs }) => 
           disabled={!categoryNameInput}
           onClick={() => {
             const copyDrawConfigs = { ...drawConfigs }
-            if (!copyDrawConfigs[`${tab}Config`]) {
-              copyDrawConfigs[`${tab}Config`] = {}
+            if (!copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`]) {
+              copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`] = {}
             }
 
-            copyDrawConfigs[`${tab}Config`][categoryNameInput] = []
+            copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`][categoryNameInput] = []
             updateDrawConfigs(copyDrawConfigs)
           }}
           autoFocus

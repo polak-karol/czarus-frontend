@@ -10,13 +10,7 @@ const CardActions = ({
   disabledAddAction,
 }) => (
   <Stack style={{ flex: 1 }} justifyContent="space-between" direction="row" alignItems="center">
-    <IconButton
-      disabled={disabledAddAction}
-      onClick={addAction}
-      color="primary"
-      edge="end"
-      aria-label="edit"
-    >
+    <IconButton disabled={disabledAddAction} onClick={addAction} color="primary" edge="end">
       <AddCircleRounded fontSize="large" />
     </IconButton>
     <ButtonGroup>

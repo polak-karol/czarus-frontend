@@ -11,7 +11,6 @@ const CardHeaderActions = ({ editAction, deleteAction }) => {
         <MoreVertRounded />
       </IconButton>
       <Menu
-        id="basic-menu"
         anchorEl={cardHeaderActionsElement}
         open={!!cardHeaderActionsElement}
         onClose={() => setCardHeaderActionsElement(null)}

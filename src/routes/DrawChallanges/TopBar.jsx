@@ -10,7 +10,7 @@ const TopBar = () => {
     <Paper>
       <Tabs value={pathname}>
         {DRAW_CHALLANGES_ROUTES.map(({ label, url }) => (
-          <Tab component={Link} value={url} to={url} label={label} />
+          <Tab key={url} component={Link} value={url} to={url} label={label} />
         ))}
       </Tabs>
     </Paper>
