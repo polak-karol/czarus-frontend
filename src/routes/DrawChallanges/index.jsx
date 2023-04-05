@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Grid, Stack, Typography } from '@mui/material'
 import agent from '~/api/agent'
+import { DRAW_CHALLANGES_CATEGORY_SUFFIX } from './config'
 import AddNewCategoryCard from './AddNewCategoryCard'
 import TopBar from './TopBar'
 import Card from './Card'
@@ -22,7 +23,9 @@ const DrawChallanges = () => {
   const getDrawCofnigsSuccess = (response) => {
     setDrawConfigs({ ...response.data })
     setFilteredDrawConfigs(
-      Object.entries({ ...response.data }).filter(([key]) => key.endsWith('Config')),
+      Object.entries({ ...response.data }).filter(([key]) =>
+        key.endsWith(DRAW_CHALLANGES_CATEGORY_SUFFIX),
+      ),
     )
   }
 
@@ -54,7 +57,9 @@ const DrawChallanges = () => {
   useEffect(() => {
     if (drawConfigs) {
       setFilteredDrawConfigs(
-        Object.entries({ ...drawConfigs }).filter(([key]) => key.endsWith('Config')),
+        Object.entries({ ...drawConfigs }).filter(([key]) =>
+          key.endsWith(DRAW_CHALLANGES_CATEGORY_SUFFIX),
+        ),
       )
     }
   }, [tab])

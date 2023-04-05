@@ -9,11 +9,11 @@ const SecondaryActionEdit = ({ disabledSaveAction, saveAction, cancelAction }) =
       onClick={saveAction}
       color="primary"
       edge="end"
-      aria-label="edit"
+      aria-label="save"
     >
       <SaveRounded />
     </IconButton>
-    <IconButton onClick={cancelAction} color="error" edge="end" aria-label="delete">
+    <IconButton onClick={cancelAction} color="error" edge="end" aria-label="cancel">
       <CancelRounded />
     </IconButton>
   </Stack>
