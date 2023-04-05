@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { Grid } from '@mui/material'
 import { useParams } from 'react-router-dom'
+import { Grid } from '@mui/material'
 import CardScrollList from '~/components/CardScrollList'
+import AgreementModal from '~/components/AgreementModal'
+import EditCategoryModal from './EditCategoryModal'
+import CardHeaderActions from './CardHeaderActions'
 import CardActions from './CardActions'
 import SubItem from './SubItem'
-import CardHeaderActions from './CardHeaderActions'
-import AgreementModal from '~/components/AgreementModal'
 
 const Card = ({
   drawConfigItemKey,
+  setDrawConfigs,
   drawConfigs,
   updateDrawConfigs,
   setFilteredDrawConfigs,
@@ -29,6 +31,8 @@ const Card = ({
     useState(false)
   const [cancelCategoryChangesAgreementModalActive, setCancelCategoryChangesAgreementModalActive] =
     useState(false)
+  const [editCategoryModalActive, setEditCategoryModalActive] = useState(false)
+  const [editCategoryNameInput, setEditCategoryNameInput] = useState(drawConfigItemKey)
   const { tab } = useParams()
 
   useEffect(() => {
@@ -70,7 +74,7 @@ const Card = ({
         Item={SubItem}
         CardHeaderActions={
           <CardHeaderActions
-            editAction={() => {}}
+            editAction={() => setEditCategoryModalActive(true)}
             deleteAction={() => setDeleteCategoryAgreementModalActive(true)}
           />
         }
@@ -128,6 +132,15 @@ const Card = ({
           )[1][drawConfigItemKey]
           updateDrawConfigs(body)
         }}
+      />
+      <EditCategoryModal
+        open={editCategoryModalActive}
+        onClose={() => setEditCategoryModalActive(false)}
+        setDrawConfigs={setDrawConfigs}
+        drawConfigs={drawConfigs}
+        editCategoryNameInput={editCategoryNameInput}
+        setEditCategoryNameInput={setEditCategoryNameInput}
+        drawConfigItemKey={drawConfigItemKey}
       />
     </Grid>
   )

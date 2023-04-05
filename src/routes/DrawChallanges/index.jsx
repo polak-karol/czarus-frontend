@@ -81,6 +81,7 @@ const DrawChallanges = () => {
                         key={drawConfigItemKey}
                         drawConfigItemKey={drawConfigItemKey}
                         drawConfigs={drawConfigs}
+                        setDrawConfigs={setDrawConfigs}
                         drawConfigKey={drawConfigKey}
                         updateDrawConfigs={updateDrawConfigs}
                         filteredDrawConfigs={filteredDrawConfigs}
