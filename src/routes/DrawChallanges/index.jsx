@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { Grid, Stack } from '@mui/material'
+import { Grid, Stack, Typography } from '@mui/material'
 import agent from '~/api/agent'
 import AddNewCategoryCard from './AddNewCategoryCard'
 import TopBar from './TopBar'
@@ -62,36 +62,43 @@ const DrawChallanges = () => {
   if (loading) return
 
   return (
-    <Stack direction="column" gap="1rem">
-      <TopBar />
-      <Grid container spacing={2}>
-        <AddNewCategoryCard setDrawConfigs={setDrawConfigs} drawConfigs={drawConfigs} tab={tab} />
-        {filteredDrawConfigs
-          .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
-          .filter(([key]) => key.includes(tab))
-          .map(([drawConfigKey, drawConfigValue]) =>
-            drawConfigValue
-              ? Object.entries(drawConfigValue).map(([drawConfigItemKey, drawConfigItemValue]) => (
-                  <Card
-                    key={drawConfigItemKey}
-                    drawConfigItemKey={drawConfigItemKey}
-                    drawConfigs={drawConfigs}
-                    drawConfigKey={drawConfigKey}
-                    updateDrawConfigs={updateDrawConfigs}
-                    filteredDrawConfigs={filteredDrawConfigs}
-                    setFilteredDrawConfigs={setFilteredDrawConfigs}
-                    setSelectedDrawConfigIndex={setSelectedDrawConfigIndex}
-                    setSelectedDrawConfigType={setSelectedDrawConfigType}
-                    setSelectedDrawConfigInput={setSelectedDrawConfigInput}
-                    selectedDrawConfigType={selectedDrawConfigType}
-                    selectedDrawConfigIndex={selectedDrawConfigIndex}
-                    drawConfigItemValue={drawConfigItemValue}
-                    selectedDrawConfigInput={selectedDrawConfigInput}
-                  />
-                ))
-              : null,
-          )}
-      </Grid>
+    <Stack spacing={4}>
+      <Typography variant="h3" component="h3">
+        Draw challanges
+      </Typography>
+      <Stack direction="column" gap="1rem">
+        <TopBar />
+        <Grid container spacing={2}>
+          <AddNewCategoryCard setDrawConfigs={setDrawConfigs} drawConfigs={drawConfigs} tab={tab} />
+          {filteredDrawConfigs
+            .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
+            .filter(([key]) => key.includes(tab))
+            .map(([drawConfigKey, drawConfigValue]) =>
+              drawConfigValue
+                ? Object.entries(drawConfigValue).map(
+                    ([drawConfigItemKey, drawConfigItemValue]) => (
+                      <Card
+                        key={drawConfigItemKey}
+                        drawConfigItemKey={drawConfigItemKey}
+                        drawConfigs={drawConfigs}
+                        drawConfigKey={drawConfigKey}
+                        updateDrawConfigs={updateDrawConfigs}
+                        filteredDrawConfigs={filteredDrawConfigs}
+                        setFilteredDrawConfigs={setFilteredDrawConfigs}
+                        setSelectedDrawConfigIndex={setSelectedDrawConfigIndex}
+                        setSelectedDrawConfigType={setSelectedDrawConfigType}
+                        setSelectedDrawConfigInput={setSelectedDrawConfigInput}
+                        selectedDrawConfigType={selectedDrawConfigType}
+                        selectedDrawConfigIndex={selectedDrawConfigIndex}
+                        drawConfigItemValue={drawConfigItemValue}
+                        selectedDrawConfigInput={selectedDrawConfigInput}
+                      />
+                    ),
+                  )
+                : null,
+            )}
+        </Grid>
+      </Stack>
     </Stack>
   )
 }
