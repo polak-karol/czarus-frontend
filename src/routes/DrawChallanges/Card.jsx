@@ -4,6 +4,7 @@ import CardScrollList from '~/components/CardScrollList'
 import CardActions from './CardActions'
 import SubItem from './SubItem'
 import CardHeaderActions from './CardHeaderActions'
+import AgreementModal from '~/components/AgreementModal'
 
 const Card = ({
   drawConfigItemKey,
@@ -21,6 +22,12 @@ const Card = ({
   selectedDrawConfigInput,
 }) => {
   const [saveActionsAllowed, setSaveActionsAllowed] = useState(false)
+  const [deleteCategoryAgreementModalActive, setDeleteCategoryAgreementModalActive] =
+    useState(false)
+  const [saveCategoryChangesAgreementModalActive, setSaveCategoryChangesAgreementModalActive] =
+    useState(false)
+  const [cancelCategoryChangesAgreementModalActive, setCancelCategoryChangesAgreementModalActive] =
+    useState(false)
 
   useEffect(() => {
     if (
@@ -59,25 +66,17 @@ const Card = ({
           overscanCount: 5,
         }}
         Item={SubItem}
-        CardHeaderActions={<CardHeaderActions editAction={() => {}} deleteAction={() => {}} />}
+        CardHeaderActions={
+          <CardHeaderActions
+            editAction={() => {}}
+            deleteAction={() => setDeleteCategoryAgreementModalActive(true)}
+          />
+        }
         Actions={
           <CardActions
             disabledSaveActions={!saveActionsAllowed}
-            cancelAction={() =>
-              setFilteredDrawConfigs(
-                Object.entries({ ...drawConfigs }).filter(
-                  ([drawConfigsKey, drawConfigsValue]) =>
-                    !!drawConfigsValue && drawConfigsKey.endsWith('Config'),
-                ),
-              )
-            }
-            saveAction={() => {
-              const body = { ...drawConfigs }
-              body[drawConfigKey][drawConfigItemKey] = filteredDrawConfigs.find(
-                ([key]) => key === drawConfigKey,
-              )[1][drawConfigItemKey]
-              updateDrawConfigs(body)
-            }}
+            cancelAction={() => setCancelCategoryChangesAgreementModalActive(true)}
+            saveAction={() => setSaveCategoryChangesAgreementModalActive(true)}
             addAction={() => {
               setFilteredDrawConfigs((state) => {
                 const copyState = [...state]
@@ -95,6 +94,33 @@ const Card = ({
             disabledAddAction={selectedDrawConfigType === drawConfigItemKey}
           />
         }
+      />
+      <AgreementModal
+        open={deleteCategoryAgreementModalActive}
+        onClose={() => setDeleteCategoryAgreementModalActive(false)}
+      />
+      <AgreementModal
+        open={cancelCategoryChangesAgreementModalActive}
+        onClose={() => setCancelCategoryChangesAgreementModalActive(false)}
+        agreeAction={() =>
+          setFilteredDrawConfigs(
+            Object.entries({ ...drawConfigs }).filter(
+              ([drawConfigsKey, drawConfigsValue]) =>
+                !!drawConfigsValue && drawConfigsKey.endsWith('Config'),
+            ),
+          )
+        }
+      />
+      <AgreementModal
+        open={saveCategoryChangesAgreementModalActive}
+        onClose={() => setSaveCategoryChangesAgreementModalActive(false)}
+        agreeAction={() => {
+          const body = { ...drawConfigs }
+          body[drawConfigKey][drawConfigItemKey] = filteredDrawConfigs.find(
+            ([key]) => key === drawConfigKey,
+          )[1][drawConfigItemKey]
+          updateDrawConfigs(body)
+        }}
       />
     </Grid>
   )

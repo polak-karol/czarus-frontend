@@ -1,13 +1,5 @@
 import React, { useState } from 'react'
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  TextField,
-} from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import agent from '~/api/agent'
 
@@ -40,9 +32,6 @@ const AddNewCategoryModal = ({ open, onClose, drawConfigs, setDrawConfigs }) => 
     >
       <DialogTitle id="alert-dialog-title">New category</DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          Are you sure that you want permamently delete this birthday?
-        </DialogContentText>
         <TextField
           fullWidth
           label="Category name"
