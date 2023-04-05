@@ -40,7 +40,7 @@ const AnswersList = ({ answerType, answers, setFilteredAnswers, baseAnswers, upd
           },
           height: 300,
           itemSize: 46,
-          itemCount: answers?.length || 0,
+          itemCount: answers?.length ?? 0,
           overscanCount: 5,
         }}
         Item={AnswerItem}
@@ -83,9 +83,7 @@ const AnswersList = ({ answerType, answers, setFilteredAnswers, baseAnswers, upd
                 Cancel
               </Button>
               <Button
-                onClick={() => {
-                  updateAnswers(Object.fromEntries([[answerType, answers]]))
-                }}
+                onClick={() => updateAnswers(Object.fromEntries([[answerType, answers]]))}
                 color="secondary"
                 disabled={!itemActionsAllowed || !!selectedAnswerType}
               >
