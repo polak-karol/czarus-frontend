@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Grid, Stack } from '@mui/material'
 import agent from '~/api/agent'
+import AddNewCategoryCard from './AddNewCategoryCard'
 import TopBar from './TopBar'
 import Card from './Card'
-import AddNewCategoryCard from './AddNewCategoryCard'
 
 const DrawChallanges = () => {
   const [drawConfigs, setDrawConfigs] = useState({})

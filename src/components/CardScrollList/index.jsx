@@ -2,9 +2,9 @@ import React from 'react'
 import { FixedSizeList } from 'react-window'
 import { Card, CardActions, CardContent, CardHeader } from '@mui/material'
 
-const CardScrollList = ({ title, Item, Actions, listConfig = {} }) => (
+const CardScrollList = ({ title, Item, Actions, CardHeaderActions, listConfig = {} }) => (
   <Card style={{ flex: 1 }}>
-    <CardHeader title={title} />
+    <CardHeader title={title} action={CardHeaderActions} />
     <CardContent>
       <FixedSizeList
         itemData={listConfig.itemData}

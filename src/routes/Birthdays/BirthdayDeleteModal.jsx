@@ -7,7 +7,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material'
-import agent from '../../api/agent'
+import agent from '~/api/agent'
 
 const BirthdayDeleteModal = ({ open, onClose, selectedBirthday, setBirthdaysList }) => {
   const deleteBirthdaySuccess = () => {

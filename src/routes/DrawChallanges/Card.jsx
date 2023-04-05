@@ -3,6 +3,7 @@ import { Grid } from '@mui/material'
 import CardScrollList from '~/components/CardScrollList'
 import CardActions from './CardActions'
 import SubItem from './SubItem'
+import CardHeaderActions from './CardHeaderActions'
 
 const Card = ({
   drawConfigItemKey,
@@ -58,6 +59,7 @@ const Card = ({
           overscanCount: 5,
         }}
         Item={SubItem}
+        CardHeaderActions={<CardHeaderActions editAction={() => {}} deleteAction={() => {}} />}
         Actions={
           <CardActions
             disabledSaveActions={!saveActionsAllowed}
