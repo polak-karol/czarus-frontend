@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Grid } from '@mui/material'
+import { useParams } from 'react-router-dom'
 import CardScrollList from '~/components/CardScrollList'
 import CardActions from './CardActions'
 import SubItem from './SubItem'
@@ -28,6 +29,7 @@ const Card = ({
     useState(false)
   const [cancelCategoryChangesAgreementModalActive, setCancelCategoryChangesAgreementModalActive] =
     useState(false)
+  const { tab } = useParams()
 
   useEffect(() => {
     if (
@@ -98,6 +100,11 @@ const Card = ({
       <AgreementModal
         open={deleteCategoryAgreementModalActive}
         onClose={() => setDeleteCategoryAgreementModalActive(false)}
+        agreeAction={() => {
+          const copyDrawConfigs = { ...drawConfigs }
+          delete copyDrawConfigs[`${tab}Config`][drawConfigItemKey]
+          updateDrawConfigs(copyDrawConfigs)
+        }}
       />
       <AgreementModal
         open={cancelCategoryChangesAgreementModalActive}
