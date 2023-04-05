@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
 import { useParams } from 'react-router-dom'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
 import agent from '~/api/agent'
 import { DRAW_CHALLANGES_CATEGORY_SUFFIX } from './config'
 
@@ -14,8 +14,8 @@ const AddNewCategoryModal = ({ open, onClose, drawConfigs, setDrawConfigs }) => 
 
   const updateDrawConfigsSuccess = (response) => {
     setDrawConfigs({ ...response.data })
-    onClose()
     setCategoryNameInput('')
+    onClose()
   }
 
   const updateDrawConfigs = (body) =>

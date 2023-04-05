@@ -2,7 +2,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
 import agent from '~/api/agent'
-import { DRAW_CHALLANGES_CATEGORY_SUFFIX } from './config'
+import { getDrawConfigsWithChangedSubItemName } from './utils'
 
 const EditCategoryModal = ({
   open,
@@ -21,7 +21,6 @@ const EditCategoryModal = ({
 
   const updateDrawConfigsSuccess = (response) => {
     setDrawConfigs({ ...response.data })
-    setEditCategoryNameInput('')
     onClose()
   }
 
@@ -48,19 +47,16 @@ const EditCategoryModal = ({
         <Button
           color="secondary"
           disabled={!editCategoryNameInput}
-          onClick={() => {
-            const copyDrawConfigs = { ...drawConfigs }
-            copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`] = Object.fromEntries(
-              Object.entries(copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`]).map(
-                ([key, value]) => {
-                  if (key !== drawConfigItemKey) return [key, value]
-
-                  return [editCategoryNameInput, value]
-                },
+          onClick={() =>
+            updateDrawConfigs(
+              getDrawConfigsWithChangedSubItemName(
+                drawConfigs,
+                tab,
+                drawConfigItemKey,
+                editCategoryNameInput,
               ),
             )
-            updateDrawConfigs(copyDrawConfigs)
-          }}
+          }
         >
           Save
         </Button>

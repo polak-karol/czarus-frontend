@@ -1,3 +1,5 @@
+import { DRAW_CHALLANGES_CATEGORY_SUFFIX } from './config'
+
 export const isEditMode = (selectedDrawConfigIndex, selectedDrawConfigType, index, resourcesKey) =>
   selectedDrawConfigIndex === index && selectedDrawConfigType === resourcesKey
 
@@ -61,4 +63,33 @@ export const getFilteredDrawConfigsWithoutDeletedItem = (
       ),
     ]
   })
+}
+
+export const getDrawConfigsWithChangedSubItemName = (
+  drawConfigs,
+  tab,
+  drawConfigItemKey,
+  editCategoryNameInput,
+) => {
+  const copyDrawConfigs = { ...drawConfigs }
+  copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`] = Object.fromEntries(
+    Object.entries(copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`]).map(
+      ([key, value]) => {
+        if (key !== drawConfigItemKey) return [key, value]
+
+        return [editCategoryNameInput, value]
+      },
+    ),
+  )
+  return copyDrawConfigs
+}
+
+export const getDrawConfigsWithNewSubItem = (state, drawConfigKey, drawConfigItemKey) => {
+  const copyState = [...state]
+  copyState.map(([key, value]) => {
+    if (key !== drawConfigKey) return [key, value]
+    value[drawConfigItemKey].unshift('')
+    return [key, value]
+  })
+  return copyState
 }

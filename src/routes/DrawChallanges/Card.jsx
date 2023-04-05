@@ -8,6 +8,7 @@ import CardHeaderActions from './CardHeaderActions'
 import CardActions from './CardActions'
 import SubItem from './SubItem'
 import { DRAW_CHALLANGES_CATEGORY_SUFFIX } from './config'
+import { getDrawConfigsWithNewSubItem } from './utils'
 
 const Card = ({
   drawConfigItemKey,
@@ -85,15 +86,9 @@ const Card = ({
             cancelAction={() => setCancelCategoryChangesAgreementModalActive(true)}
             saveAction={() => setSaveCategoryChangesAgreementModalActive(true)}
             addAction={() => {
-              setFilteredDrawConfigs((state) => {
-                const copyState = [...state]
-                copyState.map(([key, value]) => {
-                  if (key !== drawConfigKey) return [key, value]
-                  value[drawConfigItemKey].unshift('')
-                  return [key, value]
-                })
-                return copyState
-              })
+              setFilteredDrawConfigs((state) =>
+                getDrawConfigsWithNewSubItem(state, drawConfigKey, drawConfigItemKey),
+              )
               setSelectedDrawConfigIndex(0)
               setSelectedDrawConfigType(drawConfigItemKey)
               setSelectedDrawConfigInput('')
