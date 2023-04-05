@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Paper, Tab, Tabs } from '@mui/material'
+import { DRAW_CHALLANGES_ROUTES } from '~/utils/config'
 
 const TopBar = () => {
   const { pathname } = useLocation()
@@ -8,24 +9,9 @@ const TopBar = () => {
   return (
     <Paper>
       <Tabs value={pathname}>
-        <Tab
-          component={Link}
-          value="/draw-challanges/writing"
-          to="/draw-challanges/writing"
-          label="Writing"
-        />
-        <Tab
-          component={Link}
-          value="/draw-challanges/painting"
-          to="/draw-challanges/painting"
-          label="Painting"
-        />
-        <Tab
-          component={Link}
-          value="/draw-challanges/music"
-          to="/draw-challanges/music"
-          label="Music"
-        />
+        {DRAW_CHALLANGES_ROUTES.map(({ label, url }) => (
+          <Tab component={Link} value={url} to={url} label={label} />
+        ))}
       </Tabs>
     </Paper>
   )
