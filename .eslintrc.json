@@ -28,7 +28,9 @@
     "operator-linebreak": "off",
     "no-confusing-arrow": "off",
     "import/extensions": "off",
-    "import/no-unresolved": "off"
+    "import/no-unresolved": "off",
+    "react/jsx-indent": "off",
+    "indent": "off"
   },
   "overrides": [],
   "parserOptions": {

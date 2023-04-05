@@ -69,7 +69,13 @@ const Card = ({
                 ),
               )
             }
-            saveAction={() => updateDrawConfigs({})}
+            saveAction={() => {
+              const body = { ...drawConfigs }
+              body[drawConfigKey][drawConfigItemKey] = filteredDrawConfigs.find(
+                ([key]) => key === drawConfigKey,
+              )[1][drawConfigItemKey]
+              updateDrawConfigs(body)
+            }}
             addAction={() => {
               setFilteredDrawConfigs((state) => {
                 const copyState = [...state]

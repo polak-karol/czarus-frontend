@@ -21,7 +21,7 @@ const DrawChallanges = () => {
   const getDrawCofnigsSuccess = (response) => {
     setDrawConfigs({ ...response.data })
     setFilteredDrawConfigs(
-      Object.entries({ ...response.data }).filter(([key, value]) => !!value && key.startsWith(tab)),
+      Object.entries({ ...response.data }).filter(([key]) => key.endsWith('Config')),
     )
   }
 
@@ -37,7 +37,7 @@ const DrawChallanges = () => {
   }
 
   const updateDrawConfigsSuccess = (response) => {
-    console.log(response)
+    setDrawConfigs({ ...response.data })
   }
 
   const updateDrawConfigs = (body) =>
@@ -53,7 +53,7 @@ const DrawChallanges = () => {
   useEffect(() => {
     if (drawConfigs) {
       setFilteredDrawConfigs(
-        Object.entries({ ...drawConfigs }).filter(([key, value]) => !!value && key.startsWith(tab)),
+        Object.entries({ ...drawConfigs }).filter(([key]) => key.endsWith('Config')),
       )
     }
   }, [tab])
@@ -66,25 +66,28 @@ const DrawChallanges = () => {
       <Grid container spacing={2}>
         {filteredDrawConfigs
           .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
+          .filter(([key]) => key.includes(tab))
           .map(([drawConfigKey, drawConfigValue]) =>
-            Object.entries(drawConfigValue).map(([drawConfigItemKey, drawConfigItemValue]) => (
-              <Card
-                key={drawConfigItemKey}
-                drawConfigItemKey={drawConfigItemKey}
-                drawConfigs={drawConfigs}
-                drawConfigKey={drawConfigKey}
-                updateDrawConfigs={updateDrawConfigs}
-                filteredDrawConfigs={filteredDrawConfigs}
-                setFilteredDrawConfigs={setFilteredDrawConfigs}
-                setSelectedDrawConfigIndex={setSelectedDrawConfigIndex}
-                setSelectedDrawConfigType={setSelectedDrawConfigType}
-                setSelectedDrawConfigInput={setSelectedDrawConfigInput}
-                selectedDrawConfigType={selectedDrawConfigType}
-                selectedDrawConfigIndex={selectedDrawConfigIndex}
-                drawConfigItemValue={drawConfigItemValue}
-                selectedDrawConfigInput={selectedDrawConfigInput}
-              />
-            )),
+            drawConfigValue
+              ? Object.entries(drawConfigValue).map(([drawConfigItemKey, drawConfigItemValue]) => (
+                  <Card
+                    key={drawConfigItemKey}
+                    drawConfigItemKey={drawConfigItemKey}
+                    drawConfigs={drawConfigs}
+                    drawConfigKey={drawConfigKey}
+                    updateDrawConfigs={updateDrawConfigs}
+                    filteredDrawConfigs={filteredDrawConfigs}
+                    setFilteredDrawConfigs={setFilteredDrawConfigs}
+                    setSelectedDrawConfigIndex={setSelectedDrawConfigIndex}
+                    setSelectedDrawConfigType={setSelectedDrawConfigType}
+                    setSelectedDrawConfigInput={setSelectedDrawConfigInput}
+                    selectedDrawConfigType={selectedDrawConfigType}
+                    selectedDrawConfigIndex={selectedDrawConfigIndex}
+                    drawConfigItemValue={drawConfigItemValue}
+                    selectedDrawConfigInput={selectedDrawConfigInput}
+                  />
+                ))
+              : null,
           )}
       </Grid>
     </Stack>
