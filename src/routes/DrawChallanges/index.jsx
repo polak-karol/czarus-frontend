@@ -4,6 +4,7 @@ import { Grid, Stack } from '@mui/material'
 import agent from '~/api/agent'
 import TopBar from './TopBar'
 import Card from './Card'
+import AddNewCategoryCard from './AddNewCategoryCard'
 
 const DrawChallanges = () => {
   const [drawConfigs, setDrawConfigs] = useState({})
@@ -64,6 +65,7 @@ const DrawChallanges = () => {
     <Stack direction="column" gap="1rem">
       <TopBar />
       <Grid container spacing={2}>
+        <AddNewCategoryCard setDrawConfigs={setDrawConfigs} drawConfigs={drawConfigs} tab={tab} />
         {filteredDrawConfigs
           .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
           .filter(([key]) => key.includes(tab))
