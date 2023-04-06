@@ -1,8 +1,20 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Stack,
+  TextField,
+} from '@mui/material'
 import agent from '~/api/agent'
-import { getDrawConfigsWithChangedSubItemName } from './utils'
+import {
+  convertCategoryNameToDiscordCommandParam,
+  getDrawConfigsWithChangedSubItemName,
+} from './utils'
 
 const EditCategoryModal = ({
   open,
@@ -31,16 +43,28 @@ const EditCategoryModal = ({
     )
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog maxWidth="sm" open={open} onClose={onClose}>
       <DialogTitle>Edit category</DialogTitle>
       <DialogContent>
-        <TextField
-          fullWidth
-          label="Category name"
-          variant="standard"
-          value={editCategoryNameInput}
-          onChange={(event) => setEditCategoryNameInput(event.target.value)}
-        />
+        <Stack spacing={2}>
+          <DialogContentText>Change a name of selected category.</DialogContentText>
+          <TextField
+            fullWidth
+            label="Category name"
+            variant="standard"
+            value={editCategoryNameInput}
+            onChange={(event) => setEditCategoryNameInput(event.target.value)}
+          />
+          <TextField
+            disabled
+            aria-readonly
+            fullWidth
+            label="Command parameter"
+            variant="standard"
+            defaultValue={convertCategoryNameToDiscordCommandParam(editCategoryNameInput)}
+            value={convertCategoryNameToDiscordCommandParam(editCategoryNameInput)}
+          />
+        </Stack>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>

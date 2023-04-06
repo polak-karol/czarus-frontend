@@ -89,8 +89,9 @@ export const getDrawConfigsWithChangedSubItemName = (
     Object.entries(copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`]).map(
       ([key, value]) => {
         if (key !== drawConfigItemKey) return [key, value]
-
-        return [editCategoryNameInput, value]
+        const copyValue = { ...value }
+        copyValue.label = editCategoryNameInput
+        return [convertCategoryNameToDiscordCommandParam(editCategoryNameInput), copyValue]
       },
     ),
   )
