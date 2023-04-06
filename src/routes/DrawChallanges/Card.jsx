@@ -104,26 +104,28 @@ const Card = ({
       <AgreementModal
         open={deleteCategoryAgreementModalActive}
         onClose={() => setDeleteCategoryAgreementModalActive(false)}
-        agreeAction={() =>
+        agreeAction={() => {
           updateDrawConfigs(getBodyForDeleteCategoryAction(drawConfigs, tab, drawConfigItemKey))
-        }
+          setDeleteCategoryAgreementModalActive(false)
+        }}
       />
       <AgreementModal
         open={cancelCategoryChangesAgreementModalActive}
         onClose={() => setCancelCategoryChangesAgreementModalActive(false)}
-        agreeAction={() =>
+        agreeAction={() => {
           setFilteredDrawConfigs(
             Object.entries({ ...drawConfigs }).filter(
               ([drawConfigsKey, drawConfigsValue]) =>
                 !!drawConfigsValue && drawConfigsKey.endsWith(DRAW_CHALLANGES_CATEGORY_SUFFIX),
             ),
           )
-        }
+          setCancelCategoryChangesAgreementModalActive(false)
+        }}
       />
       <AgreementModal
         open={saveCategoryChangesAgreementModalActive}
         onClose={() => setSaveCategoryChangesAgreementModalActive(false)}
-        agreeAction={() =>
+        agreeAction={() => {
           updateDrawConfigs(
             getBodyForSaveCategoryAction(
               drawConfigs,
@@ -132,7 +134,8 @@ const Card = ({
               filteredDrawConfigs,
             ),
           )
-        }
+          setSaveCategoryChangesAgreementModalActive(false)
+        }}
       />
       <EditCategoryModal
         open={editCategoryModalActive}
