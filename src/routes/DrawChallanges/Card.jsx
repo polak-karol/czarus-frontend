@@ -8,7 +8,11 @@ import CardHeaderActions from './CardHeaderActions'
 import CardActions from './CardActions'
 import SubItem from './SubItem'
 import { DRAW_CHALLANGES_CATEGORY_SUFFIX } from './config'
-import { getDrawConfigsWithNewSubItem } from './utils'
+import {
+  getBodyForDeleteCategoryAction,
+  getBodyForSaveCategoryAction,
+  getDrawConfigsWithNewSubItem,
+} from './utils'
 
 const Card = ({
   drawConfigItemKey,
@@ -100,11 +104,9 @@ const Card = ({
       <AgreementModal
         open={deleteCategoryAgreementModalActive}
         onClose={() => setDeleteCategoryAgreementModalActive(false)}
-        agreeAction={() => {
-          const copyDrawConfigs = { ...drawConfigs }
-          delete copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`][drawConfigItemKey]
-          updateDrawConfigs(copyDrawConfigs)
-        }}
+        agreeAction={() =>
+          updateDrawConfigs(getBodyForDeleteCategoryAction(drawConfigs, tab, drawConfigItemKey))
+        }
       />
       <AgreementModal
         open={cancelCategoryChangesAgreementModalActive}
@@ -121,13 +123,16 @@ const Card = ({
       <AgreementModal
         open={saveCategoryChangesAgreementModalActive}
         onClose={() => setSaveCategoryChangesAgreementModalActive(false)}
-        agreeAction={() => {
-          const body = { ...drawConfigs }
-          body[drawConfigKey][drawConfigItemKey] = filteredDrawConfigs.find(
-            ([key]) => key === drawConfigKey,
-          )[1][drawConfigItemKey]
-          updateDrawConfigs(body)
-        }}
+        agreeAction={() =>
+          updateDrawConfigs(
+            getBodyForSaveCategoryAction(
+              drawConfigs,
+              drawConfigKey,
+              drawConfigItemKey,
+              filteredDrawConfigs,
+            ),
+          )
+        }
       />
       <EditCategoryModal
         open={editCategoryModalActive}

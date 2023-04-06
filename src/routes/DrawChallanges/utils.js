@@ -35,6 +35,7 @@ export const getFilteredDrawConfigsWithNewItemName = (
 
 export const getCleanedFilteredDrawConfigs = (state, drawConfigKey, resourcesKey) => {
   const copyState = [...state]
+
   return copyState.map(([key, value]) => {
     if (key !== drawConfigKey) return [key, value]
     const copyValue = { ...value }
@@ -81,6 +82,7 @@ export const getDrawConfigsWithChangedSubItemName = (
       },
     ),
   )
+
   return copyDrawConfigs
 }
 
@@ -91,5 +93,39 @@ export const getDrawConfigsWithNewSubItem = (state, drawConfigKey, drawConfigIte
     value[drawConfigItemKey].unshift('')
     return [key, value]
   })
+
   return copyState
+}
+
+export const getBodyForSaveCategoryAction = (
+  drawConfigs,
+  drawConfigKey,
+  drawConfigItemKey,
+  filteredDrawConfigs,
+) => {
+  const body = { ...drawConfigs }
+  body[drawConfigKey][drawConfigItemKey] = filteredDrawConfigs.find(
+    ([key]) => key === drawConfigKey,
+  )[1][drawConfigItemKey]
+
+  return body
+}
+
+export const getBodyForDeleteCategoryAction = (drawConfigs, tab, drawConfigItemKey) => {
+  const copyDrawConfigs = { ...drawConfigs }
+  delete copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`][drawConfigItemKey]
+
+  return copyDrawConfigs
+}
+
+export const getBodyForAddCategoryAction = (drawConfigs, tab, categoryNameInput) => {
+  const copyDrawConfigs = { ...drawConfigs }
+
+  if (!copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`]) {
+    copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`] = {}
+  }
+
+  copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`][categoryNameInput] = []
+
+  return copyDrawConfigs
 }

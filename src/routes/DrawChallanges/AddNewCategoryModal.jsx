@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
 import agent from '~/api/agent'
-import { DRAW_CHALLANGES_CATEGORY_SUFFIX } from './config'
+import { getBodyForAddCategoryAction } from './utils'
 
 const AddNewCategoryModal = ({ open, onClose, drawConfigs, setDrawConfigs }) => {
   const [categoryNameInput, setCategoryNameInput] = useState('')
@@ -41,16 +41,9 @@ const AddNewCategoryModal = ({ open, onClose, drawConfigs, setDrawConfigs }) => 
         <Button
           color="secondary"
           disabled={!categoryNameInput}
-          onClick={() => {
-            const copyDrawConfigs = { ...drawConfigs }
-            if (!copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`]) {
-              copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`] = {}
-            }
-
-            copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`][categoryNameInput] = []
-            updateDrawConfigs(copyDrawConfigs)
-          }}
-          autoFocus
+          onClick={() =>
+            updateDrawConfigs(getBodyForAddCategoryAction(drawConfigs, tab, categoryNameInput))
+          }
         >
           Save
         </Button>
