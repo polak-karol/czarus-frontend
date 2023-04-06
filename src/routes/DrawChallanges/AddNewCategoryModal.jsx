@@ -1,8 +1,16 @@
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Stack,
+  TextField,
+} from '@mui/material'
 import agent from '~/api/agent'
-import { getBodyForAddCategoryAction } from './utils'
+import { convertCategoryNameToDiscordCommandParam, getBodyForAddCategoryAction } from './utils'
 
 const AddNewCategoryModal = ({ open, onClose, drawConfigs, setDrawConfigs }) => {
   const [categoryNameInput, setCategoryNameInput] = useState('')
@@ -28,13 +36,24 @@ const AddNewCategoryModal = ({ open, onClose, drawConfigs, setDrawConfigs }) => 
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>New category</DialogTitle>
       <DialogContent>
-        <TextField
-          fullWidth
-          label="Category name"
-          variant="standard"
-          value={categoryNameInput}
-          onChange={(event) => setCategoryNameInput(event.target.value)}
-        />
+        <Stack spacing={2}>
+          <TextField
+            fullWidth
+            label="Category name"
+            variant="standard"
+            value={categoryNameInput}
+            onChange={(event) => setCategoryNameInput(event.target.value)}
+          />
+          <TextField
+            disabled
+            aria-readonly
+            fullWidth
+            label="Category name in command param"
+            variant="standard"
+            defaultValue={convertCategoryNameToDiscordCommandParam(categoryNameInput)}
+            value={convertCategoryNameToDiscordCommandParam(categoryNameInput)}
+          />
+        </Stack>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>

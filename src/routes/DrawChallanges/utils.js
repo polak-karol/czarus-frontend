@@ -1,5 +1,12 @@
 import { DRAW_CHALLANGES_CATEGORY_SUFFIX } from './config'
 
+export const convertCategoryNameToDiscordCommandParam = (categoryName) =>
+  categoryName
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replaceAll(' ', '_')
+
 export const isEditMode = (selectedDrawConfigIndex, selectedDrawConfigType, index, resourcesKey) =>
   selectedDrawConfigIndex === index && selectedDrawConfigType === resourcesKey
 
@@ -19,14 +26,15 @@ export const getFilteredDrawConfigsWithNewItemName = (
       Object.fromEntries(
         Object.entries(value).map(([itemKey, itemValue]) => {
           if (itemKey !== resourcesKey) return [itemKey, itemValue]
-          return [
-            itemKey,
-            itemValue.map((element) => {
-              if (element !== resource) return element
 
-              return selectedDrawConfigInput
-            }),
-          ]
+          const copyItemValue = { ...itemValue }
+          copyItemValue.items = itemValue.items.map((element) => {
+            if (element !== resource) return element
+
+            return selectedDrawConfigInput
+          })
+
+          return [itemKey, copyItemValue]
         }),
       ),
     ]
@@ -59,7 +67,11 @@ export const getFilteredDrawConfigsWithoutDeletedItem = (
       Object.fromEntries(
         Object.entries(value).map(([itemKey, itemValue]) => {
           if (itemKey !== resourcesKey) return [itemKey, itemValue]
-          return [itemKey, itemValue.filter((element) => element !== resource)]
+
+          const copyItemValue = { ...itemValue }
+          copyItemValue.items = copyItemValue.items.filter((element) => element !== resource)
+
+          return [itemKey, copyItemValue]
         }),
       ),
     ]
@@ -90,7 +102,7 @@ export const getDrawConfigsWithNewSubItem = (state, drawConfigKey, drawConfigIte
   const copyState = [...state]
   copyState.map(([key, value]) => {
     if (key !== drawConfigKey) return [key, value]
-    value[drawConfigItemKey].unshift('')
+    value[drawConfigItemKey].items.unshift('')
     return [key, value]
   })
 
@@ -125,7 +137,9 @@ export const getBodyForAddCategoryAction = (drawConfigs, tab, categoryNameInput)
     copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`] = {}
   }
 
-  copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`][categoryNameInput] = []
+  copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`][
+    convertCategoryNameToDiscordCommandParam(categoryNameInput)
+  ] = { items: [], label: categoryNameInput }
 
   return copyDrawConfigs
 }

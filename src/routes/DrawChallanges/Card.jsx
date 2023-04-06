@@ -58,7 +58,7 @@ const Card = ({
   return (
     <Grid item xs={6}>
       <CardScrollList
-        title={drawConfigItemKey}
+        title={drawConfigs[drawConfigKey][drawConfigItemKey].label}
         listConfig={{
           itemData: {
             resources: drawConfigItemValue,

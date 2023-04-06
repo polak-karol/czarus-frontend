@@ -96,7 +96,7 @@ const DrawChallanges = () => {
                         setSelectedDrawConfigInput={setSelectedDrawConfigInput}
                         selectedDrawConfigType={selectedDrawConfigType}
                         selectedDrawConfigIndex={selectedDrawConfigIndex}
-                        drawConfigItemValue={drawConfigItemValue}
+                        drawConfigItemValue={drawConfigItemValue.items}
                         selectedDrawConfigInput={selectedDrawConfigInput}
                       />
                     ),
