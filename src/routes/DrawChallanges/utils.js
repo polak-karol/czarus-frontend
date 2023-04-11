@@ -141,3 +141,8 @@ export const getBodyForAddCategoryAction = (drawConfigs, tab, categoryNameInput)
 
   return copyDrawConfigs
 }
+
+export const formatCardTitle = (title) => {
+  const [firstLetter, ...rest] = title.replaceAll('_', ' ').split('')
+  return [firstLetter.toUpperCase(), ...rest].join('')
+}

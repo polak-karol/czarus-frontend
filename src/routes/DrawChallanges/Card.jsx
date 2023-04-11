@@ -8,6 +8,7 @@ import CardActions from './CardActions'
 import SubItem from './SubItem'
 import { DRAW_CHALLANGES_CATEGORY_SUFFIX } from './config'
 import {
+  formatCardTitle,
   getBodyForDeleteCategoryAction,
   getBodyForSaveCategoryAction,
   getDrawConfigsWithNewSubItem,
@@ -57,7 +58,7 @@ const Card = ({
   return (
     <Grid item xs={6}>
       <CardScrollList
-        title={drawConfigItemKey}
+        title={formatCardTitle(drawConfigItemKey)}
         listConfig={{
           itemData: {
             resources: drawConfigItemValue,
