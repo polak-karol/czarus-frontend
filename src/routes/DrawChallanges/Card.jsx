@@ -4,7 +4,6 @@ import { Grid } from '@mui/material'
 import CardScrollList from '~/components/CardScrollList'
 import AgreementModal from '~/components/AgreementModal'
 import EditCategoryModal from './EditCategoryModal'
-import CardHeaderActions from './CardHeaderActions'
 import CardActions from './CardActions'
 import SubItem from './SubItem'
 import { DRAW_CHALLANGES_CATEGORY_SUFFIX } from './config'
@@ -21,7 +20,6 @@ const Card = ({
   updateDrawConfigs,
   setFilteredDrawConfigs,
   filteredDrawConfigs,
-  drawConfigKey,
   setSelectedDrawConfigIndex,
   setSelectedDrawConfigType,
   setSelectedDrawConfigInput,
@@ -40,6 +38,7 @@ const Card = ({
   const [editCategoryModalActive, setEditCategoryModalActive] = useState(false)
   const [editCategoryNameInput, setEditCategoryNameInput] = useState(drawConfigItemKey)
   const { tab } = useParams()
+  const drawConfigKey = `${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`
 
   useEffect(() => {
     if (
@@ -58,7 +57,7 @@ const Card = ({
   return (
     <Grid item xs={6}>
       <CardScrollList
-        title={drawConfigs[drawConfigKey][drawConfigItemKey].label}
+        title={drawConfigItemKey}
         listConfig={{
           itemData: {
             resources: drawConfigItemValue,
@@ -78,12 +77,6 @@ const Card = ({
           overscanCount: 5,
         }}
         Item={SubItem}
-        CardHeaderActions={
-          <CardHeaderActions
-            editAction={() => setEditCategoryModalActive(true)}
-            deleteAction={() => setDeleteCategoryAgreementModalActive(true)}
-          />
-        }
         Actions={
           <CardActions
             disabledSaveActions={!saveActionsAllowed}

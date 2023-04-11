@@ -27,14 +27,14 @@ export const getFilteredDrawConfigsWithNewItemName = (
         Object.entries(value).map(([itemKey, itemValue]) => {
           if (itemKey !== resourcesKey) return [itemKey, itemValue]
 
-          const copyItemValue = { ...itemValue }
-          copyItemValue.items = itemValue.items.map((element) => {
-            if (element !== resource) return element
+          return [
+            itemKey,
+            itemValue.map((element) => {
+              if (element !== resource) return element
 
-            return selectedDrawConfigInput
-          })
-
-          return [itemKey, copyItemValue]
+              return selectedDrawConfigInput
+            }),
+          ]
         }),
       ),
     ]
@@ -68,10 +68,7 @@ export const getFilteredDrawConfigsWithoutDeletedItem = (
         Object.entries(value).map(([itemKey, itemValue]) => {
           if (itemKey !== resourcesKey) return [itemKey, itemValue]
 
-          const copyItemValue = { ...itemValue }
-          copyItemValue.items = copyItemValue.items.filter((element) => element !== resource)
-
-          return [itemKey, copyItemValue]
+          return [itemKey, itemValue.filter((element) => element !== resource)]
         }),
       ),
     ]
@@ -103,7 +100,7 @@ export const getDrawConfigsWithNewSubItem = (state, drawConfigKey, drawConfigIte
   const copyState = [...state]
   copyState.map(([key, value]) => {
     if (key !== drawConfigKey) return [key, value]
-    value[drawConfigItemKey].items.unshift('')
+    value[drawConfigItemKey].unshift('')
     return [key, value]
   })
 

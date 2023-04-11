@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom'
 import { Grid, Stack, Typography } from '@mui/material'
 import agent from '~/api/agent'
 import { DRAW_CHALLANGES_CATEGORY_SUFFIX } from './config'
-import AddNewCategoryCard from './AddNewCategoryCard'
 import TopBar from './TopBar'
 import Card from './Card'
 
@@ -56,15 +55,14 @@ const DrawChallanges = () => {
 
   useEffect(() => {
     if (drawConfigs) {
-      setFilteredDrawConfigs(
-        Object.entries({ ...drawConfigs }).filter(([key]) =>
-          key.endsWith(DRAW_CHALLANGES_CATEGORY_SUFFIX),
-        ),
+      const drawConfigsEntries = Object.entries({ ...drawConfigs }).filter(([key]) =>
+        key.endsWith(DRAW_CHALLANGES_CATEGORY_SUFFIX),
       )
+      setFilteredDrawConfigs(drawConfigsEntries)
     }
-  }, [tab])
+  }, [tab, loading])
 
-  if (loading) return
+  if (loading || !drawConfigs) return
 
   return (
     <Stack spacing={4}>
@@ -74,35 +72,28 @@ const DrawChallanges = () => {
       <Stack direction="column" gap="1rem">
         <TopBar />
         <Grid container spacing={2}>
-          <AddNewCategoryCard setDrawConfigs={setDrawConfigs} drawConfigs={drawConfigs} tab={tab} />
-          {filteredDrawConfigs
-            .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
-            .filter(([key]) => key.includes(tab))
-            .map(([drawConfigKey, drawConfigValue]) =>
-              drawConfigValue
-                ? Object.entries(drawConfigValue).map(
-                    ([drawConfigItemKey, drawConfigItemValue]) => (
-                      <Card
-                        key={drawConfigItemKey}
-                        drawConfigItemKey={drawConfigItemKey}
-                        drawConfigs={drawConfigs}
-                        setDrawConfigs={setDrawConfigs}
-                        drawConfigKey={drawConfigKey}
-                        updateDrawConfigs={updateDrawConfigs}
-                        filteredDrawConfigs={filteredDrawConfigs}
-                        setFilteredDrawConfigs={setFilteredDrawConfigs}
-                        setSelectedDrawConfigIndex={setSelectedDrawConfigIndex}
-                        setSelectedDrawConfigType={setSelectedDrawConfigType}
-                        setSelectedDrawConfigInput={setSelectedDrawConfigInput}
-                        selectedDrawConfigType={selectedDrawConfigType}
-                        selectedDrawConfigIndex={selectedDrawConfigIndex}
-                        drawConfigItemValue={drawConfigItemValue.items}
-                        selectedDrawConfigInput={selectedDrawConfigInput}
-                      />
-                    ),
-                  )
-                : null,
-            )}
+          {Object.entries(
+            filteredDrawConfigs?.find(
+              ([key]) => key === `${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`,
+            )?.[1],
+          ).map(([key, value]) => (
+            <Card
+              key={key}
+              drawConfigItemKey={key}
+              drawConfigs={drawConfigs}
+              setDrawConfigs={setDrawConfigs}
+              updateDrawConfigs={updateDrawConfigs}
+              filteredDrawConfigs={filteredDrawConfigs}
+              setFilteredDrawConfigs={setFilteredDrawConfigs}
+              setSelectedDrawConfigIndex={setSelectedDrawConfigIndex}
+              setSelectedDrawConfigType={setSelectedDrawConfigType}
+              setSelectedDrawConfigInput={setSelectedDrawConfigInput}
+              selectedDrawConfigType={selectedDrawConfigType}
+              selectedDrawConfigIndex={selectedDrawConfigIndex}
+              drawConfigItemValue={value}
+              selectedDrawConfigInput={selectedDrawConfigInput}
+            />
+          ))}
         </Grid>
       </Stack>
     </Stack>
