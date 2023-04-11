@@ -46,10 +46,16 @@ const Holidays = {
   getHoliday: (guildId, date) => requests.get(`/holiday/${guildId}?date=${date}`),
 }
 
+const Draws = {
+  getDrawConfigs: (guildId) => requests.get(`/draw-config/${guildId}`),
+  updateDrawConfigs: (guildId, body) => requests.put(`/draw-config/${guildId}`, body),
+}
+
 const agent = {
   Answers,
   Birthdays,
   Holidays,
+  Draws,
 }
 
 export default agent
