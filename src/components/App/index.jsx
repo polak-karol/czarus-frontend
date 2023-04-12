@@ -1,11 +1,12 @@
 import * as React from 'react'
-import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles'
+import { ThemeProvider, useTheme } from '@mui/material/styles'
 import { Box, Toolbar, CssBaseline, Typography, Divider, IconButton } from '@mui/material'
 import {
   Menu as MenuIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
 } from '@mui/icons-material'
+import { customTheme } from '~/utils/theme'
 import { basicPaths, restPaths } from './config'
 import { AppBar, Drawer, DrawerHeader } from './utils'
 import MenuListSegment from './MenuListSegment'
@@ -13,11 +14,6 @@ import MenuListSegment from './MenuListSegment'
 const App = ({ children }) => {
   const theme = useTheme()
   const [open, setOpen] = React.useState(false)
-  const darkTheme = createTheme({
-    palette: {
-      mode: 'dark',
-    },
-  })
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -28,7 +24,7 @@ const App = ({ children }) => {
   }
 
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={customTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <AppBar position="fixed" open={open}>
