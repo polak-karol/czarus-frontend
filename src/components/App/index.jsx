@@ -1,62 +1,20 @@
-import * as React from 'react'
-import { ThemeProvider, useTheme } from '@mui/material/styles'
-import { Box, Toolbar, CssBaseline, Typography, Divider, IconButton } from '@mui/material'
-import {
-  Menu as MenuIcon,
-  ChevronLeft as ChevronLeftIcon,
-  ChevronRight as ChevronRightIcon,
-} from '@mui/icons-material'
+import React, { useState } from 'react'
+import { ThemeProvider } from '@mui/material/styles'
+import { Box, CssBaseline } from '@mui/material'
 import { customTheme } from '~/utils/theme'
-import { basicPaths, restPaths } from './config'
-import { AppBar, Drawer, DrawerHeader } from './utils'
-import MenuListSegment from './MenuListSegment'
+import { DrawerHeader } from './utils'
+import TopBar from './TopBar'
+import SideBar from './SideBar'
 
 const App = ({ children }) => {
-  const theme = useTheme()
-  const [open, setOpen] = React.useState(false)
-
-  const handleDrawerOpen = () => {
-    setOpen(true)
-  }
-
-  const handleDrawerClose = () => {
-    setOpen(false)
-  }
+  const [open, setOpen] = useState(false)
 
   return (
     <ThemeProvider theme={customTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar position="fixed" open={open}>
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              sx={{
-                marginRight: 5,
-                ...(open && { display: 'none' }),
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" noWrap component="div">
-              Czaruś
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Drawer variant="permanent" open={open}>
-          <DrawerHeader>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-            </IconButton>
-          </DrawerHeader>
-          <Divider />
-          <MenuListSegment open={open} paths={basicPaths} />
-          <Divider />
-          <MenuListSegment open={open} paths={restPaths} />
-        </Drawer>
+        <TopBar open={open} setOpen={setOpen} />
+        <SideBar open={open} setOpen={setOpen} />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <DrawerHeader />
           {children}

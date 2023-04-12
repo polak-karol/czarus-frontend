@@ -11,6 +11,7 @@ import Birthdays from './Birthdays'
 import ErrorPage from './Error/ErrorPage'
 import Holidays from './Holidays'
 import DrawChallanges from './DrawChallanges'
+import Login from './Login'
 
 const BrowserRouter = ({ basename, children, window }) => {
   const historyRef = React.useRef()
@@ -47,6 +48,7 @@ const BrowserRouter = ({ basename, children, window }) => {
                 element={<DrawChallanges />}
                 errorElement={<ErrorPage />}
               />
+              <Route path="/login" element={<Login />} errorElement={<ErrorPage />} />
             </Routes>
           </Container>
         </LocalizationProvider>
