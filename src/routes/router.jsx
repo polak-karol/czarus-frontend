@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import { Router, Routes, Route } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
 import { LocalizationProvider } from '@mui/x-date-pickers'
@@ -25,7 +25,7 @@ const BrowserRouter = ({ basename, children, window }) => {
     location: history.location,
   })
 
-  React.useLayoutEffect(() => history.listen(setState), [history])
+  useLayoutEffect(() => history.listen(setState), [history])
 
   return (
     <Router

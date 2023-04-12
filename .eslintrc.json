@@ -5,7 +5,7 @@
   },
   "extends": ["plugin:react/recommended", "airbnb"],
   "rules": {
-    "max-len": ["error", { "code": 100 }],
+    "max-len": "off",
     "semi": "off",
     "react/no-unescaped-entities": "off",
     "react/jsx-wrap-multilines": "off",
