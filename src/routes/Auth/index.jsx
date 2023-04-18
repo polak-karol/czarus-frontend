@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import agent from '~/api/agent'
 import UserContext from '~/contexts/UserContext'
+import { writeCookie } from '~/utils/global-functions'
 
 const Auth = () => {
   const { user, setUser } = useContext(UserContext)
@@ -12,7 +13,8 @@ const Auth = () => {
   }
 
   const sendDiscordCodeSuccess = (response) => {
-    console.log(response.data)
+    writeCookie('accessToken', response.data.accessToken)
+    writeCookie('refreshToken', response.data.refreshToken)
     setUser(response.data.user)
   }
 

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { readCookie } from '~/utils/global-functions'
 
 axios.defaults.baseURL = 'http://localhost:5001/'
 axios.defaults.withCredentials = false
@@ -20,7 +21,7 @@ const buildFormData = (object) => {
 const responseBody = (response) => response.data
 
 const requests = {
-  get: (url) => axios.get(url).then(responseBody),
+  get: (url, config) => axios.get(url, config).then(responseBody),
   post: (url, body, options = { formData: false }) =>
     axios.post(url, options.formData ? buildFormData(body) : body).then(responseBody),
   put: (url, body, options = { formData: false }) =>
@@ -53,6 +54,8 @@ const Draws = {
 
 const User = {
   sendDiscordCode: (body) => requests.post('/discord-login', body),
+  getCurrentUser: () =>
+    requests.get('/user', { headers: { Authorization: `Bearer ${readCookie('accessToken')}` } }),
 }
 
 const agent = {
