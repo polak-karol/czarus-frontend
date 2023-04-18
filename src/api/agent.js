@@ -51,11 +51,16 @@ const Draws = {
   updateDrawConfigs: (guildId, body) => requests.put(`/draw-config/${guildId}`, body),
 }
 
+const User = {
+  sendDiscordCode: (body) => requests.post('/discord-login', body),
+}
+
 const agent = {
   Answers,
   Birthdays,
-  Holidays,
   Draws,
+  Holidays,
+  User,
 }
 
 export default agent

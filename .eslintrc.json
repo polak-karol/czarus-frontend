@@ -30,7 +30,8 @@
     "import/extensions": "off",
     "import/no-unresolved": "off",
     "react/jsx-indent": "off",
-    "indent": "off"
+    "indent": "off",
+    "react/jsx-no-constructed-context-values": "off"
   },
   "overrides": [],
   "parserOptions": {
