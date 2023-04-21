@@ -1,25 +1,35 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { ThemeProvider } from '@mui/material/styles'
 import { Box, CssBaseline } from '@mui/material'
+import UserContext from '~/contexts/UserContext'
 import { customTheme } from '~/utils/theme'
 import agent from '~/api/agent'
+import { readCookie } from '~/utils/global-functions'
 import { DrawerHeader } from './utils'
 import TopBar from './TopBar'
 import SideBar from './SideBar'
 
 const App = ({ children }) => {
+  const { setUser } = useContext(UserContext)
   const [open, setOpen] = useState(false)
+  const navigate = useNavigate()
 
   const getCurrentUserError = (error) => {
     console.log(error)
+    return navigate('/login')
   }
 
   const getCurrentUserSuccess = (response) => {
-    console.log(response)
+    setUser(response.data.user)
   }
 
   const getCurrentUser = () => {
-    agent.User.getCurrentUser().then(getCurrentUserSuccess, getCurrentUserError)
+    if (!readCookie('accessToken')) {
+      return navigate('/login')
+    }
+
+    return agent.User.getCurrentUser().then(getCurrentUserSuccess, getCurrentUserError)
   }
 
   useEffect(() => {
