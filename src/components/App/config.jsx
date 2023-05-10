@@ -25,3 +25,7 @@ export const restPaths = [
 ]
 
 export const drawerWidth = 240
+
+export const pathsWithoutSideBar = ['/login']
+
+export const pathsWithoutTopBar = ['/login']
