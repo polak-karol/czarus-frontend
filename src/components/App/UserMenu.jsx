@@ -1,0 +1,61 @@
+import React, { useContext, useState } from 'react'
+import { Avatar, IconButton, Menu, MenuItem, Typography } from '@mui/material'
+import UserContext from '~/contexts/UserContext'
+
+const UserMenu = () => {
+  const [anchorElUser, setAnchorElUser] = useState(null)
+  const { user } = useContext(UserContext)
+
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget)
+  }
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null)
+  }
+
+  if (!user?.avatar) return
+
+  return (
+    <>
+      <IconButton
+        color="inherit"
+        onClick={handleOpenUserMenu}
+        edge="start"
+        aria-label="account of current user"
+        aria-controls="menu-appbar"
+        aria-haspopup="true"
+      >
+        <Avatar
+          alt={user.username}
+          src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`}
+        />
+      </IconButton>
+      <Menu
+        sx={{ mt: '45px' }}
+        id="menu-appbar"
+        anchorEl={anchorElUser}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={!!anchorElUser}
+        onClose={handleCloseUserMenu}
+      >
+        <MenuItem onClick={() => {}}>
+          <Typography textAlign="left">Profile</Typography>
+        </MenuItem>
+        <MenuItem onClick={() => {}}>
+          <Typography textAlign="left">Logout</Typography>
+        </MenuItem>
+      </Menu>
+    </>
+  )
+}
+
+export default UserMenu
