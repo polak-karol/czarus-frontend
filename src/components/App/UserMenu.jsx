@@ -1,9 +1,11 @@
 import React, { useContext, useState } from 'react'
 import { Avatar, IconButton, Menu, MenuItem, Typography } from '@mui/material'
 import UserContext from '~/contexts/UserContext'
+import LogoutConfirmationModal from './LogoutConfirmationModal'
 
 const UserMenu = () => {
   const [anchorElUser, setAnchorElUser] = useState(null)
+  const [logoutConfirmationModalActive, setLogoutConfirmationModalActive] = useState(false)
   const { user } = useContext(UserContext)
 
   const handleOpenUserMenu = (event) => {
@@ -50,10 +52,14 @@ const UserMenu = () => {
         <MenuItem onClick={() => {}}>
           <Typography textAlign="left">Profile</Typography>
         </MenuItem>
-        <MenuItem onClick={() => {}}>
+        <MenuItem onClick={() => setLogoutConfirmationModalActive(true)}>
           <Typography textAlign="left">Logout</Typography>
         </MenuItem>
       </Menu>
+      <LogoutConfirmationModal
+        open={logoutConfirmationModalActive}
+        onClose={() => setLogoutConfirmationModalActive(false)}
+      />
     </>
   )
 }

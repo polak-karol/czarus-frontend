@@ -16,3 +16,7 @@ export const readCookie = (key) =>
     .split('; ')
     .find((row) => row.startsWith(key))
     ?.split('=')[1]
+
+export const deleteCookie = (name) => {
+  document.cookie = `${name}=;Max-Age=0;SameSite=Strict;path=/`
+}
