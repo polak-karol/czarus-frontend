@@ -1,14 +1,11 @@
 import React from 'react'
-import { Stack, Typography } from '@mui/material'
+import Page from '~/components/Page'
 import BirthdaysTable from './BirthdayTable'
 
 const Birthdays = () => (
-  <Stack spacing={4}>
-    <Typography variant="h3" component="h3">
-      Birthdays
-    </Typography>
+  <Page title="Birthdays">
     <BirthdaysTable />
-  </Stack>
+  </Page>
 )
 
 export default Birthdays

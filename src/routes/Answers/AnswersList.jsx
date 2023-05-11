@@ -23,7 +23,7 @@ const AnswersList = ({ answerType, answers, setFilteredAnswers, baseAnswers, upd
   }, [JSON.stringify(answers), JSON.stringify(baseAnswers[answerType])])
 
   return (
-    <Grid item xs={6}>
+    <Grid item xs={5.5}>
       <CardScrollList
         title={answersTitle[answerType]}
         listConfig={{

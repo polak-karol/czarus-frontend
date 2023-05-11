@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import moment from 'moment'
-import { Alert, AlertTitle, Button, Grid, Stack, Typography } from '@mui/material'
+import { Alert, AlertTitle, Button, Grid, Stack } from '@mui/material'
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton'
 import agent from '~/api/agent'
 import UpdateHolidayModal from './UpdateHolidayModal'
 import DayPicker from './DayPicker'
 import HolidayCard from './HolidayCard'
+import Page from '~/components/Page'
 
 const Holidays = () => {
   const [loading, setLoading] = useState(false)
@@ -51,10 +52,7 @@ const Holidays = () => {
   }
 
   return (
-    <Stack direction="column" gap="2rem">
-      <Typography variant="h3" component="h3">
-        Holidays
-      </Typography>
+    <Page title="Holidays">
       {!tomorrowHoliday && (
         <Alert
           severity="warning"
@@ -121,7 +119,7 @@ const Holidays = () => {
         setMessage={setMessage}
         onClose={() => setUpdateHolidayModalActive(false)}
       />
-    </Stack>
+    </Page>
   )
 }
 
