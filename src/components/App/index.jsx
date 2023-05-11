@@ -6,22 +6,25 @@ import UserContext from '~/contexts/UserContext'
 import { customTheme } from '~/utils/theme'
 import agent from '~/api/agent'
 import { readCookie } from '~/utils/global-functions'
+import GuildsContext from '~/contexts/GuildsContext'
 import { DrawerHeader } from './utils'
 import TopBar from './TopBar'
 import SideBar from './SideBar'
 
 const App = ({ children }) => {
   const { setUser } = useContext(UserContext)
+  const { setGuilds } = useContext(GuildsContext)
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
 
   const getCurrentUserError = (error) => {
     console.log(error)
-    return navigate('/login')
+    // return navigate('/login')
   }
 
   const getCurrentUserSuccess = (response) => {
     setUser(response.data.user)
+    setGuilds(response.data.guilds)
   }
 
   const getCurrentUser = () => {
