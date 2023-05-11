@@ -14,7 +14,7 @@ import {
   DeleteRounded as DeleteRoundedIcon,
   EditRounded as EditRoundedIcon,
 } from '@mui/icons-material'
-import agent from '../../api/agent'
+import agent from '~/api/agent'
 import { columns } from './config'
 import { createData } from './utils'
 import BirthdayDeleteModal from './BirthdayDeleteModal'

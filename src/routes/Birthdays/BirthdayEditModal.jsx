@@ -15,7 +15,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material'
-import agent from '../../api/agent'
+import agent from '~/api/agent'
 
 const BirthdayEditModal = ({
   open,

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Grid, Typography } from '@mui/material'
-import agent from '../../api/agent'
+import agent from '~/api/agent'
 import AnswersList from './AnswersList'
 
 const Answers = () => {
