@@ -1,19 +1,21 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import agent from '~/api/agent'
 import GuildsContext from '~/contexts/GuildsContext'
 import UserContext from '~/contexts/UserContext'
-import { writeCookie } from '~/utils/global-functions'
+import { readCookie, writeCookie } from '~/utils/global-functions'
+import GuildSelectorModal from './GuildSelectorModal'
 
 const Auth = () => {
   const { setUser } = useContext(UserContext)
   const { setGuilds } = useContext(GuildsContext)
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
+  const [guildSelectorModalActive, setGuildSelectorModalActive] = useState(false)
 
   const sendDiscordCodeError = (error) => {
     console.log(error)
-    navigate('/login')
+    // navigate('/login')
   }
 
   const sendDiscordCodeSuccess = (response) => {
@@ -21,7 +23,12 @@ const Auth = () => {
     writeCookie('refreshToken', response.data.refreshToken)
     setUser(response.data.user)
     setGuilds(response.data.guilds)
-    navigate('/')
+
+    if (readCookie('selectedGuild')) {
+      return navigate('/')
+    }
+
+    return setGuildSelectorModalActive(true)
   }
 
   const sendDiscordCode = () => {
@@ -33,7 +40,12 @@ const Auth = () => {
     sendDiscordCode()
   }, [])
 
-  return <div>Wait</div>
+  return (
+    <div>
+      Wait
+      <GuildSelectorModal open={guildSelectorModalActive} />
+    </div>
+  )
 }
 
 export default Auth
