@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 
-const MenuListSegment = ({ paths, open }) => (
+const SideBarMenuListSegment = ({ paths, open }) => (
   <List>
     {paths.map(({ name, url, icon }) => (
       <ListItem key={name} disablePadding sx={{ display: 'block' }}>
@@ -31,4 +31,4 @@ const MenuListSegment = ({ paths, open }) => (
   </List>
 )
 
-export default MenuListSegment
+export default SideBarMenuListSegment

@@ -4,7 +4,7 @@ import agent from '~/api/agent'
 import GuildsContext from '~/contexts/GuildsContext'
 import UserContext from '~/contexts/UserContext'
 import { readCookie, writeCookie } from '~/utils/global-functions'
-import GuildSelectorModal from './GuildSelectorModal'
+import GuildSelectorModal from '~/components/GuildSelectorModal'
 
 const Auth = () => {
   const { setUser } = useContext(UserContext)

@@ -13,19 +13,22 @@ import {
 import GuildsContext from '~/contexts/GuildsContext'
 import { writeCookie } from '~/utils/global-functions'
 
-const GuildSelectorModal = ({ open }) => {
+const GuildSelectorModal = ({ open, onClose }) => {
   const { guilds } = useContext(GuildsContext)
   const navigate = useNavigate('/')
 
   const handleGuildSelection = (guild) => {
     writeCookie('selectedGuild', guild.id)
-    navigate('/')
+
+    if (onClose) return onClose()
+
+    return navigate('/')
   }
 
   if (!open) return
 
   return (
-    <Dialog open>
+    <Dialog open onClose={onClose}>
       <DialogTitle>Choose your guild</DialogTitle>
       <List sx={{ pt: 0 }}>
         {guilds.map((guild) => (

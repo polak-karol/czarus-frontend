@@ -1,7 +1,9 @@
 import React from 'react'
-import { Divider, IconButton, useTheme } from '@mui/material'
+import { Box, Divider, IconButton, useTheme } from '@mui/material'
 import { ChevronLeft, ChevronRight } from '@mui/icons-material'
-import MenuListSegment from './MenuListSegment'
+import { Stack } from '@mui/system'
+import SideBarMenuListSegment from './SideBarMenuListSegment'
+import SideBarSelectedGuildSegment from './SideBarSelectedGuildSegment'
 import { basicPaths, restPaths } from './config'
 import { Drawer, DrawerHeader, isSideBarHidden } from './utils'
 
@@ -12,15 +14,20 @@ const SideBar = ({ open, setOpen }) => {
 
   return (
     <Drawer variant="permanent" open={open}>
-      <DrawerHeader>
-        <IconButton onClick={() => setOpen(false)}>
-          {theme.direction === 'rtl' ? <ChevronRight /> : <ChevronLeft />}
-        </IconButton>
-      </DrawerHeader>
-      <Divider />
-      <MenuListSegment open={open} paths={basicPaths} />
-      <Divider />
-      <MenuListSegment open={open} paths={restPaths} />
+      <Stack direction="column" justifyContent="space-between" sx={{ minHeight: '100%' }}>
+        <Box>
+          <DrawerHeader>
+            <IconButton onClick={() => setOpen(false)}>
+              {theme.direction === 'rtl' ? <ChevronRight /> : <ChevronLeft />}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <SideBarMenuListSegment open={open} paths={basicPaths} />
+          <Divider />
+          <SideBarMenuListSegment open={open} paths={restPaths} />
+        </Box>
+        <SideBarSelectedGuildSegment open={open} />
+      </Stack>
     </Drawer>
   )
 }
