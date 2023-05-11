@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { Grid, Stack, Typography } from '@mui/material'
+import { Grid, Stack } from '@mui/material'
 import agent from '~/api/agent'
+import Page from '~/components/Page'
 import { DRAW_CHALLANGES_CATEGORY_SUFFIX } from './config'
 import TopBar from './TopBar'
 import Card from './Card'
@@ -65,10 +66,7 @@ const DrawChallanges = () => {
   if (loading || !drawConfigs) return
 
   return (
-    <Stack spacing={4}>
-      <Typography variant="h3" component="h3">
-        Draw challanges
-      </Typography>
+    <Page title="Draw challanges">
       <Stack direction="column" gap="1rem">
         <TopBar />
         <Grid container spacing={2}>
@@ -96,7 +94,7 @@ const DrawChallanges = () => {
           ))}
         </Grid>
       </Stack>
-    </Stack>
+    </Page>
   )
 }
 

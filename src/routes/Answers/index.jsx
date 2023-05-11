@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Grid, Typography } from '@mui/material'
-import agent from '../../api/agent'
+import { Grid } from '@mui/material'
+import agent from '~/api/agent'
 import AnswersList from './AnswersList'
+import Page from '~/components/Page'
 
 const Answers = () => {
   const [answers, setAnswers] = useState([])
@@ -53,11 +54,8 @@ const Answers = () => {
   if (loading) return
 
   return (
-    <div>
-      <Typography variant="h3" component="h3">
-        Answers
-      </Typography>
-      <Grid container spacing={2}>
+    <Page title="Answers">
+      <Grid container gap={2}>
         {filteredAnswers
           .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
           .map(([key, value]) => (
@@ -71,7 +69,7 @@ const Answers = () => {
             />
           ))}
       </Grid>
-    </div>
+    </Page>
   )
 }
 
