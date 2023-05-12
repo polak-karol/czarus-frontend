@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import {
   Button,
   Dialog,
@@ -11,6 +11,7 @@ import {
 } from '@mui/material'
 import { DateField } from '@mui/x-date-pickers'
 import agent from '~/api/agent'
+import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 
 const UpdateHolidayModal = ({
   open,
@@ -21,6 +22,7 @@ const UpdateHolidayModal = ({
   setHolidaysData,
   holidaysData,
 }) => {
+  const { selectedGuild } = useContext(SelectedGuildContext)
   const [loading, setLoading] = useState(false)
 
   const updateHolidayError = (error) => {
@@ -51,7 +53,7 @@ const UpdateHolidayModal = ({
       date: date.toISOString(),
     }
 
-    return agent.Holidays.updateHolidays('guild_id', body)
+    return agent.Holidays.updateHolidays(selectedGuild.id, body)
       .then(updateHolidaySuccess, updateHolidayError)
       .finally(() => setLoading(false))
   }

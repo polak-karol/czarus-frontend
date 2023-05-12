@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import { Grid, Stack } from '@mui/material'
 import agent from '~/api/agent'
+import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import Page from '~/components/Page'
 import { DRAW_CHALLANGES_CATEGORY_SUFFIX } from './config'
 import TopBar from './TopBar'
 import Card from './Card'
 
 const DrawChallanges = () => {
+  const { selectedGuild } = useContext(SelectedGuildContext)
   const [drawConfigs, setDrawConfigs] = useState({})
   const [filteredDrawConfigs, setFilteredDrawConfigs] = useState({})
   const [loading, setLoading] = useState(true)
@@ -31,7 +33,7 @@ const DrawChallanges = () => {
 
   const getDrawConfigs = () => {
     setLoading(true)
-    return agent.Draws.getDrawConfigs('guild_id')
+    return agent.Draws.getDrawConfigs(selectedGuild.id)
       .then(getDrawCofnigsSuccess, getDrawConfigsError)
       .finally(() => setLoading(false))
   }
@@ -45,7 +47,7 @@ const DrawChallanges = () => {
   }
 
   const updateDrawConfigs = (body) =>
-    agent.Draws.updateDrawConfigs('guild_id', body).then(
+    agent.Draws.updateDrawConfigs(selectedGuild.id, body).then(
       updateDrawConfigsSuccess,
       updateDrawConfigsError,
     )

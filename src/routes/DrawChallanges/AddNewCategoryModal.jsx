@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import {
   Button,
@@ -10,9 +10,11 @@ import {
   TextField,
 } from '@mui/material'
 import agent from '~/api/agent'
+import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import { convertCategoryNameToDiscordCommandParam, getBodyForAddCategoryAction } from './utils'
 
 const AddNewCategoryModal = ({ open, onClose, drawConfigs, setDrawConfigs }) => {
+  const { selectedGuild } = useContext(SelectedGuildContext)
   const [categoryNameInput, setCategoryNameInput] = useState('')
   const { tab } = useParams()
 
@@ -27,7 +29,7 @@ const AddNewCategoryModal = ({ open, onClose, drawConfigs, setDrawConfigs }) => 
   }
 
   const updateDrawConfigs = (body) =>
-    agent.Draws.updateDrawConfigs('guild_id', body).then(
+    agent.Draws.updateDrawConfigs(selectedGuild.id, body).then(
       updateDrawConfigsSuccess,
       updateDrawConfigsError,
     )

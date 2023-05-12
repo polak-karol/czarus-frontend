@@ -15,6 +15,7 @@ import {
   EditRounded as EditRoundedIcon,
 } from '@mui/icons-material'
 import agent from '~/api/agent'
+import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import { columns } from './config'
 import { createData } from './utils'
 import BirthdayDeleteModal from './BirthdayDeleteModal'
@@ -45,7 +46,7 @@ const BirthdaysTable = () => {
   }
 
   const getBirthdays = () =>
-    agent.Birthdays.getBirthdays('guild_id').then(getBirthdaysSuccess, getBirthdaysError)
+    agent.Birthdays.getBirthdays(SelectedGuildContext).then(getBirthdaysSuccess, getBirthdaysError)
 
   useEffect(() => {
     getBirthdays()

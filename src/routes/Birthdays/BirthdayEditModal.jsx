@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Form, Formik } from 'formik'
 import moment from 'moment'
 import Button from '@mui/material/Button'
@@ -16,6 +16,7 @@ import {
   DialogTitle,
 } from '@mui/material'
 import agent from '~/api/agent'
+import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 
 const BirthdayEditModal = ({
   open,
@@ -24,6 +25,8 @@ const BirthdayEditModal = ({
   refreshBirthdayList,
   setRefreshBirthdayList,
 }) => {
+  const { selectedGuild } = useContext(SelectedGuildContext)
+
   const editBirthdayError = (error) => {
     console.log(error)
   }
@@ -34,7 +37,7 @@ const BirthdayEditModal = ({
   }
 
   const editBirthday = ({ date, isAnonymous }) => {
-    agent.Birthdays.updateBirthday('guild_id', {
+    agent.Birthdays.updateBirthday(selectedGuild.id, {
       date: date.toISOString(),
       isAnonymous,
       userId: selectedBirthday.userId,
