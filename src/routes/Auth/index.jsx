@@ -1,24 +1,38 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import _ from 'lodash'
 import agent from '~/api/agent'
+import GuildsContext from '~/contexts/GuildsContext'
 import UserContext from '~/contexts/UserContext'
-import { writeCookie } from '~/utils/global-functions'
+import { readCookie, writeCookie } from '~/utils/global-functions'
+import GuildSelectorModal from '~/components/GuildSelectorModal'
+import PageSpinner from '~/components/PageSpinner'
 
 const Auth = () => {
-  const { setUser } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
+  const { setGuilds } = useContext(GuildsContext)
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
+  const [guildSelectorModalActive, setGuildSelectorModalActive] = useState(false)
 
   const sendDiscordCodeError = (error) => {
     console.log(error)
-    navigate('/login')
+    if (_.isEmpty(user)) {
+      navigate('/login')
+    }
   }
 
   const sendDiscordCodeSuccess = (response) => {
     writeCookie('accessToken', response.data.accessToken)
     writeCookie('refreshToken', response.data.refreshToken)
     setUser(response.data.user)
-    navigate('/')
+    setGuilds(response.data.guilds)
+
+    if (readCookie('selectedGuild')) {
+      return navigate('/')
+    }
+
+    return setGuildSelectorModalActive(true)
   }
 
   const sendDiscordCode = () => {
@@ -30,7 +44,11 @@ const Auth = () => {
     sendDiscordCode()
   }, [])
 
-  return <div>Wait</div>
+  return (
+    <PageSpinner>
+      <GuildSelectorModal open={guildSelectorModalActive} />
+    </PageSpinner>
+  )
 }
 
 export default Auth

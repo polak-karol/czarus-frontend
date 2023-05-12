@@ -26,6 +26,8 @@ export const restPaths = [
 
 export const drawerWidth = 240
 
-export const pathsWithoutSideBar = ['/login']
+export const pathsWithoutSideBar = ['/login', '/authorize']
 
-export const pathsWithoutTopBar = ['/login']
+export const pathsWithoutTopBar = ['/login', '/authorize']
+
+export const nonRestrictedPaths = ['/authorize', '/login']
