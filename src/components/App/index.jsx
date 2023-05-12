@@ -10,11 +10,13 @@ import GuildsContext from '~/contexts/GuildsContext'
 import { DrawerHeader } from './utils'
 import TopBar from './TopBar'
 import SideBar from './SideBar'
+import PageSpinner from '../PageSpinner'
 
 const App = ({ children }) => {
   const { setUser } = useContext(UserContext)
   const { setGuilds } = useContext(GuildsContext)
   const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
   const getCurrentUserError = (error) => {
@@ -28,16 +30,22 @@ const App = ({ children }) => {
   }
 
   const getCurrentUser = () => {
+    setLoading(true)
+
     if (!readCookie('accessToken')) {
       return navigate('/login')
     }
 
-    return agent.User.getCurrentUser().then(getCurrentUserSuccess, getCurrentUserError)
+    return agent.User.getCurrentUser()
+      .then(getCurrentUserSuccess, getCurrentUserError)
+      .finally(() => setLoading(false))
   }
 
   useEffect(() => {
     getCurrentUser()
   }, [])
+
+  if (loading) return <PageSpinner />
 
   return (
     <ThemeProvider theme={customTheme}>
