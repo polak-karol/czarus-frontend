@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import _ from 'lodash'
 import { ThemeProvider } from '@mui/material/styles'
 import { Box, CssBaseline } from '@mui/material'
 import UserContext from '~/contexts/UserContext'
@@ -7,13 +8,13 @@ import { customTheme } from '~/utils/theme'
 import agent from '~/api/agent'
 import { readCookie } from '~/utils/global-functions'
 import GuildsContext from '~/contexts/GuildsContext'
-import { DrawerHeader } from './utils'
+import { DrawerHeader, isRestrictedPath } from './utils'
 import TopBar from './TopBar'
 import SideBar from './SideBar'
 import PageSpinner from '../PageSpinner'
 
 const App = ({ children }) => {
-  const { setUser } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
   const { setGuilds } = useContext(GuildsContext)
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -21,18 +22,23 @@ const App = ({ children }) => {
 
   const getCurrentUserError = (error) => {
     console.log(error)
-    // return navigate('/login')
+    if (_.isEmpty(user) && error.response.code === 400) {
+      return navigate('/login')
+    }
+    return error
   }
 
   const getCurrentUserSuccess = (response) => {
     setUser(response.data.user)
     setGuilds(response.data.guilds)
+    return response
   }
 
   const getCurrentUser = () => {
     setLoading(true)
 
     if (!readCookie('accessToken')) {
+      setLoading(false)
       return navigate('/login')
     }
 
@@ -42,7 +48,11 @@ const App = ({ children }) => {
   }
 
   useEffect(() => {
-    getCurrentUser()
+    if (isRestrictedPath()) {
+      getCurrentUser()
+    } else {
+      setLoading(false)
+    }
   }, [])
 
   if (loading) return <PageSpinner />

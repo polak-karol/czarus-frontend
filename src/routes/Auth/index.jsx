@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import _ from 'lodash'
 import agent from '~/api/agent'
 import GuildsContext from '~/contexts/GuildsContext'
 import UserContext from '~/contexts/UserContext'
 import { readCookie, writeCookie } from '~/utils/global-functions'
 import GuildSelectorModal from '~/components/GuildSelectorModal'
+import PageSpinner from '~/components/PageSpinner'
 
 const Auth = () => {
-  const { setUser } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
   const { setGuilds } = useContext(GuildsContext)
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
@@ -15,7 +17,9 @@ const Auth = () => {
 
   const sendDiscordCodeError = (error) => {
     console.log(error)
-    // navigate('/login')
+    if (_.isEmpty(user)) {
+      navigate('/login')
+    }
   }
 
   const sendDiscordCodeSuccess = (response) => {
@@ -41,10 +45,9 @@ const Auth = () => {
   }, [])
 
   return (
-    <div>
-      Wait
+    <PageSpinner>
       <GuildSelectorModal open={guildSelectorModalActive} />
-    </div>
+    </PageSpinner>
   )
 }
 

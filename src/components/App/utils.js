@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles'
 import { Drawer as MuiDrawer, AppBar as MuiAppBar } from '@mui/material'
-import { drawerWidth, pathsWithoutSideBar, pathsWithoutTopBar } from './config'
+import { drawerWidth, nonRestrictedPaths, pathsWithoutSideBar, pathsWithoutTopBar } from './config'
 
 export const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -69,3 +69,5 @@ export const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 
 export const isTopBarHidden = () => pathsWithoutTopBar.includes(window.location.pathname)
 
 export const isSideBarHidden = () => pathsWithoutSideBar.includes(window.location.pathname)
+
+export const isRestrictedPath = () => !nonRestrictedPaths.includes(window.location.pathname)
