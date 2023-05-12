@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
+import _ from 'lodash'
 import { Grid, Stack } from '@mui/material'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
@@ -69,33 +70,35 @@ const DrawChallanges = () => {
 
   return (
     <Page title="Draw challanges">
-      <Stack direction="column" gap="1rem">
-        <TopBar />
-        <Grid container spacing={2}>
-          {Object.entries(
-            filteredDrawConfigs?.find(
-              ([key]) => key === `${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`,
-            )?.[1],
-          ).map(([key, value]) => (
-            <Card
-              key={key}
-              drawConfigItemKey={key}
-              drawConfigs={drawConfigs}
-              setDrawConfigs={setDrawConfigs}
-              updateDrawConfigs={updateDrawConfigs}
-              filteredDrawConfigs={filteredDrawConfigs}
-              setFilteredDrawConfigs={setFilteredDrawConfigs}
-              setSelectedDrawConfigIndex={setSelectedDrawConfigIndex}
-              setSelectedDrawConfigType={setSelectedDrawConfigType}
-              setSelectedDrawConfigInput={setSelectedDrawConfigInput}
-              selectedDrawConfigType={selectedDrawConfigType}
-              selectedDrawConfigIndex={selectedDrawConfigIndex}
-              drawConfigItemValue={value}
-              selectedDrawConfigInput={selectedDrawConfigInput}
-            />
-          ))}
-        </Grid>
-      </Stack>
+      {!_.isEmpty(filteredDrawConfigs) && (
+        <Stack direction="column" gap="1rem">
+          <TopBar />
+          <Grid container spacing={2}>
+            {Object.entries(
+              filteredDrawConfigs?.find(
+                ([key]) => key === `${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`,
+              )?.[1],
+            ).map(([key, value]) => (
+              <Card
+                key={key}
+                drawConfigItemKey={key}
+                drawConfigs={drawConfigs}
+                setDrawConfigs={setDrawConfigs}
+                updateDrawConfigs={updateDrawConfigs}
+                filteredDrawConfigs={filteredDrawConfigs}
+                setFilteredDrawConfigs={setFilteredDrawConfigs}
+                setSelectedDrawConfigIndex={setSelectedDrawConfigIndex}
+                setSelectedDrawConfigType={setSelectedDrawConfigType}
+                setSelectedDrawConfigInput={setSelectedDrawConfigInput}
+                selectedDrawConfigType={selectedDrawConfigType}
+                selectedDrawConfigIndex={selectedDrawConfigIndex}
+                drawConfigItemValue={value}
+                selectedDrawConfigInput={selectedDrawConfigInput}
+              />
+            ))}
+          </Grid>
+        </Stack>
+      )}
     </Page>
   )
 }
