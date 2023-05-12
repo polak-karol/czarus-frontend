@@ -12,6 +12,7 @@ import {
 } from '@mui/material'
 import GuildsContext from '~/contexts/GuildsContext'
 import { writeCookie } from '~/utils/global-functions'
+import { getAvatarProps } from './utils'
 
 const GuildSelectorModal = ({ open, onClose }) => {
   const { guilds } = useContext(GuildsContext)
@@ -35,11 +36,7 @@ const GuildSelectorModal = ({ open, onClose }) => {
           <ListItem disableGutters key={guild.id}>
             <ListItemButton onClick={() => handleGuildSelection(guild)}>
               <ListItemAvatar>
-                <Avatar
-                  alt={guild.name}
-                  sx={{ bgcolor: 'black' }}
-                  src={`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}`}
-                />
+                <Avatar {...getAvatarProps(guild)} />
               </ListItemAvatar>
               <ListItemText primary={guild.name} />
             </ListItemButton>
