@@ -12,14 +12,17 @@ import {
 } from '@mui/material'
 import GuildsContext from '~/contexts/GuildsContext'
 import { writeCookie } from '~/utils/global-functions'
+import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import { getAvatarProps } from './utils'
 
 const GuildSelectorModal = ({ open, onClose }) => {
   const { guilds } = useContext(GuildsContext)
+  const { setSelectedGuild } = useContext(SelectedGuildContext)
   const navigate = useNavigate('/')
 
   const handleGuildSelection = (guild) => {
     writeCookie('selectedGuild', guild.id)
+    setSelectedGuild(guild)
 
     if (onClose) return onClose()
 

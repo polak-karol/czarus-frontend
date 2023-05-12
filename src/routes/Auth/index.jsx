@@ -4,13 +4,15 @@ import _ from 'lodash'
 import agent from '~/api/agent'
 import GuildsContext from '~/contexts/GuildsContext'
 import UserContext from '~/contexts/UserContext'
-import { readCookie, writeCookie } from '~/utils/global-functions'
+import { writeCookie } from '~/utils/global-functions'
+import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import GuildSelectorModal from '~/components/GuildSelectorModal'
 import PageSpinner from '~/components/PageSpinner'
 
 const Auth = () => {
   const { user, setUser } = useContext(UserContext)
   const { setGuilds } = useContext(GuildsContext)
+  const { selectedGuild } = useContext(SelectedGuildContext)
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const [guildSelectorModalActive, setGuildSelectorModalActive] = useState(false)
@@ -28,7 +30,7 @@ const Auth = () => {
     setUser(response.data.user)
     setGuilds(response.data.guilds)
 
-    if (readCookie('selectedGuild')) {
+    if (!_.isEmpty(selectedGuild)) {
       return navigate('/')
     }
 

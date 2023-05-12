@@ -1,13 +1,11 @@
 import React, { useContext, useState } from 'react'
 import { Avatar, List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material'
-import GuildsContext from '~/contexts/GuildsContext'
-import { readCookie } from '~/utils/global-functions'
+import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import GuildSelectorModal from '../GuildSelectorModal'
 
 const SideBarSelectedGuildSegment = ({ open }) => {
-  const { guilds } = useContext(GuildsContext)
+  const { selectedGuild } = useContext(SelectedGuildContext)
   const [guldSelectorModalActive, setGuildSelectorModalActive] = useState(false)
-  const selectedGuild = guilds.find((guild) => guild.id === readCookie('selectedGuild'))
 
   if (!selectedGuild) return
 
