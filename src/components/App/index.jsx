@@ -8,6 +8,7 @@ import { customTheme } from '~/utils/theme'
 import agent from '~/api/agent'
 import { readCookie } from '~/utils/global-functions'
 import GuildsContext from '~/contexts/GuildsContext'
+import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import { DrawerHeader, isRestrictedPath } from './utils'
 import TopBar from './TopBar'
 import SideBar from './SideBar'
@@ -16,6 +17,7 @@ import PageSpinner from '../PageSpinner'
 const App = ({ children }) => {
   const { user, setUser } = useContext(UserContext)
   const { setGuilds } = useContext(GuildsContext)
+  const { setSelectedGuild } = useContext(SelectedGuildContext)
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
@@ -31,6 +33,8 @@ const App = ({ children }) => {
   const getCurrentUserSuccess = (response) => {
     setUser(response.data.user)
     setGuilds(response.data.guilds)
+    setSelectedGuild(response.data.guilds.find((guild) => guild.id === readCookie('selectedGuild')))
+
     return response
   }
 
