@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import {
   Paper,
   Table,
@@ -22,7 +22,8 @@ import BirthdayDeleteModal from './BirthdayDeleteModal'
 import BirthdayEditModal from './BirthdayEditModal'
 
 const BirthdaysTable = () => {
-  const [page, setPage] = React.useState(0)
+  const [page, setPage] = useState(0)
+  const { selectedGuild } = useContext(SelectedGuildContext)
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [birthdaysList, setBirthdaysList] = useState([])
   const [birthdayDeleteModalOpen, setBirthdayDeleteModalClose] = useState(false)
@@ -46,7 +47,7 @@ const BirthdaysTable = () => {
   }
 
   const getBirthdays = () =>
-    agent.Birthdays.getBirthdays(SelectedGuildContext).then(getBirthdaysSuccess, getBirthdaysError)
+    agent.Birthdays.getBirthdays(selectedGuild.id).then(getBirthdaysSuccess, getBirthdaysError)
 
   useEffect(() => {
     getBirthdays()
