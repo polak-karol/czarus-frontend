@@ -5,6 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import UserContext from '~/contexts/UserContext'
 import GuildsContext from '~/contexts/GuildsContext'
+import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import App from '~/components/App'
 import Home from './Home/Home'
 import Answers from './Answers'
@@ -18,6 +19,7 @@ import Auth from './Auth'
 const BrowserRouter = ({ basename, children, window }) => {
   const [user, setUser] = useState({})
   const [guilds, setGuilds] = useState([])
+  const [selectedGuild, setSelectedGuild] = useState({})
   const historyRef = useRef()
 
   if (historyRef.current == null) {
@@ -42,23 +44,25 @@ const BrowserRouter = ({ basename, children, window }) => {
       {children}
       <UserContext.Provider value={{ user, setUser }}>
         <GuildsContext.Provider value={{ guilds, setGuilds }}>
-          <App>
-            <LocalizationProvider dateAdapter={AdapterMoment}>
-              <Routes>
-                <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
-                <Route path="/answers" element={<Answers />} errorElement={<ErrorPage />} />
-                <Route path="/birthdays" element={<Birthdays />} errorElement={<ErrorPage />} />
-                <Route path="/holidays" element={<Holidays />} errorElement={<ErrorPage />} />
-                <Route
-                  path="/draw-challanges/:tab"
-                  element={<DrawChallanges />}
-                  errorElement={<ErrorPage />}
-                />
-                <Route path="/login" element={<Login />} errorElement={<ErrorPage />} />
-                <Route path="/authorize" element={<Auth />} errorElement={<ErrorPage />} />
-              </Routes>
-            </LocalizationProvider>
-          </App>
+          <SelectedGuildContext.Provider value={{ selectedGuild, setSelectedGuild }}>
+            <App>
+              <LocalizationProvider dateAdapter={AdapterMoment}>
+                <Routes>
+                  <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
+                  <Route path="/answers" element={<Answers />} errorElement={<ErrorPage />} />
+                  <Route path="/birthdays" element={<Birthdays />} errorElement={<ErrorPage />} />
+                  <Route path="/holidays" element={<Holidays />} errorElement={<ErrorPage />} />
+                  <Route
+                    path="/draw-challanges/:tab"
+                    element={<DrawChallanges />}
+                    errorElement={<ErrorPage />}
+                  />
+                  <Route path="/login" element={<Login />} errorElement={<ErrorPage />} />
+                  <Route path="/authorize" element={<Auth />} errorElement={<ErrorPage />} />
+                </Routes>
+              </LocalizationProvider>
+            </App>
+          </SelectedGuildContext.Provider>
         </GuildsContext.Provider>
       </UserContext.Provider>
     </Router>

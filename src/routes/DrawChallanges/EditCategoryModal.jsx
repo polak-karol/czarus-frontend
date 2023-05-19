@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import {
   Button,
@@ -11,6 +11,7 @@ import {
   TextField,
 } from '@mui/material'
 import agent from '~/api/agent'
+import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import {
   convertCategoryNameToDiscordCommandParam,
   getDrawConfigsWithChangedSubItemName,
@@ -25,6 +26,7 @@ const EditCategoryModal = ({
   setEditCategoryNameInput,
   drawConfigItemKey,
 }) => {
+  const { selectedGuild } = useContext(SelectedGuildContext)
   const { tab } = useParams()
 
   const updateDrawConfigsError = (error) => {
@@ -37,7 +39,7 @@ const EditCategoryModal = ({
   }
 
   const updateDrawConfigs = (body) =>
-    agent.Draws.updateDrawConfigs('guild_id', body).then(
+    agent.Draws.updateDrawConfigs(selectedGuild.id, body).then(
       updateDrawConfigsSuccess,
       updateDrawConfigsError,
     )

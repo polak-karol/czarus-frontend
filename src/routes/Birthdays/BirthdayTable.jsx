@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import {
   Paper,
   Table,
@@ -15,13 +15,15 @@ import {
   EditRounded as EditRoundedIcon,
 } from '@mui/icons-material'
 import agent from '~/api/agent'
+import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import { columns } from './config'
 import { createData } from './utils'
 import BirthdayDeleteModal from './BirthdayDeleteModal'
 import BirthdayEditModal from './BirthdayEditModal'
 
 const BirthdaysTable = () => {
-  const [page, setPage] = React.useState(0)
+  const [page, setPage] = useState(0)
+  const { selectedGuild } = useContext(SelectedGuildContext)
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [birthdaysList, setBirthdaysList] = useState([])
   const [birthdayDeleteModalOpen, setBirthdayDeleteModalClose] = useState(false)
@@ -45,7 +47,7 @@ const BirthdaysTable = () => {
   }
 
   const getBirthdays = () =>
-    agent.Birthdays.getBirthdays('guild_id').then(getBirthdaysSuccess, getBirthdaysError)
+    agent.Birthdays.getBirthdays(selectedGuild.id).then(getBirthdaysSuccess, getBirthdaysError)
 
   useEffect(() => {
     getBirthdays()

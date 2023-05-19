@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Grid } from '@mui/material'
 import agent from '~/api/agent'
+import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import AnswersList from './AnswersList'
 import Page from '~/components/Page'
 
 const Answers = () => {
+  const { selectedGuild } = useContext(SelectedGuildContext)
   const [answers, setAnswers] = useState([])
   const [filteredAnswers, setFilteredAnswers] = useState([])
   const [loading, setLoading] = useState(true)
@@ -28,7 +30,7 @@ const Answers = () => {
 
   const getAnswers = () => {
     setLoading(true)
-    agent.Answers.getAnswers('guild_id')
+    agent.Answers.getAnswers(selectedGuild.id)
       .then(getAnswersSuccess, getAnswersError)
       .finally(() => setLoading(false))
   }
@@ -44,7 +46,10 @@ const Answers = () => {
 
   const updateAnswers = (data) => {
     const body = { ...data, channelId: 'channel_id' }
-    agent.Answers.updateAnswers('guild_id', body).then(updateAnswersSuccess, updateAnswersError)
+    agent.Answers.updateAnswers(selectedGuild.id, body).then(
+      updateAnswersSuccess,
+      updateAnswersError,
+    )
   }
 
   useEffect(() => {

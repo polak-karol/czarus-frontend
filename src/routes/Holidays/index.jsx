@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import moment from 'moment'
 import { Alert, AlertTitle, Button, Grid, Stack } from '@mui/material'
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton'
 import agent from '~/api/agent'
+import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import UpdateHolidayModal from './UpdateHolidayModal'
 import DayPicker from './DayPicker'
 import HolidayCard from './HolidayCard'
 import Page from '~/components/Page'
 
 const Holidays = () => {
+  const { selectedGuild } = useContext(SelectedGuildContext)
   const [loading, setLoading] = useState(false)
   const [holidaysData, setHolidaysData] = useState([1, 2, 15])
   const [selectedDate, setSelectedDate] = useState(moment())
@@ -25,7 +27,10 @@ const Holidays = () => {
     const startOfMonth = date.startOf('month').format('YYYY-MM-DD')
     const endOfMonth = date.endOf('month').format('YYYY-MM-DD')
 
-    return agent.Holidays.getHolidays('guild_id', { endDate: endOfMonth, startDate: startOfMonth })
+    return agent.Holidays.getHolidays(selectedGuild.id, {
+      endDate: endOfMonth,
+      startDate: startOfMonth,
+    })
       .then(getHolidaysSuccess, getHolidaysError)
       .finally(() => setLoading(false))
   }
@@ -35,7 +40,7 @@ const Holidays = () => {
   const getHolidayForTomorrowSuccess = (response) => setTomorrowHoliday(response.data)
 
   const getHolidayForTomorrow = () =>
-    agent.Holidays.getHoliday('guild_id', moment().add(1, 'day').toISOString()).then(
+    agent.Holidays.getHoliday(selectedGuild.id, moment().add(1, 'day').toISOString()).then(
       getHolidayForTomorrowSuccess,
       getHolidayForTomorrowError,
     )
