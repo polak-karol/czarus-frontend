@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { useParams } from 'react-router-dom'
+import { useSnackbar } from 'notistack'
 import {
   Button,
   Dialog,
@@ -11,15 +12,17 @@ import {
 } from '@mui/material'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
+import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
 import { convertCategoryNameToDiscordCommandParam, getBodyForAddCategoryAction } from './utils'
 
 const AddNewCategoryModal = ({ open, onClose, drawConfigs, setDrawConfigs }) => {
   const { selectedGuild } = useContext(SelectedGuildContext)
+  const { enqueueSnackbar } = useSnackbar()
   const [categoryNameInput, setCategoryNameInput] = useState('')
   const { tab } = useParams()
 
   const updateDrawConfigsError = (error) => {
-    console.log(error)
+    enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
   }
 
   const updateDrawConfigsSuccess = (response) => {

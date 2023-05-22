@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { Form, Formik } from 'formik'
+import { useSnackbar } from 'notistack'
 import moment from 'moment'
 import Button from '@mui/material/Button'
 import { DatePicker } from '@mui/x-date-pickers'
@@ -17,6 +18,7 @@ import {
 } from '@mui/material'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
+import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
 
 const BirthdayEditModal = ({
   open,
@@ -26,9 +28,10 @@ const BirthdayEditModal = ({
   setRefreshBirthdayList,
 }) => {
   const { selectedGuild } = useContext(SelectedGuildContext)
+  const { enqueueSnackbar } = useSnackbar()
 
   const editBirthdayError = (error) => {
-    console.log(error)
+    enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
   }
 
   const editBirthdaySuccess = () => {

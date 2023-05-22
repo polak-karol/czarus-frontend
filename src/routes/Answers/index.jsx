@@ -1,18 +1,21 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { Grid } from '@mui/material'
+import { useSnackbar } from 'notistack'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
-import AnswersList from './AnswersList'
+import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
 import Page from '~/components/Page'
+import AnswersList from './AnswersList'
 
 const Answers = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
+  const { enqueueSnackbar } = useSnackbar()
   const [answers, setAnswers] = useState([])
   const [filteredAnswers, setFilteredAnswers] = useState([])
   const [loading, setLoading] = useState(true)
 
   const getAnswersError = (error) => {
-    console.log(error)
+    enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
   }
 
   const getAnswersSuccess = (response) => {
@@ -36,11 +39,10 @@ const Answers = () => {
   }
 
   const updateAnswersError = (error) => {
-    console.log(error)
+    enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
   }
 
   const updateAnswersSuccess = (response) => {
-    console.log(response)
     setAnswers({ ...response.data })
   }
 

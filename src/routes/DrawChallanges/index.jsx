@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
+import { useSnackbar } from 'notistack'
 import _ from 'lodash'
 import { Grid, Stack } from '@mui/material'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
+import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
 import Page from '~/components/Page'
 import { DRAW_CHALLANGES_CATEGORY_SUFFIX } from './config'
 import TopBar from './TopBar'
@@ -11,6 +13,7 @@ import Card from './Card'
 
 const DrawChallanges = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
+  const { enqueueSnackbar } = useSnackbar()
   const [drawConfigs, setDrawConfigs] = useState({})
   const [filteredDrawConfigs, setFilteredDrawConfigs] = useState({})
   const [loading, setLoading] = useState(true)
@@ -20,7 +23,7 @@ const DrawChallanges = () => {
   const { tab } = useParams()
 
   const getDrawConfigsError = (error) => {
-    console.log(error)
+    enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
   }
 
   const getDrawCofnigsSuccess = (response) => {
@@ -40,7 +43,7 @@ const DrawChallanges = () => {
   }
 
   const updateDrawConfigsError = (error) => {
-    console.log(error)
+    enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
   }
 
   const updateDrawConfigsSuccess = (response) => {

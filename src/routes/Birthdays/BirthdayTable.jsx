@@ -46,7 +46,7 @@ const BirthdaysTable = () => {
   }
 
   const getBirthdaysError = (error) => {
-    enqueueSnackbar(error.response.msg, ERROR_SNACKBAR_CONFIG)
+    enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
   }
 
   const getBirthdays = () =>
