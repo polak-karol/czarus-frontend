@@ -19,7 +19,7 @@ const Auth = () => {
 
   const sendDiscordCodeError = (error) => {
     console.log(error)
-    if (_.isEmpty(user)) {
+    if ((error?.response?.code >= 400 || error.code === 'ERR_NETWORK') && _.isEmpty(user)) {
       navigate('/login')
     }
   }

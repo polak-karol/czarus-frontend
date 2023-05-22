@@ -24,7 +24,7 @@ const App = ({ children }) => {
 
   const getCurrentUserError = (error) => {
     console.log(error)
-    if (_.isEmpty(user) && error.response.code === 400) {
+    if ((error?.response?.code >= 400 || error.code === 'ERR_NETWORK') && _.isEmpty(user)) {
       return navigate('/login')
     }
     return error
