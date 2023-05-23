@@ -7,6 +7,7 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import UserContext from '~/contexts/UserContext'
 import GuildsContext from '~/contexts/GuildsContext'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
+import SelectedGuildChannelsContext from '~/contexts/SelectedGuildChannelsContext'
 import App from '~/components/App'
 import Home from './Home/Home'
 import Answers from './Answers'
@@ -21,6 +22,7 @@ const BrowserRouter = ({ basename, children, window }) => {
   const [user, setUser] = useState({})
   const [guilds, setGuilds] = useState([])
   const [selectedGuild, setSelectedGuild] = useState({})
+  const [selectedGuildChannels, setSelectedGuildChannels] = useState([])
   const historyRef = useRef()
 
   if (historyRef.current == null) {
@@ -46,25 +48,33 @@ const BrowserRouter = ({ basename, children, window }) => {
       <UserContext.Provider value={{ user, setUser }}>
         <GuildsContext.Provider value={{ guilds, setGuilds }}>
           <SelectedGuildContext.Provider value={{ selectedGuild, setSelectedGuild }}>
-            <SnackbarProvider maxSnack={3}>
-              <App>
-                <LocalizationProvider dateAdapter={AdapterMoment}>
-                  <Routes>
-                    <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
-                    <Route path="/answers" element={<Answers />} errorElement={<ErrorPage />} />
-                    <Route path="/birthdays" element={<Birthdays />} errorElement={<ErrorPage />} />
-                    <Route path="/holidays" element={<Holidays />} errorElement={<ErrorPage />} />
-                    <Route
-                      path="/draw-challanges/:tab"
-                      element={<DrawChallanges />}
-                      errorElement={<ErrorPage />}
-                    />
-                    <Route path="/login" element={<Login />} errorElement={<ErrorPage />} />
-                    <Route path="/authorize" element={<Auth />} errorElement={<ErrorPage />} />
-                  </Routes>
-                </LocalizationProvider>
-              </App>
-            </SnackbarProvider>
+            <SelectedGuildChannelsContext.Provider
+              value={{ selectedGuildChannels, setSelectedGuildChannels }}
+            >
+              <SnackbarProvider maxSnack={3}>
+                <App>
+                  <LocalizationProvider dateAdapter={AdapterMoment}>
+                    <Routes>
+                      <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
+                      <Route path="/answers" element={<Answers />} errorElement={<ErrorPage />} />
+                      <Route
+                        path="/birthdays"
+                        element={<Birthdays />}
+                        errorElement={<ErrorPage />}
+                      />
+                      <Route path="/holidays" element={<Holidays />} errorElement={<ErrorPage />} />
+                      <Route
+                        path="/draw-challanges/:tab"
+                        element={<DrawChallanges />}
+                        errorElement={<ErrorPage />}
+                      />
+                      <Route path="/login" element={<Login />} errorElement={<ErrorPage />} />
+                      <Route path="/authorize" element={<Auth />} errorElement={<ErrorPage />} />
+                    </Routes>
+                  </LocalizationProvider>
+                </App>
+              </SnackbarProvider>
+            </SelectedGuildChannelsContext.Provider>
           </SelectedGuildContext.Provider>
         </GuildsContext.Provider>
       </UserContext.Provider>
