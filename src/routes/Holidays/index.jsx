@@ -1,17 +1,20 @@
 import React, { useState, useEffect, useContext } from 'react'
+import { useSnackbar } from 'notistack'
 import moment from 'moment'
 import { Alert, AlertTitle, Button, Grid, Stack } from '@mui/material'
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
+import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
+import Page from '~/components/Page'
 import UpdateHolidayModal from './UpdateHolidayModal'
 import DayPicker from './DayPicker'
 import HolidayCard from './HolidayCard'
-import Page from '~/components/Page'
 
 const Holidays = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
+  const { enqueueSnackbar } = useSnackbar()
   const [loading, setLoading] = useState(false)
   const [holidaysData, setHolidaysData] = useState([1, 2, 15])
   const [selectedDate, setSelectedDate] = useState(moment())
@@ -19,7 +22,9 @@ const Holidays = () => {
   const [tomorrowHoliday, setTomorrowHoliday] = useState(null)
   const [updateHolidayModalActive, setUpdateHolidayModalActive] = useState(false)
 
-  const getHolidaysError = (error) => console.log(error)
+  const getHolidaysError = (error) => {
+    enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
+  }
 
   const getHolidaysSuccess = (response) => setHolidaysData(response.data)
 
@@ -35,7 +40,9 @@ const Holidays = () => {
       .finally(() => setLoading(false))
   }
 
-  const getHolidayForTomorrowError = (error) => console.log(error)
+  const getHolidayForTomorrowError = (error) => {
+    enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
+  }
 
   const getHolidayForTomorrowSuccess = (response) => setTomorrowHoliday(response.data)
 

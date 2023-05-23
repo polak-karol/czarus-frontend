@@ -14,8 +14,10 @@ import {
   DeleteRounded as DeleteRoundedIcon,
   EditRounded as EditRoundedIcon,
 } from '@mui/icons-material'
+import { useSnackbar } from 'notistack'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
+import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
 import { columns } from './config'
 import { createData } from './utils'
 import BirthdayDeleteModal from './BirthdayDeleteModal'
@@ -23,6 +25,7 @@ import BirthdayEditModal from './BirthdayEditModal'
 
 const BirthdaysTable = () => {
   const [page, setPage] = useState(0)
+  const { enqueueSnackbar } = useSnackbar()
   const { selectedGuild } = useContext(SelectedGuildContext)
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [birthdaysList, setBirthdaysList] = useState([])
@@ -43,7 +46,7 @@ const BirthdaysTable = () => {
   }
 
   const getBirthdaysError = (error) => {
-    console.log(error)
+    enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
   }
 
   const getBirthdays = () =>

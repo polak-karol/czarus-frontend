@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSnackbar } from 'notistack'
 import {
   Button,
   Dialog,
@@ -8,15 +9,17 @@ import {
   DialogTitle,
 } from '@mui/material'
 import agent from '~/api/agent'
+import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
 
 const BirthdayDeleteModal = ({ open, onClose, selectedBirthday, setBirthdaysList }) => {
+  const { enqueueSnackbar } = useSnackbar()
   const deleteBirthdaySuccess = () => {
     setBirthdaysList((state) => state.filter((value) => value.id !== selectedBirthday.id))
     onClose()
   }
 
   const deleteBirthdayError = (error) => {
-    console.log(error)
+    enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
   }
 
   const deleteBirthday = () => {

@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react'
+import { useSnackbar } from 'notistack'
 import {
   Button,
   Dialog,
@@ -12,6 +13,7 @@ import {
 import { DateField } from '@mui/x-date-pickers'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
+import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
 
 const UpdateHolidayModal = ({
   open,
@@ -23,10 +25,11 @@ const UpdateHolidayModal = ({
   holidaysData,
 }) => {
   const { selectedGuild } = useContext(SelectedGuildContext)
+  const { enqueueSnackbar } = useSnackbar()
   const [loading, setLoading] = useState(false)
 
   const updateHolidayError = (error) => {
-    console.log(error)
+    enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
   }
 
   const updateHolidaySuccess = (response) => {
