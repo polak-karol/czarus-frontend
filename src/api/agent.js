@@ -64,12 +64,17 @@ const User = {
   getCurrentUser: () => requests.get('/user', defaultHeaders),
 }
 
+const Guild = {
+  getGuildChannels: (guildId) => requests.get(`/guild-channels/${guildId}`, defaultHeaders),
+}
+
 const agent = {
   Answers,
   Birthdays,
   Draws,
   Holidays,
   User,
+  Guild,
 }
 
 export default agent

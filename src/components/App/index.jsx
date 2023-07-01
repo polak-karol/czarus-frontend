@@ -10,6 +10,7 @@ import agent from '~/api/agent'
 import { readCookie } from '~/utils/global-functions'
 import GuildsContext from '~/contexts/GuildsContext'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
+import SelectedGuildChannelsContext from '~/contexts/SelectedGuildChannelsContext'
 import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
 import PageSpinner from '../PageSpinner'
 import { DrawerHeader, isRestrictedPath } from './utils'
@@ -19,6 +20,7 @@ import SideBar from './SideBar'
 const App = ({ children }) => {
   const { user, setUser } = useContext(UserContext)
   const { setGuilds } = useContext(GuildsContext)
+  const { setSelectedGuildChannels } = useContext(SelectedGuildChannelsContext)
   const { enqueueSnackbar } = useSnackbar()
   const { setSelectedGuild } = useContext(SelectedGuildContext)
   const [open, setOpen] = useState(false)
@@ -26,7 +28,7 @@ const App = ({ children }) => {
   const navigate = useNavigate()
 
   const getCurrentUserError = (error) => {
-    enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
+    // enqueueSnackbar(error.response.data.msg || error.response.data.message, ERROR_SNACKBAR_CONFIG)
     if ((error?.response?.code >= 400 || error.code === 'ERR_NETWORK') && _.isEmpty(user)) {
       return navigate('/login')
     }
@@ -54,9 +56,30 @@ const App = ({ children }) => {
       .finally(() => setLoading(false))
   }
 
+  const getSelectedGuildChannelsError = (error) => {
+    console.log(error)
+    // enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
+  }
+
+  const getSelectedGuildChannelsSuccess = (response) => {
+    console.log(response)
+  }
+
+  const getSelectedGuildChannels = () => {
+    const selectedGuild = readCookie('selectedGuild')
+
+    if (!selectedGuild) return null
+
+    return agent.Guild.getGuildChannels(selectedGuild).then(
+      getSelectedGuildChannelsSuccess,
+      getSelectedGuildChannelsError,
+    )
+  }
+
   useEffect(() => {
     if (isRestrictedPath()) {
       getCurrentUser()
+      getSelectedGuildChannels()
     } else {
       setLoading(false)
     }
