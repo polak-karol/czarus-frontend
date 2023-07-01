@@ -47,9 +47,10 @@ const Auth = () => {
   }, [])
 
   return (
-    <PageSpinner>
+    <>
+      <PageSpinner />
       <GuildSelectorModal open={guildSelectorModalActive} />
-    </PageSpinner>
+    </>
   )
 }
 
