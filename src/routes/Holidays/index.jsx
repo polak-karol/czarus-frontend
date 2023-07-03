@@ -11,6 +11,7 @@ import Page from '~/components/Page'
 import UpdateHolidayModal from './UpdateHolidayModal'
 import DayPicker from './DayPicker'
 import HolidayCard from './HolidayCard'
+import ChannelSelector from '~/components/ChannelSelector'
 
 const Holidays = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
@@ -21,6 +22,7 @@ const Holidays = () => {
   const [message, setMessage] = useState('')
   const [tomorrowHoliday, setTomorrowHoliday] = useState(null)
   const [updateHolidayModalActive, setUpdateHolidayModalActive] = useState(false)
+  const [selectedChannel, setSelectedChannel] = useState('')
 
   const getHolidaysError = (error) => {
     enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
@@ -64,7 +66,15 @@ const Holidays = () => {
   }
 
   return (
-    <Page title="Holidays">
+    <Page
+      title="Holidays"
+      actions={
+        <ChannelSelector
+          selectedChannel={selectedChannel}
+          setSelectedChannel={(event) => setSelectedChannel(event.target.value)}
+        />
+      }
+    >
       {!tomorrowHoliday && (
         <Alert
           severity="warning"
