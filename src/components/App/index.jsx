@@ -27,6 +27,14 @@ const App = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
+  const getGuildChannelsSuccess = (response) => {
+    setSelectedGuildChannels(response.data)
+  }
+
+  const getGuildChannelsError = (error) => {
+    console.log(error)
+  }
+
   const getCurrentUserError = (error) => {
     // enqueueSnackbar(error.response.data.msg || error.response.data.message, ERROR_SNACKBAR_CONFIG)
     if ((error?.response?.code >= 400 || error.code === 'ERR_NETWORK') && _.isEmpty(user)) {
@@ -39,6 +47,10 @@ const App = ({ children }) => {
     setUser(response.data.user)
     setGuilds(response.data.guilds)
     setSelectedGuild(response.data.guilds.find((guild) => guild.id === readCookie('selectedGuild')))
+    agent.Guild.getGuildChannels(readCookie('selectedGuild')).then(
+      getGuildChannelsSuccess,
+      getGuildChannelsError,
+    )
 
     return response
   }
