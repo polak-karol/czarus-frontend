@@ -71,6 +71,7 @@ const Guild = {
 const GuildSettings = {
   updateSettings: (guildId, body) =>
     requests.put(`/guild-settings/${guildId}`, body, defaultHeaders),
+  getSettings: (guildId) => requests.get(`/guild-settings/${guildId}`, defaultHeaders),
 }
 
 const agent = {
