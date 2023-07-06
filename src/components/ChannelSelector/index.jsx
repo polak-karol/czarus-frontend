@@ -2,11 +2,11 @@ import React, { useContext } from 'react'
 import { FormControl, InputLabel, ListSubheader, MenuItem, Select } from '@mui/material'
 import SelectedGuildChannelsContext from '~/contexts/SelectedGuildChannelsContext'
 
-const ChannelSelector = ({ selectedChannel, setSelectedChannel }) => {
+const ChannelSelector = ({ selectedChannel, setSelectedChannel, disabled }) => {
   const { selectedGuildChannels } = useContext(SelectedGuildChannelsContext)
 
   return (
-    <FormControl variant="standard" sx={{ m: 1, minWidth: 150 }}>
+    <FormControl variant="standard" sx={{ m: 1, minWidth: 150 }} disabled={disabled}>
       <InputLabel id="selected-channel">Selected channel</InputLabel>
       <Select
         labelId="selected-channel"
