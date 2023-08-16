@@ -68,6 +68,12 @@ const Guild = {
   getGuildChannels: (guildId) => requests.get(`/guild-channels/${guildId}`, defaultHeaders),
 }
 
+const GuildSettings = {
+  updateSettings: (guildId, body) =>
+    requests.put(`/guild-settings/${guildId}`, body, defaultHeaders),
+  getSettings: (guildId) => requests.get(`/guild-settings/${guildId}`, defaultHeaders),
+}
+
 const agent = {
   Answers,
   Birthdays,
@@ -75,6 +81,7 @@ const agent = {
   Holidays,
   User,
   Guild,
+  GuildSettings,
 }
 
 export default agent
