@@ -95,20 +95,37 @@ const DrawChallenges = () => {
   }
 
   const updateDrawChallengesChannelSuccess = (response) => {
-    setSelectedChannel(response.data.birthdays_channel_id)
+    setSelectedChannel(response.data.draw_challenges_channel_id)
   }
 
   const updateDrawChallengesChannel = (channel) => {
     setLoading(true)
-    const body = { birthdays_channel_id: channel }
+    const body = { draw_challenges_channel_id: channel }
 
     agent.GuildSettings.updateSettings(selectedGuild.id, body)
       .then(updateDrawChallengesChannelSuccess, updateDrawChallengesChannelError)
       .finally(() => setLoading(false))
   }
 
+  const getGuildSettingsError = (error) => {
+    console.log(error)
+  }
+
+  const getGuildSettingsSuccess = (response) => {
+    console.log(response)
+    setSelectedChannel(response.data.draw_challenges_channel_id)
+  }
+
+  const getGuildSettings = () => {
+    agent.GuildSettings.getSettings(selectedGuild.id).then(
+      getGuildSettingsSuccess,
+      getGuildSettingsError,
+    )
+  }
+
   useEffect(() => {
     getDrawConfigs()
+    getGuildSettings()
   }, [])
 
   useEffect(() => {

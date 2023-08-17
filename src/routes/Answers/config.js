@@ -8,3 +8,5 @@ export const answersTitle = {
   whoAnswers: 'Who',
   whyAnswers: 'Why',
 }
+
+export const ANSWERS_CATEGORY_SUFFIX = 'Answers'
