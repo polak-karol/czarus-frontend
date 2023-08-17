@@ -14,7 +14,7 @@ import Answers from './Answers'
 import Birthdays from './Birthdays'
 import ErrorPage from './Error/ErrorPage'
 import Holidays from './Holidays'
-import DrawChallanges from './DrawChallanges'
+import DrawChallenges from './DrawChallenges'
 import Login from './Login'
 import Auth from './Auth'
 
@@ -64,8 +64,8 @@ const BrowserRouter = ({ basename, children, window }) => {
                       />
                       <Route path="/holidays" element={<Holidays />} errorElement={<ErrorPage />} />
                       <Route
-                        path="/draw-challanges/:tab"
-                        element={<DrawChallanges />}
+                        path="/draw-challenges/:tab"
+                        element={<DrawChallenges />}
                         errorElement={<ErrorPage />}
                       />
                       <Route path="/login" element={<Login />} errorElement={<ErrorPage />} />

@@ -6,12 +6,14 @@ import { Grid, Stack } from '@mui/material'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
+import ChannelSelector from '~/components/ChannelSelector'
 import Page from '~/components/Page'
-import { DRAW_CHALLANGES_CATEGORY_SUFFIX } from './config'
+import { DRAW_CHALLENGES_CATEGORY_SUFFIX } from './config'
 import TopBar from './TopBar'
 import Card from './Card'
 
-const DrawChallanges = () => {
+const DrawChallenges = () => {
+  const [selectedChannel, setSelectedChannel] = useState('')
   const { selectedGuild } = useContext(SelectedGuildContext)
   const { enqueueSnackbar } = useSnackbar()
   const [drawConfigs, setDrawConfigs] = useState({
@@ -49,7 +51,7 @@ const DrawChallanges = () => {
     if (error.response.status === 404) {
       setFilteredDrawConfigs(
         Object.entries({ ...drawConfigs }).filter(([key]) =>
-          key.endsWith(DRAW_CHALLANGES_CATEGORY_SUFFIX),
+          key.endsWith(DRAW_CHALLENGES_CATEGORY_SUFFIX),
         ),
       )
       return
@@ -62,7 +64,7 @@ const DrawChallanges = () => {
     setDrawConfigs({ ...response.data })
     setFilteredDrawConfigs(
       Object.entries({ ...response.data }).filter(([key]) =>
-        key.endsWith(DRAW_CHALLANGES_CATEGORY_SUFFIX),
+        key.endsWith(DRAW_CHALLENGES_CATEGORY_SUFFIX),
       ),
     )
   }
@@ -88,6 +90,23 @@ const DrawChallanges = () => {
       updateDrawConfigsError,
     )
 
+  const updateDrawChallengesChannelError = (error) => {
+    console.log(error)
+  }
+
+  const updateDrawChallengesChannelSuccess = (response) => {
+    setSelectedChannel(response.data.birthdays_channel_id)
+  }
+
+  const updateDrawChallengesChannel = (channel) => {
+    setLoading(true)
+    const body = { birthdays_channel_id: channel }
+
+    agent.GuildSettings.updateSettings(selectedGuild.id, body)
+      .then(updateDrawChallengesChannelSuccess, updateDrawChallengesChannelError)
+      .finally(() => setLoading(false))
+  }
+
   useEffect(() => {
     getDrawConfigs()
   }, [])
@@ -95,7 +114,7 @@ const DrawChallanges = () => {
   useEffect(() => {
     if (drawConfigs) {
       const drawConfigsEntries = Object.entries({ ...drawConfigs }).filter(([key]) =>
-        key.endsWith(DRAW_CHALLANGES_CATEGORY_SUFFIX),
+        key.endsWith(DRAW_CHALLENGES_CATEGORY_SUFFIX),
       )
       setFilteredDrawConfigs(drawConfigsEntries)
     }
@@ -103,17 +122,24 @@ const DrawChallanges = () => {
 
   if (loading || _.isEmpty(filteredDrawConfigs)) return
 
-  console.log(filteredDrawConfigs, 'qeggeqegqgeq')
-
   return (
-    <Page title="Draw challanges">
+    <Page
+      title="Draw challenges"
+      actions={
+        <ChannelSelector
+          disabled={loading}
+          selectedChannel={selectedChannel}
+          setSelectedChannel={(event) => updateDrawChallengesChannel(event.target.value)}
+        />
+      }
+    >
       {!_.isEmpty(filteredDrawConfigs) && (
         <Stack direction="column" gap="1rem">
           <TopBar />
           <Grid container spacing={2}>
             {Object.entries(
               filteredDrawConfigs?.find(
-                ([key]) => key === `${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`,
+                ([key]) => key === `${tab}${DRAW_CHALLENGES_CATEGORY_SUFFIX}`,
               )?.[1],
             ).map(([key, value]) => (
               <Card
@@ -140,4 +166,4 @@ const DrawChallanges = () => {
   )
 }
 
-export default DrawChallanges
+export default DrawChallenges

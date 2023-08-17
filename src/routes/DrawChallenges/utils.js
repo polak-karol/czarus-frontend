@@ -1,4 +1,4 @@
-import { DRAW_CHALLANGES_CATEGORY_SUFFIX } from './config'
+import { DRAW_CHALLENGES_CATEGORY_SUFFIX } from './config'
 
 export const convertCategoryNameToDiscordCommandParam = (categoryName) =>
   categoryName
@@ -82,8 +82,8 @@ export const getDrawConfigsWithChangedSubItemName = (
   editCategoryNameInput,
 ) => {
   const copyDrawConfigs = { ...drawConfigs }
-  copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`] = Object.fromEntries(
-    Object.entries(copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`]).map(
+  copyDrawConfigs[`${tab}${DRAW_CHALLENGES_CATEGORY_SUFFIX}`] = Object.fromEntries(
+    Object.entries(copyDrawConfigs[`${tab}${DRAW_CHALLENGES_CATEGORY_SUFFIX}`]).map(
       ([key, value]) => {
         if (key !== drawConfigItemKey) return [key, value]
         const copyValue = { ...value }
@@ -123,7 +123,7 @@ export const getBodyForSaveCategoryAction = (
 
 export const getBodyForDeleteCategoryAction = (drawConfigs, tab, drawConfigItemKey) => {
   const copyDrawConfigs = { ...drawConfigs }
-  delete copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`][drawConfigItemKey]
+  delete copyDrawConfigs[`${tab}${DRAW_CHALLENGES_CATEGORY_SUFFIX}`][drawConfigItemKey]
 
   return copyDrawConfigs
 }
@@ -131,11 +131,11 @@ export const getBodyForDeleteCategoryAction = (drawConfigs, tab, drawConfigItemK
 export const getBodyForAddCategoryAction = (drawConfigs, tab, categoryNameInput) => {
   const copyDrawConfigs = { ...drawConfigs }
 
-  if (!copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`]) {
-    copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`] = {}
+  if (!copyDrawConfigs[`${tab}${DRAW_CHALLENGES_CATEGORY_SUFFIX}`]) {
+    copyDrawConfigs[`${tab}${DRAW_CHALLENGES_CATEGORY_SUFFIX}`] = {}
   }
 
-  copyDrawConfigs[`${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`][
+  copyDrawConfigs[`${tab}${DRAW_CHALLENGES_CATEGORY_SUFFIX}`][
     convertCategoryNameToDiscordCommandParam(categoryNameInput)
   ] = { items: [], label: categoryNameInput }
 
