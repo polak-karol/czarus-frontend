@@ -14,7 +14,30 @@ import Card from './Card'
 const DrawChallanges = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
   const { enqueueSnackbar } = useSnackbar()
-  const [drawConfigs, setDrawConfigs] = useState({})
+  const [drawConfigs, setDrawConfigs] = useState({
+    musicConfig: {
+      rate: [],
+      rhythm: [],
+      key: [],
+      requiredKey: [],
+      forbiddenKey: [],
+      genre: [],
+      requiredInstrument: [],
+      forbiddenInstrument: [],
+      mood: [],
+    },
+    writingConfig: {
+      genre: [],
+      narration: [],
+      theme: [],
+      wordsRange: [],
+      requiredWord: [],
+      forbiddenWord: [],
+      character: [],
+      place: [],
+    },
+    paintingConfig: {},
+  })
   const [filteredDrawConfigs, setFilteredDrawConfigs] = useState({})
   const [loading, setLoading] = useState(true)
   const [selectedDrawConfigIndex, setSelectedDrawConfigIndex] = useState(null)
@@ -23,6 +46,15 @@ const DrawChallanges = () => {
   const { tab } = useParams()
 
   const getDrawConfigsError = (error) => {
+    if (error.response.status === 404) {
+      setFilteredDrawConfigs(
+        Object.entries({ ...drawConfigs }).filter(([key]) =>
+          key.endsWith(DRAW_CHALLANGES_CATEGORY_SUFFIX),
+        ),
+      )
+      return
+    }
+
     enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
   }
 
@@ -69,7 +101,9 @@ const DrawChallanges = () => {
     }
   }, [tab, loading])
 
-  if (loading || !drawConfigs) return
+  if (loading || _.isEmpty(filteredDrawConfigs)) return
+
+  console.log(filteredDrawConfigs, 'qeggeqegqgeq')
 
   return (
     <Page title="Draw challanges">
