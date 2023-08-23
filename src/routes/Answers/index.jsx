@@ -4,17 +4,35 @@ import { useSnackbar } from 'notistack'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
+import ChannelSelector from '~/components/ChannelSelector'
 import Page from '~/components/Page'
 import AnswersList from './AnswersList'
+import { ANSWERS_CATEGORY_SUFFIX } from './config'
 
 const Answers = () => {
+  const [selectedChannel, setSelectedChannel] = useState('')
   const { selectedGuild } = useContext(SelectedGuildContext)
   const { enqueueSnackbar } = useSnackbar()
-  const [answers, setAnswers] = useState([])
+  const [answers, setAnswers] = useState({
+    doesAnswers: [],
+    howAnswers: [],
+    whatAnswers: [],
+    whatDoYouThinkAnswers: [],
+    whatIsAnswers: [],
+    whenAnswers: [],
+    whoAnswers: [],
+    whyAnswers: [],
+  })
   const [filteredAnswers, setFilteredAnswers] = useState([])
   const [loading, setLoading] = useState(true)
 
   const getAnswersError = (error) => {
+    if (error.response.status === 404) {
+      setFilteredAnswers(
+        Object.entries({ ...answers }).filter(([key]) => key.endsWith(ANSWERS_CATEGORY_SUFFIX)),
+      )
+      return
+    }
     enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
   }
 
@@ -22,7 +40,7 @@ const Answers = () => {
     setAnswers({ ...response.data })
     setFilteredAnswers(
       Object.entries({ ...response.data })
-        .filter(([key]) => key.endsWith('Answers'))
+        .filter(([key]) => key.endsWith(ANSWERS_CATEGORY_SUFFIX))
         .map(([key, value]) => {
           if (!value) return [key, value]
 
@@ -47,21 +65,63 @@ const Answers = () => {
   }
 
   const updateAnswers = (data) => {
-    const body = { ...data, channelId: 'channel_id' }
-    agent.Answers.updateAnswers(selectedGuild.id, body).then(
+    agent.Answers.updateAnswers(selectedGuild.id, data).then(
       updateAnswersSuccess,
       updateAnswersError,
     )
   }
 
+  const updateAnswersChannelError = (error) => {
+    console.log(error)
+  }
+
+  const updateAnswersChannelSuccess = (response) => {
+    setSelectedChannel(response.data.answers_channel_id)
+  }
+
+  const updateAnswersChannel = (channel) => {
+    setLoading(true)
+    const body = { answers_channel_id: channel }
+
+    agent.GuildSettings.updateSettings(selectedGuild.id, body)
+      .then(updateAnswersChannelSuccess, updateAnswersChannelError)
+      .finally(() => setLoading(false))
+  }
+
+  const getGuildSettingsError = (error) => {
+    console.log(error)
+  }
+
+  const getGuildSettingsSuccess = (response) => {
+    console.log(response)
+    setSelectedChannel(response.data.answers_channel_id)
+  }
+
+  const getGuildSettings = () => {
+    agent.GuildSettings.getSettings(selectedGuild.id).then(
+      getGuildSettingsSuccess,
+      getGuildSettingsError,
+    )
+  }
+
   useEffect(() => {
     getAnswers()
+    getGuildSettings()
   }, [])
 
   if (loading) return
 
   return (
-    <Page title="Answers">
+    <Page
+      title="Answers"
+      actions={
+        <ChannelSelector
+          disabled={loading}
+          selectedChannel={selectedChannel}
+          setSelectedChannel={(event) => updateAnswersChannel(event.target.value)}
+        />
+      }
+    >
       <Grid container gap={2}>
         {filteredAnswers
           .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))

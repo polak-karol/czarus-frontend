@@ -6,7 +6,7 @@ import AgreementModal from '~/components/AgreementModal'
 import EditCategoryModal from './EditCategoryModal'
 import CardActions from './CardActions'
 import SubItem from './SubItem'
-import { DRAW_CHALLANGES_CATEGORY_SUFFIX } from './config'
+import { DRAW_CHALLENGES_CATEGORY_SUFFIX } from './config'
 import {
   formatCardTitle,
   getBodyForDeleteCategoryAction,
@@ -39,7 +39,7 @@ const Card = ({
   const [editCategoryModalActive, setEditCategoryModalActive] = useState(false)
   const [editCategoryNameInput, setEditCategoryNameInput] = useState(drawConfigItemKey)
   const { tab } = useParams()
-  const drawConfigKey = `${tab}${DRAW_CHALLANGES_CATEGORY_SUFFIX}`
+  const drawConfigKey = `${tab}${DRAW_CHALLENGES_CATEGORY_SUFFIX}`
 
   useEffect(() => {
     if (
@@ -110,7 +110,7 @@ const Card = ({
           setFilteredDrawConfigs(
             Object.entries({ ...drawConfigs }).filter(
               ([drawConfigsKey, drawConfigsValue]) =>
-                !!drawConfigsValue && drawConfigsKey.endsWith(DRAW_CHALLANGES_CATEGORY_SUFFIX),
+                !!drawConfigsValue && drawConfigsKey.endsWith(DRAW_CHALLENGES_CATEGORY_SUFFIX),
             ),
           )
           setCancelCategoryChangesAgreementModalActive(false)

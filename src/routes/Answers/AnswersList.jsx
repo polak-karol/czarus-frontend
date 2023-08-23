@@ -45,16 +45,24 @@ const AnswersList = ({ answerType, answers, setFilteredAnswers, baseAnswers, upd
         }}
         Item={AnswerItem}
         Actions={
-          <Stack style={{ flex: 1 }} justifyContent="space-between" direction="row">
+          <Stack
+            style={{ flex: 1 }}
+            justifyContent="space-between"
+            direction="row"
+            alignItems="center"
+          >
             <IconButton
               disabled={!!selectedAnswerType}
               onClick={() => {
                 setFilteredAnswers((state) =>
                   state.map(([key, value]) => {
-                    if (key !== answerType) return [key, value]
+                    let copyValue = value
 
-                    value.unshift('')
-                    return [key, value]
+                    if (key !== answerType) return [key, copyValue]
+
+                    copyValue ??= []
+                    copyValue.unshift('')
+                    return [key, copyValue]
                   }),
                 )
                 setSelectedAnswerType(answerType)

@@ -13,7 +13,7 @@ import {
 export const basicPaths = [
   { name: 'Dashboard', url: '/', icon: <HomeRounded /> },
   { name: 'Birthdays', url: '/birthdays', icon: <CakeRounded /> },
-  { name: 'Draw challanges', url: '/draw-challanges/writing', icon: <EmojiEventsRounded /> },
+  { name: 'Draw challenges', url: '/draw-challenges/writing', icon: <EmojiEventsRounded /> },
   { name: 'Holidays', url: '/holidays', icon: <CalendarMonthRounded /> },
   { name: 'Answers', url: '/answers', icon: <ChatRounded /> },
 ]
