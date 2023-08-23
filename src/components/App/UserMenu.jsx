@@ -1,10 +1,12 @@
 import React, { useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Avatar, IconButton, Menu, MenuItem, Typography } from '@mui/material'
 import UserContext from '~/contexts/UserContext'
 import LogoutConfirmationModal from './LogoutConfirmationModal'
 
 const UserMenu = () => {
   const [anchorElUser, setAnchorElUser] = useState(null)
+  const navigate = useNavigate()
   const [logoutConfirmationModalActive, setLogoutConfirmationModalActive] = useState(false)
   const { user } = useContext(UserContext)
 
@@ -49,7 +51,7 @@ const UserMenu = () => {
         open={!!anchorElUser}
         onClose={handleCloseUserMenu}
       >
-        <MenuItem onClick={() => {}}>
+        <MenuItem onClick={() => navigate('/profile')}>
           <Typography textAlign="left">Profile</Typography>
         </MenuItem>
         <MenuItem onClick={() => setLogoutConfirmationModalActive(true)}>

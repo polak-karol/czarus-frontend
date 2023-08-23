@@ -17,6 +17,7 @@ import Holidays from './Holidays'
 import DrawChallenges from './DrawChallenges'
 import Login from './Login'
 import Auth from './Auth'
+import Profile from './Profile'
 
 const BrowserRouter = ({ basename, children, window }) => {
   const [user, setUser] = useState({})
@@ -70,6 +71,7 @@ const BrowserRouter = ({ basename, children, window }) => {
                       />
                       <Route path="/login" element={<Login />} errorElement={<ErrorPage />} />
                       <Route path="/authorize" element={<Auth />} errorElement={<ErrorPage />} />
+                      <Route path="/profile" element={<Profile />} errorElement={<ErrorPage />} />
                     </Routes>
                   </LocalizationProvider>
                 </App>
