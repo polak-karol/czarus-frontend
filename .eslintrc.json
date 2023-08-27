@@ -31,7 +31,8 @@
     "import/no-unresolved": "off",
     "react/jsx-indent": "off",
     "indent": "off",
-    "react/jsx-no-constructed-context-values": "off"
+    "react/jsx-no-constructed-context-values": "off",
+    "no-bitwise": "off"
   },
   "overrides": [],
   "parserOptions": {
