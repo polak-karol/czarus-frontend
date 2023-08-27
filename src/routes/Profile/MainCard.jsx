@@ -1,3 +1,4 @@
+import React, { useContext } from 'react'
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded'
 import {
   Avatar,
@@ -12,7 +13,6 @@ import {
   Stack,
   Chip,
 } from '@mui/material'
-import React, { useContext } from 'react'
 import UserContext from '~/contexts/UserContext'
 import { getDecodedFlags } from './utils'
 
