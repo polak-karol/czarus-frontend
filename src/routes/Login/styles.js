@@ -16,3 +16,5 @@ export const MainSection = styled.section`
   align-items: center;
   gap: 5rem;
 `
+
+export const FeaturesSection = styled.section``
