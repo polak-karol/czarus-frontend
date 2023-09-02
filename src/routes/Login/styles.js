@@ -18,3 +18,7 @@ export const MainSection = styled.section`
 `
 
 export const FeaturesSection = styled.section``
+
+export const FreeSection = styled.section`
+  margin-top: 5rem !important;
+`
