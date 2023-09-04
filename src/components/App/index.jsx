@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import _ from 'lodash'
 import { ThemeProvider } from '@mui/material/styles'
-import { Box, CssBaseline } from '@mui/material'
+import { Box, CssBaseline, Paper } from '@mui/material'
 import UserContext from '~/contexts/UserContext'
 import { customTheme } from '~/utils/theme'
 import agent from '~/api/agent'
@@ -101,11 +101,11 @@ const App = ({ children }) => {
 
   return (
     <ThemeProvider theme={customTheme}>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', padding: 0 }}>
         <CssBaseline />
         <TopBar open={open} setOpen={setOpen} />
         <SideBar open={open} setOpen={setOpen} />
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Box component="main" sx={{ flexGrow: 1, p: 3, padding: 0 }}>
           <DrawerHeader />
           {children}
         </Box>
