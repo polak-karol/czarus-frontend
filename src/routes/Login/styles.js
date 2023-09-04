@@ -20,11 +20,11 @@ export const MainSection = styled.section`
 export const FeaturesSection = styled.section``
 
 export const FreeSection = styled.section`
-  margin-top: 5rem !important;
+  margin-top: 12rem !important;
 `
 
 export const RequestFeatureSection = styled.section`
-  margin-top: 13rem !important;
+  margin-top: 12rem !important;
   display: flex;
   gap: 3rem;
   justify-content: center;

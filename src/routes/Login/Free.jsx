@@ -1,7 +1,7 @@
 import React from 'react'
-import { FreeSection } from './styles'
 import MoneyOffRoundedIcon from '@mui/icons-material/MoneyOffRounded'
 import { Paper, Stack, Typography } from '@mui/material'
+import { FreeSection } from './styles'
 
 const Free = () => (
   <FreeSection>
