@@ -9,15 +9,14 @@ import GuildsContext from '~/contexts/GuildsContext'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import SelectedGuildChannelsContext from '~/contexts/SelectedGuildChannelsContext'
 import App from '~/components/App'
-import Home from './Home/Home'
 import Answers from './Answers'
 import Birthdays from './Birthdays'
 import ErrorPage from './Error/ErrorPage'
 import Holidays from './Holidays'
 import DrawChallenges from './DrawChallenges'
-import Landing from './Landing'
 import Auth from './Auth'
 import Profile from './Profile'
+import Home from './Home'
 
 const BrowserRouter = ({ basename, children, window }) => {
   const [user, setUser] = useState({})
@@ -69,7 +68,6 @@ const BrowserRouter = ({ basename, children, window }) => {
                         element={<DrawChallenges />}
                         errorElement={<ErrorPage />}
                       />
-                      <Route path="/login" element={<Landing />} errorElement={<ErrorPage />} />
                       <Route path="/authorize" element={<Auth />} errorElement={<ErrorPage />} />
                       <Route path="/profile" element={<Profile />} errorElement={<ErrorPage />} />
                     </Routes>

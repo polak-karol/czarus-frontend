@@ -36,9 +36,9 @@ const App = ({ children }) => {
   }
 
   const getCurrentUserError = (error) => {
-    // enqueueSnackbar(error.response.data.msg || error.response.data.message, ERROR_SNACKBAR_CONFIG)
+    enqueueSnackbar(error.response.data.msg || error.response.data.message, ERROR_SNACKBAR_CONFIG)
     if ((error?.response?.code >= 400 || error.code === 'ERR_NETWORK') && _.isEmpty(user)) {
-      return navigate('/login')
+      return navigate('/')
     }
     return error
   }
@@ -60,7 +60,7 @@ const App = ({ children }) => {
 
     if (!readCookie('accessToken')) {
       setLoading(false)
-      return navigate('/login')
+      return navigate('/')
     }
 
     return agent.User.getCurrentUser()
@@ -70,7 +70,7 @@ const App = ({ children }) => {
 
   const getSelectedGuildChannelsError = (error) => {
     console.log(error)
-    // enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
+    enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
   }
 
   const getSelectedGuildChannelsSuccess = (response) => {
