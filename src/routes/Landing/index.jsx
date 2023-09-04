@@ -5,7 +5,7 @@ import Features from './Featueres'
 import Free from './Free'
 import RequestFeature from './RequestFeature'
 
-const Login = () => (
+const Landing = () => (
   <Page>
     <Main />
     <Features />
@@ -14,4 +14,4 @@ const Login = () => (
   </Page>
 )
 
-export default Login
+export default Landing
