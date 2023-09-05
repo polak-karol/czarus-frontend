@@ -1,6 +1,15 @@
 import React from 'react'
-import { Paper } from '@mui/material'
+import { Container, Paper, Stack } from '@mui/material'
+import RightSide from './RightSide'
 
-const Footer = () => <Paper>FOooter</Paper>
+const Footer = () => (
+  <Paper sx={{ marginTop: '12rem' }}>
+    <Container sx={{ padding: '2rem 0' }} fixed>
+      <Stack flexDirection="row" justifyContent="center">
+        <RightSide />
+      </Stack>
+    </Container>
+  </Paper>
+)
 
 export default Footer
