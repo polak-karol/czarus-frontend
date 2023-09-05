@@ -21,6 +21,9 @@ export const FeaturesSection = styled.section``
 
 export const FreeSection = styled.section`
   margin-top: 12rem !important;
+  display: flex;
+  gap: 3rem;
+  justify-content: center;
 `
 
 export const RequestFeatureSection = styled.section`
