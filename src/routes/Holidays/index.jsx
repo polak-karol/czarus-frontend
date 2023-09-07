@@ -49,7 +49,7 @@ const Holidays = () => {
   const getHolidayForTomorrowSuccess = (response) => setTomorrowHoliday(response.data)
 
   const getHolidayForTomorrow = () =>
-    agent.Holidays.getHoliday(selectedGuild.id, moment().add(1, 'day').toISOString()).then(
+    agent.Holidays.getHoliday(selectedGuild.id, moment().add(1, 'day').format('YYYY-MM-DD')).then(
       getHolidayForTomorrowSuccess,
       getHolidayForTomorrowError,
     )
