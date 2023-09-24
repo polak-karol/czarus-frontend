@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import _ from 'lodash'
 import { ThemeProvider } from '@mui/material/styles'
-import { Box, CssBaseline } from '@mui/material'
+import { Box, CssBaseline, Paper } from '@mui/material'
 import UserContext from '~/contexts/UserContext'
 import { customTheme } from '~/utils/theme'
 import agent from '~/api/agent'
@@ -36,9 +36,9 @@ const App = ({ children }) => {
   }
 
   const getCurrentUserError = (error) => {
-    // enqueueSnackbar(error.response.data.msg || error.response.data.message, ERROR_SNACKBAR_CONFIG)
+    enqueueSnackbar(error.response.data.msg || error.response.data.message, ERROR_SNACKBAR_CONFIG)
     if ((error?.response?.code >= 400 || error.code === 'ERR_NETWORK') && _.isEmpty(user)) {
-      return navigate('/login')
+      return navigate('/')
     }
     return error
   }
@@ -60,7 +60,7 @@ const App = ({ children }) => {
 
     if (!readCookie('accessToken')) {
       setLoading(false)
-      return navigate('/login')
+      return navigate('/')
     }
 
     return agent.User.getCurrentUser()
@@ -70,7 +70,7 @@ const App = ({ children }) => {
 
   const getSelectedGuildChannelsError = (error) => {
     console.log(error)
-    // enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
+    enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
   }
 
   const getSelectedGuildChannelsSuccess = (response) => {
@@ -101,11 +101,11 @@ const App = ({ children }) => {
 
   return (
     <ThemeProvider theme={customTheme}>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', padding: 0 }}>
         <CssBaseline />
         <TopBar open={open} setOpen={setOpen} />
         <SideBar open={open} setOpen={setOpen} />
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Box component="main" sx={{ flexGrow: 1, p: 3, padding: 0 }}>
           <DrawerHeader />
           {children}
         </Box>

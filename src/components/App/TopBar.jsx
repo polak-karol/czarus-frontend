@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Container, IconButton, Stack, Toolbar, Typography } from '@mui/material'
 import { Menu as MenuIcon } from '@mui/icons-material'
+import UserContext from '~/contexts/UserContext'
 import { AppBar, isTopBarHidden } from './utils'
 import UserMenu from './UserMenu'
 
 const TopBar = ({ open, setOpen }) => {
-  if (isTopBarHidden()) return null
+  const { user } = useContext(UserContext)
+
+  if (isTopBarHidden(user)) return null
 
   return (
     <AppBar position="fixed" open={open}>

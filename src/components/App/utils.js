@@ -1,5 +1,6 @@
 import { styled } from '@mui/material/styles'
 import { Drawer as MuiDrawer, AppBar as MuiAppBar } from '@mui/material'
+import _ from 'lodash'
 import { drawerWidth, nonRestrictedPaths, pathsWithoutSideBar, pathsWithoutTopBar } from './config'
 
 export const openedMixin = (theme) => ({
@@ -66,8 +67,10 @@ export const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 
   }),
 )
 
-export const isTopBarHidden = () => pathsWithoutTopBar.includes(window.location.pathname)
+export const isTopBarHidden = (user) =>
+  _.isEmpty(user) || pathsWithoutTopBar.includes(window.location.pathname)
 
-export const isSideBarHidden = () => pathsWithoutSideBar.includes(window.location.pathname)
+export const isSideBarHidden = (user) =>
+  _.isEmpty(user) || pathsWithoutSideBar.includes(window.location.pathname)
 
 export const isRestrictedPath = () => !nonRestrictedPaths.includes(window.location.pathname)

@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Box, Divider, IconButton, useTheme } from '@mui/material'
 import { ChevronLeft, ChevronRight } from '@mui/icons-material'
 import { Stack } from '@mui/system'
+import UserContext from '~/contexts/UserContext'
 import SideBarMenuListSegment from './SideBarMenuListSegment'
 import SideBarSelectedGuildSegment from './SideBarSelectedGuildSegment'
 import { basicPaths, restPaths } from './config'
@@ -9,8 +10,9 @@ import { Drawer, DrawerHeader, isSideBarHidden } from './utils'
 
 const SideBar = ({ open, setOpen }) => {
   const theme = useTheme()
+  const { user } = useContext(UserContext)
 
-  if (isSideBarHidden()) return null
+  if (isSideBarHidden(user)) return null
 
   return (
     <Drawer variant="permanent" open={open}>

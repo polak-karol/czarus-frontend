@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react'
+import moment from 'moment'
 import { useSnackbar } from 'notistack'
 import {
   Button,
@@ -53,7 +54,7 @@ const UpdateHolidayModal = ({
     setLoading(true)
     const body = {
       message,
-      date: date.toISOString(),
+      date: moment(date).format('YYYY-MM-DD'),
     }
 
     return agent.Holidays.updateHolidays(selectedGuild.id, body)
