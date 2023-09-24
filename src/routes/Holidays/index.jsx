@@ -54,9 +54,43 @@ const Holidays = () => {
       getHolidayForTomorrowError,
     )
 
+  const updateHolidaysChannelError = (error) => {
+    console.log(error)
+  }
+
+  const updateHolidaysChannelSuccess = (response) => {
+    setSelectedChannel(response.data.answers_channel_id)
+  }
+
+  const updateHolidaysChannel = (channel) => {
+    setLoading(true)
+    const body = { holiday_channel_id: channel }
+
+    agent.GuildSettings.updateSettings(selectedGuild.id, body)
+      .then(updateHolidaysChannelSuccess, updateHolidaysChannelError)
+      .finally(() => setLoading(false))
+  }
+
+  const getGuildSettingsError = (error) => {
+    console.log(error)
+  }
+
+  const getGuildSettingsSuccess = (response) => {
+    console.log(response)
+    setSelectedChannel(response.data.holidayChannelId)
+  }
+
+  const getGuildSettings = () => {
+    agent.GuildSettings.getSettings(selectedGuild.id).then(
+      getGuildSettingsSuccess,
+      getGuildSettingsError,
+    )
+  }
+
   useEffect(() => {
     getHolidays(moment())
     getHolidayForTomorrow()
+    getGuildSettings()
   }, [])
 
   const handleMonthChange = (date) => {
@@ -71,7 +105,7 @@ const Holidays = () => {
       actions={
         <ChannelSelector
           selectedChannel={selectedChannel}
-          setSelectedChannel={(event) => setSelectedChannel(event.target.value)}
+          setSelectedChannel={(event) => updateHolidaysChannel(event.target.value)}
         />
       }
     >

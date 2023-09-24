@@ -4,7 +4,7 @@ import Footer from '../Footer'
 
 const Page = ({ title, children, actions }) => (
   <>
-    <Container fixed>
+    <Container sx={{ minHeight: '100vh' }} fixed>
       <Stack spacing={4}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography variant="h3" component="h3">
