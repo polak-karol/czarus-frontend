@@ -18,10 +18,10 @@ const Main = () => (
         vel porttitor ipsum.
       </Typography>
       <Stack gap={5} flexDirection="row">
-        <Button variant="contained">Invite me</Button>
-        <Button href="https://discord.com/api/oauth2/authorize?client_id=993578103538458664&redirect_uri=http%3A%2F%2Flocalhost%3A5173%2Fauthorize&response_type=code&scope=identify%20guilds%20email">
-          Sign in
+        <Button href={import.meta.env.DISCORD_INVITE_URL} variant="contained">
+          Invite me
         </Button>
+        <Button href={import.meta.env.DISCORD_LOGIN_URL}>Sign in</Button>
       </Stack>
     </IntroDescription>
   </MainSection>
