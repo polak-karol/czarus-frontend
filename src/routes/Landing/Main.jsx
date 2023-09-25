@@ -18,10 +18,10 @@ const Main = () => (
         vel porttitor ipsum.
       </Typography>
       <Stack gap={5} flexDirection="row">
-        <Button href={import.meta.env.DISCORD_INVITE_URL} variant="contained">
+        <Button href={import.meta.env.VITE_DISCORD_INVITE_URL} variant="contained">
           Invite me
         </Button>
-        <Button href={import.meta.env.DISCORD_LOGIN_URL}>Sign in</Button>
+        <Button href={import.meta.env.VITE_DISCORD_LOGIN_URL}>Sign in</Button>
       </Stack>
     </IntroDescription>
   </MainSection>

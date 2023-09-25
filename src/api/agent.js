@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { readCookie } from '~/utils/global-functions'
 
-axios.defaults.baseURL = import.meta.env.API_URL
+axios.defaults.baseURL = import.meta.env.VITE_API_URL
 axios.defaults.withCredentials = false
 
 const defaultHeaders = { headers: { Authorization: `Bearer ${readCookie('accessToken')}` } }
