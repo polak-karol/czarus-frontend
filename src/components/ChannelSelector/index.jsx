@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { FormControl, InputLabel, ListSubheader, MenuItem, Select } from '@mui/material'
 import SelectedGuildChannelsContext from '~/contexts/SelectedGuildChannelsContext'
+import { GUILD_CHANNELS_TO_SELECT } from './config'
 
 const ChannelSelector = ({ selectedChannel, setSelectedChannel, disabled }) => {
   const { selectedGuildChannels } = useContext(SelectedGuildChannelsContext)
@@ -16,7 +17,7 @@ const ChannelSelector = ({ selectedChannel, setSelectedChannel, disabled }) => {
         label="Selected channel"
       >
         {selectedGuildChannels
-          .filter(({ type, parent_id }) => type === 0 && !parent_id)
+          .filter(({ type, parentId }) => GUILD_CHANNELS_TO_SELECT.includes(type) && !parentId)
           .map((channel) => (
             <MenuItem key={channel.id} value={channel.id}>
               {channel.name}
@@ -26,7 +27,8 @@ const ChannelSelector = ({ selectedChannel, setSelectedChannel, disabled }) => {
           .filter(({ type }) => type === 4)
           .map((channel) => {
             const childChannels = selectedGuildChannels.filter(
-              ({ parent_id, type }) => parent_id === channel.id && type === 0,
+              ({ parentId, type }) =>
+                parentId === channel.id && GUILD_CHANNELS_TO_SELECT.includes(type),
             )
             if (!childChannels.length) return
 
