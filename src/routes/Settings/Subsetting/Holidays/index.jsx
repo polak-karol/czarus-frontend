@@ -4,25 +4,25 @@ import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import ChannelSelector from '~/components/ChannelSelector'
 
-const Challanges = () => {
+const Holidays = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
   const [selectedChannel, setSelectedChannel] = useState('')
   const [loading, setLoading] = useState(true)
 
-  const updateChallangesChannelError = (error) => {
+  const updateHolidaysChannelError = (error) => {
     console.log(error)
   }
 
-  const updateChallangesChannelSuccess = (response) => {
-    setSelectedChannel(response.data.drawChallangesChannelId)
+  const updateHolidaysChannelSuccess = (response) => {
+    setSelectedChannel(response.data.holidaysChannelId)
   }
 
-  const updateChallangesChannel = (channel) => {
+  const updateHolidaysChannel = (channel) => {
     setLoading(true)
-    const body = { drawChallangesChannelId: channel }
+    const body = { holidaysChannelId: channel }
 
     agent.GuildSettings.updateSettings(selectedGuild.id, body)
-      .then(updateChallangesChannelSuccess, updateChallangesChannelError)
+      .then(updateHolidaysChannelSuccess, updateHolidaysChannelError)
       .finally(() => setLoading(false))
   }
 
@@ -32,7 +32,7 @@ const Challanges = () => {
 
   const getGuildSettingsSuccess = (response) => {
     console.log(response)
-    setSelectedChannel(response.data.drawChallangesChannelId)
+    setSelectedChannel(response.data.holidaysChannelId)
   }
 
   const getGuildSettings = () => {
@@ -62,29 +62,13 @@ const Challanges = () => {
       <Grid item xs={7}>
         <Card>
           <CardContent>
-            <Stack>
-              <ChannelSelector
-                fullWidth
-                disabled={loading}
-                selectedChannel={selectedChannel}
-                setSelectedChannel={(event) => updateChallangesChannel(event.target.value)}
-                helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
-              />
-              <ChannelSelector
-                fullWidth
-                disabled={loading}
-                selectedChannel={selectedChannel}
-                setSelectedChannel={(event) => updateChallangesChannel(event.target.value)}
-                helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
-              />
-              <ChannelSelector
-                fullWidth
-                disabled={loading}
-                selectedChannel={selectedChannel}
-                setSelectedChannel={(event) => updateChallangesChannel(event.target.value)}
-                helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
-              />
-            </Stack>
+            <ChannelSelector
+              fullWidth
+              disabled={loading}
+              selectedChannel={selectedChannel}
+              setSelectedChannel={(event) => updateHolidaysChannel(event.target.value)}
+              helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
+            />
           </CardContent>
         </Card>
       </Grid>
@@ -92,4 +76,4 @@ const Challanges = () => {
   )
 }
 
-export default Challanges
+export default Holidays
