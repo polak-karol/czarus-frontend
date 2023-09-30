@@ -18,6 +18,7 @@ import Auth from './Auth'
 import Profile from './Profile'
 import Home from './Home'
 import Settings from './Settings'
+import Subsetting from './Settings/Subsetting'
 
 const BrowserRouter = ({ basename, children, window }) => {
   const [user, setUser] = useState({})
@@ -72,6 +73,11 @@ const BrowserRouter = ({ basename, children, window }) => {
                       <Route path="/authorize" element={<Auth />} errorElement={<ErrorPage />} />
                       <Route path="/profile" element={<Profile />} errorElement={<ErrorPage />} />
                       <Route path="/settings" element={<Settings />} errorElement={<ErrorPage />} />
+                      <Route
+                        path="/settings/:optionName"
+                        element={<Subsetting />}
+                        errorElement={<ErrorPage />}
+                      />
                     </Routes>
                   </LocalizationProvider>
                 </App>

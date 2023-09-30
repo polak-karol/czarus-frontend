@@ -10,9 +10,9 @@ import AnswersList from './AnswersList'
 import { ANSWERS_CATEGORY_SUFFIX } from './config'
 
 const Answers = () => {
-  const [selectedChannel, setSelectedChannel] = useState('')
   const { selectedGuild } = useContext(SelectedGuildContext)
   const { enqueueSnackbar } = useSnackbar()
+  const [loading, setLoading] = useState(true)
   const [answers, setAnswers] = useState({
     doesAnswers: [],
     howAnswers: [],
@@ -24,7 +24,6 @@ const Answers = () => {
     whyAnswers: [],
   })
   const [filteredAnswers, setFilteredAnswers] = useState([])
-  const [loading, setLoading] = useState(true)
 
   const getAnswersError = (error) => {
     if (error.response.status === 404) {
@@ -68,39 +67,6 @@ const Answers = () => {
     agent.Answers.updateAnswers(selectedGuild.id, data).then(
       updateAnswersSuccess,
       updateAnswersError,
-    )
-  }
-
-  const updateAnswersChannelError = (error) => {
-    console.log(error)
-  }
-
-  const updateAnswersChannelSuccess = (response) => {
-    setSelectedChannel(response.data.answers_channel_id)
-  }
-
-  const updateAnswersChannel = (channel) => {
-    setLoading(true)
-    const body = { answers_channel_id: channel }
-
-    agent.GuildSettings.updateSettings(selectedGuild.id, body)
-      .then(updateAnswersChannelSuccess, updateAnswersChannelError)
-      .finally(() => setLoading(false))
-  }
-
-  const getGuildSettingsError = (error) => {
-    console.log(error)
-  }
-
-  const getGuildSettingsSuccess = (response) => {
-    console.log(response)
-    setSelectedChannel(response.data.answers_channel_id)
-  }
-
-  const getGuildSettings = () => {
-    agent.GuildSettings.getSettings(selectedGuild.id).then(
-      getGuildSettingsSuccess,
-      getGuildSettingsError,
     )
   }
 
