@@ -1,20 +1,35 @@
 import React, { useContext } from 'react'
-import { FormControl, InputLabel, ListSubheader, MenuItem, Select } from '@mui/material'
+import {
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  ListSubheader,
+  MenuItem,
+  Select,
+} from '@mui/material'
 import SelectedGuildChannelsContext from '~/contexts/SelectedGuildChannelsContext'
 import { GUILD_CHANNELS_TO_SELECT } from './config'
 
-const ChannelSelector = ({ selectedChannel, setSelectedChannel, disabled }) => {
+const ChannelSelector = ({
+  selectedChannel,
+  setSelectedChannel,
+  disabled,
+  label = 'Selected channel',
+  fullWidth,
+  helperText,
+}) => {
   const { selectedGuildChannels } = useContext(SelectedGuildChannelsContext)
+  const inputStyle = fullWidth ? { width: '100%', m: 1 } : { minWidth: 150, m: 1 }
 
   return (
-    <FormControl variant="standard" sx={{ m: 1, minWidth: 150 }} disabled={disabled}>
-      <InputLabel id="selected-channel">Selected channel</InputLabel>
+    <FormControl variant="standard" sx={inputStyle} disabled={disabled}>
+      <InputLabel id="selected-channel">{label}</InputLabel>
       <Select
         labelId="selected-channel"
         id="selected-channel-input"
         value={selectedChannel}
         onChange={(event) => setSelectedChannel(event)}
-        label="Selected channel"
+        label={label}
       >
         {selectedGuildChannels
           .filter(({ type, parentId }) => GUILD_CHANNELS_TO_SELECT.includes(type) && !parentId)
@@ -42,6 +57,7 @@ const ChannelSelector = ({ selectedChannel, setSelectedChannel, disabled }) => {
             return menuItems
           })}
       </Select>
+      <FormHelperText>{helperText}</FormHelperText>
     </FormControl>
   )
 }
