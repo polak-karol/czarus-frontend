@@ -4,7 +4,6 @@ import { useSnackbar } from 'notistack'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
-import ChannelSelector from '~/components/ChannelSelector'
 import Page from '~/components/Page'
 import AnswersList from './AnswersList'
 import { ANSWERS_CATEGORY_SUFFIX } from './config'
@@ -72,22 +71,12 @@ const Answers = () => {
 
   useEffect(() => {
     getAnswers()
-    getGuildSettings()
   }, [])
 
   if (loading) return
 
   return (
-    <Page
-      title="Answers"
-      actions={
-        <ChannelSelector
-          disabled={loading}
-          selectedChannel={selectedChannel}
-          setSelectedChannel={(event) => updateAnswersChannel(event.target.value)}
-        />
-      }
-    >
+    <Page title="Answers">
       <Grid container gap={2}>
         {filteredAnswers
           .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
