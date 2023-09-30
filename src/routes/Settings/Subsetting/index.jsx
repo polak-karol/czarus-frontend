@@ -5,6 +5,7 @@ import Answers from './Answers'
 import Birthdays from './Birthdays'
 import Challanges from './Challanges'
 import Holidays from './Holidays'
+import { subPageTitles } from './config'
 
 const Subsetting = () => {
   const { optionName } = useParams()
@@ -16,7 +17,7 @@ const Subsetting = () => {
     holidays: <Holidays />,
   }
 
-  return <Page title={optionName}>{options[optionName]}</Page>
+  return <Page title={subPageTitles[optionName]}>{options[optionName]}</Page>
 }
 
 export default Subsetting
