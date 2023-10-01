@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Card, CardContent, Grid, Stack, Typography } from '@mui/material'
+import { Button, Card, CardActions, CardContent, Grid, Stack, Typography } from '@mui/material'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import ChannelSelector from '~/components/ChannelSelector'
@@ -14,12 +14,12 @@ const Birthdays = () => {
   }
 
   const updateBirthdaysChannelSuccess = (response) => {
-    setSelectedChannel(response.data.birthdaysChannelId)
+    setSelectedChannel(response.data.birthdaysAnnouncementChannelId)
   }
 
   const updateBirthdaysChannel = (channel) => {
     setLoading(true)
-    const body = { birthdaysChannelId: channel }
+    const body = { birthdaysAnnouncementChannelId: channel }
 
     agent.GuildSettings.updateSettings(selectedGuild.id, body)
       .then(updateBirthdaysChannelSuccess, updateBirthdaysChannelError)
@@ -32,7 +32,7 @@ const Birthdays = () => {
 
   const getGuildSettingsSuccess = (response) => {
     console.log(response)
-    setSelectedChannel(response.data.birthdaysChannelId)
+    setSelectedChannel(response.data.birthdaysAnnouncementChannelId)
   }
 
   const getGuildSettings = () => {
@@ -67,18 +67,23 @@ const Birthdays = () => {
                 fullWidth
                 disabled={loading}
                 selectedChannel={selectedChannel}
-                setSelectedChannel={(event) => updateBirthdaysChannel(event.target.value)}
+                setSelectedChannel={(event) => setSelectedChannel(event.target.value)}
                 helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
               />
               <ChannelSelector
                 fullWidth
                 disabled={loading}
                 selectedChannel={selectedChannel}
-                setSelectedChannel={(event) => updateBirthdaysChannel(event.target.value)}
+                setSelectedChannel={(event) => setSelectedChannel(event.target.value)}
                 helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
               />
             </Stack>
           </CardContent>
+          <CardActions>
+            <Button size="small" onClick={() => updateBirthdaysChannel()}>
+              Save
+            </Button>
+          </CardActions>
         </Card>
       </Grid>
     </Grid>

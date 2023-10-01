@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Card, CardContent, Grid, Stack, Typography } from '@mui/material'
+import { Button, Card, CardActions, CardContent, Grid, Stack, Typography } from '@mui/material'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import ChannelSelector from '~/components/ChannelSelector'
@@ -67,25 +67,30 @@ const Challanges = () => {
                 fullWidth
                 disabled={loading}
                 selectedChannel={selectedChannel}
-                setSelectedChannel={(event) => updateChallangesChannel(event.target.value)}
+                setSelectedChannel={(event) => setSelectedChannel(event.target.value)}
                 helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
               />
               <ChannelSelector
                 fullWidth
                 disabled={loading}
                 selectedChannel={selectedChannel}
-                setSelectedChannel={(event) => updateChallangesChannel(event.target.value)}
+                setSelectedChannel={(event) => setSelectedChannel(event.target.value)}
                 helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
               />
               <ChannelSelector
                 fullWidth
                 disabled={loading}
                 selectedChannel={selectedChannel}
-                setSelectedChannel={(event) => updateChallangesChannel(event.target.value)}
+                setSelectedChannel={(event) => setSelectedChannel(event.target.value)}
                 helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
               />
             </Stack>
           </CardContent>
+          <CardActions>
+            <Button size="small" onClick={() => updateChallangesChannel()}>
+              Save
+            </Button>
+          </CardActions>
         </Card>
       </Grid>
     </Grid>

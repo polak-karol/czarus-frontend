@@ -14,12 +14,12 @@ const Holidays = () => {
   }
 
   const updateHolidaysChannelSuccess = (response) => {
-    setSelectedChannel(response.data.holidaysChannelId)
+    setSelectedChannel(response.data.holidayAnnouncementChannelId)
   }
 
   const updateHolidaysChannel = (channel) => {
     setLoading(true)
-    const body = { holidaysChannelId: channel }
+    const body = { holidayAnnouncementChannelId: channel }
 
     agent.GuildSettings.updateSettings(selectedGuild.id, body)
       .then(updateHolidaysChannelSuccess, updateHolidaysChannelError)
@@ -32,7 +32,7 @@ const Holidays = () => {
 
   const getGuildSettingsSuccess = (response) => {
     console.log(response)
-    setSelectedChannel(response.data.holidaysChannelId)
+    setSelectedChannel(response.data.holidayAnnouncementChannelId)
   }
 
   const getGuildSettings = () => {

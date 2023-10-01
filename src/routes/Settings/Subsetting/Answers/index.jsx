@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Card, CardContent, Grid, Stack, Typography } from '@mui/material'
+import { Button, Card, CardActions, CardContent, Grid, Stack, Typography } from '@mui/material'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import ChannelSelector from '~/components/ChannelSelector'
@@ -14,12 +14,12 @@ const Answers = () => {
   }
 
   const updateAnswersChannelSuccess = (response) => {
-    setSelectedChannel(response.data.answersChannelId)
+    console.log(response)
   }
 
-  const updateAnswersChannel = (channel) => {
+  const updateAnswersChannel = () => {
     setLoading(true)
-    const body = { answersChannelId: channel }
+    const body = { answersChannelId: selectedChannel }
 
     agent.GuildSettings.updateSettings(selectedGuild.id, body)
       .then(updateAnswersChannelSuccess, updateAnswersChannelError)
@@ -66,10 +66,15 @@ const Answers = () => {
               fullWidth
               disabled={loading}
               selectedChannel={selectedChannel}
-              setSelectedChannel={(event) => updateAnswersChannel(event.target.value)}
+              setSelectedChannel={(event) => setSelectedChannel(event.target.value)}
               helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
             />
           </CardContent>
+          <CardActions>
+            <Button size="small" onClick={() => updateAnswersChannel()}>
+              Save
+            </Button>
+          </CardActions>
         </Card>
       </Grid>
     </Grid>
