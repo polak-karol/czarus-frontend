@@ -4,15 +4,14 @@ import { useSnackbar } from 'notistack'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
-import ChannelSelector from '~/components/ChannelSelector'
 import Page from '~/components/Page'
 import AnswersList from './AnswersList'
 import { ANSWERS_CATEGORY_SUFFIX } from './config'
 
 const Answers = () => {
-  const [selectedChannel, setSelectedChannel] = useState('')
   const { selectedGuild } = useContext(SelectedGuildContext)
   const { enqueueSnackbar } = useSnackbar()
+  const [loading, setLoading] = useState(true)
   const [answers, setAnswers] = useState({
     doesAnswers: [],
     howAnswers: [],
@@ -24,7 +23,6 @@ const Answers = () => {
     whyAnswers: [],
   })
   const [filteredAnswers, setFilteredAnswers] = useState([])
-  const [loading, setLoading] = useState(true)
 
   const getAnswersError = (error) => {
     if (error.response.status === 404) {
@@ -71,57 +69,14 @@ const Answers = () => {
     )
   }
 
-  const updateAnswersChannelError = (error) => {
-    console.log(error)
-  }
-
-  const updateAnswersChannelSuccess = (response) => {
-    setSelectedChannel(response.data.answers_channel_id)
-  }
-
-  const updateAnswersChannel = (channel) => {
-    setLoading(true)
-    const body = { answers_channel_id: channel }
-
-    agent.GuildSettings.updateSettings(selectedGuild.id, body)
-      .then(updateAnswersChannelSuccess, updateAnswersChannelError)
-      .finally(() => setLoading(false))
-  }
-
-  const getGuildSettingsError = (error) => {
-    console.log(error)
-  }
-
-  const getGuildSettingsSuccess = (response) => {
-    console.log(response)
-    setSelectedChannel(response.data.answers_channel_id)
-  }
-
-  const getGuildSettings = () => {
-    agent.GuildSettings.getSettings(selectedGuild.id).then(
-      getGuildSettingsSuccess,
-      getGuildSettingsError,
-    )
-  }
-
   useEffect(() => {
     getAnswers()
-    getGuildSettings()
   }, [])
 
   if (loading) return
 
   return (
-    <Page
-      title="Answers"
-      actions={
-        <ChannelSelector
-          disabled={loading}
-          selectedChannel={selectedChannel}
-          setSelectedChannel={(event) => updateAnswersChannel(event.target.value)}
-        />
-      }
-    >
+    <Page title="Answers">
       <Grid container gap={2}>
         {filteredAnswers
           .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
