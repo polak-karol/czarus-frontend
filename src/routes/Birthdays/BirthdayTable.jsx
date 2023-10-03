@@ -23,7 +23,7 @@ import { createData } from './utils'
 import BirthdayDeleteModal from './BirthdayDeleteModal'
 import BirthdayEditModal from './BirthdayEditModal'
 
-const BirthdaysTable = () => {
+const BirthdaysTable = ({ setPageLoading }) => {
   const [page, setPage] = useState(0)
   const { enqueueSnackbar } = useSnackbar()
   const { selectedGuild } = useContext(SelectedGuildContext)
@@ -49,8 +49,12 @@ const BirthdaysTable = () => {
     enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
   }
 
-  const getBirthdays = () =>
-    agent.Birthdays.getBirthdays(selectedGuild.id).then(getBirthdaysSuccess, getBirthdaysError)
+  const getBirthdays = () => {
+    setPageLoading(true)
+    agent.Birthdays.getBirthdays(selectedGuild.id)
+      .then(getBirthdaysSuccess, getBirthdaysError)
+      .finally(() => setPageLoading(false))
+  }
 
   useEffect(() => {
     getBirthdays()
