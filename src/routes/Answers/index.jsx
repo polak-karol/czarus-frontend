@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { Grid } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import { Grid, IconButton } from '@mui/material'
+import { SettingsRounded } from '@mui/icons-material'
 import { useSnackbar } from 'notistack'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
@@ -9,6 +11,7 @@ import AnswersList from './AnswersList'
 import { ANSWERS_CATEGORY_SUFFIX } from './config'
 
 const Answers = () => {
+  const navigate = useNavigate()
   const { selectedGuild } = useContext(SelectedGuildContext)
   const { enqueueSnackbar } = useSnackbar()
   const [loading, setLoading] = useState(true)
@@ -76,7 +79,14 @@ const Answers = () => {
   if (loading) return
 
   return (
-    <Page title="Answers">
+    <Page
+      title="Answers"
+      actions={
+        <IconButton onClick={() => navigate('/settings/answers')}>
+          <SettingsRounded />
+        </IconButton>
+      }
+    >
       <Grid container gap={2}>
         {filteredAnswers
           .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
