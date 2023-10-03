@@ -4,7 +4,7 @@ import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import ChannelSelector from '~/components/ChannelSelector'
 
-const Challanges = () => {
+const Challenges = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
   const [selectedChannel, setSelectedChannel] = useState('')
   const [loading, setLoading] = useState(true)
@@ -97,4 +97,4 @@ const Challanges = () => {
   )
 }
 
-export default Challanges
+export default Challenges
