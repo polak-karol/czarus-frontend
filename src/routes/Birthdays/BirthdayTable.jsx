@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useState } from 'react'
 import {
   Paper,
   Table,
@@ -14,25 +14,22 @@ import {
   DeleteRounded as DeleteRoundedIcon,
   EditRounded as EditRoundedIcon,
 } from '@mui/icons-material'
-import { useSnackbar } from 'notistack'
-import agent from '~/api/agent'
-import SelectedGuildContext from '~/contexts/SelectedGuildContext'
-import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
 import { columns } from './config'
 import { createData } from './utils'
 import BirthdayDeleteModal from './BirthdayDeleteModal'
 import BirthdayEditModal from './BirthdayEditModal'
 
-const BirthdaysTable = ({ setPageLoading }) => {
+const BirthdaysTable = ({
+  birthdaysList,
+  setBirthdaysList,
+  refreshBirthdayList,
+  setRefreshBirthdayList,
+}) => {
   const [page, setPage] = useState(0)
-  const { enqueueSnackbar } = useSnackbar()
-  const { selectedGuild } = useContext(SelectedGuildContext)
   const [rowsPerPage, setRowsPerPage] = useState(10)
-  const [birthdaysList, setBirthdaysList] = useState([])
   const [birthdayDeleteModalOpen, setBirthdayDeleteModalClose] = useState(false)
   const [birthdayEditModalOpen, setBirthdayEditModalClose] = useState(false)
   const [selectedBirthday, setSelectedBirthday] = useState({})
-  const [refreshBirthdayList, setRefreshBirthdayList] = useState(false)
 
   const handleChangePage = (_, newPage) => setPage(newPage)
 
@@ -40,25 +37,6 @@ const BirthdaysTable = ({ setPageLoading }) => {
     setRowsPerPage(+event.target.value)
     setPage(0)
   }
-
-  const getBirthdaysSuccess = (response) => {
-    setBirthdaysList(response.data)
-  }
-
-  const getBirthdaysError = (error) => {
-    enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
-  }
-
-  const getBirthdays = () => {
-    setPageLoading(true)
-    agent.Birthdays.getBirthdays(selectedGuild.id)
-      .then(getBirthdaysSuccess, getBirthdaysError)
-      .finally(() => setPageLoading(false))
-  }
-
-  useEffect(() => {
-    getBirthdays()
-  }, [refreshBirthdayList])
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
