@@ -1,20 +1,26 @@
 import React from 'react'
+import { Link as RouterLink } from 'react-router-dom'
 import _ from 'lodash'
 import { Breadcrumbs, Container, Link, Stack, Typography } from '@mui/material'
 import Footer from '../Footer'
 
 const Page = ({ title, children, actions, breadcrumbs = [] }) => {
-  const previousPages = breadcrumbs
-  const currentPage = breadcrumbs.at(-1)
+  const [currentPage, ...previousPages] = breadcrumbs.reverse()
 
   return (
     <>
-      <Container sx={{ minHeight: '100vh' }} fixed>
+      <Container sx={{ minHeight: '100vh', paddingTop: '2rem' }} fixed>
         <Stack spacing={4}>
           {!_.isEmpty(breadcrumbs) && (
             <Breadcrumbs aria-label="breadcrumb">
-              {previousPages.map((previousPage) => (
-                <Link underline="hover" color="inherit" href={previousPage.url}>
+              {previousPages.reverse().map((previousPage) => (
+                <Link
+                  component={RouterLink}
+                  key={previousPage.name}
+                  underline="hover"
+                  color="inherit"
+                  to={previousPage.url}
+                >
                   {previousPage.name}
                 </Link>
               ))}
