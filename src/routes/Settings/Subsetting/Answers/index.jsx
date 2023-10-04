@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { Formik } from 'formik'
 import { Button, Card, CardActions, CardContent, Grid, Stack, Typography } from '@mui/material'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import ChannelSelector from '~/components/ChannelSelector'
+import PageSpinner from '~/components/PageSpinner'
 
 const Answers = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
-  const [selectedChannel, setSelectedChannel] = useState('')
+  const [answersSettings, setAnswersSettings] = useState({})
   const [loading, setLoading] = useState(true)
 
   const updateAnswersChannelError = (error) => {
@@ -14,14 +16,13 @@ const Answers = () => {
   }
 
   const updateAnswersChannelSuccess = (response) => {
-    console.log(response)
+    setAnswersSettings(response.data)
   }
 
-  const updateAnswersChannel = () => {
+  const updateAnswersChannel = (values) => {
     setLoading(true)
-    const body = { answersChannelId: selectedChannel }
 
-    agent.GuildSettings.updateSettings(selectedGuild.id, body)
+    return agent.GuildSettings.updateSettings(selectedGuild.id, values)
       .then(updateAnswersChannelSuccess, updateAnswersChannelError)
       .finally(() => setLoading(false))
   }
@@ -31,8 +32,7 @@ const Answers = () => {
   }
 
   const getGuildSettingsSuccess = (response) => {
-    console.log(response)
-    setSelectedChannel(response.data.answersChannelId)
+    setAnswersSettings(response.data)
   }
 
   const getGuildSettings = () => {
@@ -47,6 +47,8 @@ const Answers = () => {
     getGuildSettings()
   }, [])
 
+  if (loading) return <PageSpinner />
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={5}>
@@ -55,26 +57,39 @@ const Answers = () => {
             Basic settings
           </Typography>
           <Typography component="p" variant="p">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.{' '}
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
           </Typography>
         </Stack>
       </Grid>
       <Grid item xs={7}>
         <Card>
-          <CardContent>
-            <ChannelSelector
-              fullWidth
-              disabled={loading}
-              selectedChannel={selectedChannel}
-              setSelectedChannel={(event) => setSelectedChannel(event.target.value)}
-              helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
-            />
-          </CardContent>
-          <CardActions>
-            <Button size="small" onClick={() => updateAnswersChannel()}>
-              Save
-            </Button>
-          </CardActions>
+          <Formik
+            initialValues={{
+              answersChannelId: answersSettings.answersChannelId,
+            }}
+            onSubmit={updateAnswersChannel}
+          >
+            {({ values, setFieldValue, handleSubmit }) => (
+              <>
+                <CardContent>
+                  <ChannelSelector
+                    fullWidth
+                    disabled={loading}
+                    selectedChannel={values.answersChannelId}
+                    setSelectedChannel={(event) =>
+                      setFieldValue('answersChannelId', event.target.value)
+                    }
+                    helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
+                  />
+                </CardContent>
+                <CardActions>
+                  <Button size="small" onClick={handleSubmit}>
+                    Save
+                  </Button>
+                </CardActions>
+              </>
+            )}
+          </Formik>
         </Card>
       </Grid>
     </Grid>
