@@ -17,7 +17,14 @@ const Subsetting = () => {
     holidays: <Holidays />,
   }
 
-  return <Page title={subPageTitles[optionName]}>{options[optionName]}</Page>
+  return (
+    <Page
+      breadcrumbs={[{ url: '/settings', name: 'Settings' }, { name: subPageTitles[optionName] }]}
+      title={subPageTitles[optionName]}
+    >
+      {options[optionName]}
+    </Page>
+  )
 }
 
 export default Subsetting
