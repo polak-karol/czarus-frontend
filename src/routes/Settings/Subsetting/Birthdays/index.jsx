@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { Formik } from 'formik'
 import { Button, Card, CardActions, CardContent, Grid, Stack, Typography } from '@mui/material'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import ChannelSelector from '~/components/ChannelSelector'
+import PageSpinner from '~/components/PageSpinner'
 
 const Birthdays = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
-  const [selectedChannel, setSelectedChannel] = useState('')
+  const [birthdaysSettings, setBirthdaysSettings] = useState({})
   const [loading, setLoading] = useState(true)
 
   const updateBirthdaysChannelError = (error) => {
@@ -14,14 +16,13 @@ const Birthdays = () => {
   }
 
   const updateBirthdaysChannelSuccess = (response) => {
-    setSelectedChannel(response.data.birthdaysAnnouncementChannelId)
+    setBirthdaysSettings(response.data)
   }
 
-  const updateBirthdaysChannel = (channel) => {
+  const updateBirthdaysChannel = (values) => {
     setLoading(true)
-    const body = { birthdaysAnnouncementChannelId: channel }
 
-    agent.GuildSettings.updateSettings(selectedGuild.id, body)
+    agent.GuildSettings.updateSettings(selectedGuild.id, values)
       .then(updateBirthdaysChannelSuccess, updateBirthdaysChannelError)
       .finally(() => setLoading(false))
   }
@@ -31,8 +32,7 @@ const Birthdays = () => {
   }
 
   const getGuildSettingsSuccess = (response) => {
-    console.log(response)
-    setSelectedChannel(response.data.birthdaysAnnouncementChannelId)
+    setBirthdaysSettings(response.data)
   }
 
   const getGuildSettings = () => {
@@ -46,6 +46,8 @@ const Birthdays = () => {
   useEffect(() => {
     getGuildSettings()
   }, [])
+
+  if (loading) return <PageSpinner />
 
   return (
     <Grid container spacing={2}>
@@ -61,29 +63,45 @@ const Birthdays = () => {
       </Grid>
       <Grid item xs={7}>
         <Card>
-          <CardContent>
-            <Stack>
-              <ChannelSelector
-                fullWidth
-                disabled={loading}
-                selectedChannel={selectedChannel}
-                setSelectedChannel={(event) => setSelectedChannel(event.target.value)}
-                helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
-              />
-              <ChannelSelector
-                fullWidth
-                disabled={loading}
-                selectedChannel={selectedChannel}
-                setSelectedChannel={(event) => setSelectedChannel(event.target.value)}
-                helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
-              />
-            </Stack>
-          </CardContent>
-          <CardActions>
-            <Button size="small" onClick={() => updateBirthdaysChannel()}>
-              Save
-            </Button>
-          </CardActions>
+          <Formik
+            initialValues={{
+              birthdaysAnnouncementChannelId: birthdaysSettings.birthdaysAnnouncementChannelId,
+              birthdaysHandleChannelId: birthdaysSettings.birthdaysHandleChannelId,
+            }}
+            onSubmit={updateBirthdaysChannel}
+          >
+            {({ values, setFieldValue, handleSubmit }) => (
+              <>
+                <CardContent>
+                  <Stack>
+                    <ChannelSelector
+                      fullWidth
+                      disabled={loading}
+                      selectedChannel={values.birthdaysAnnouncementChannelId}
+                      setSelectedChannel={(event) =>
+                        setFieldValue('birthdaysAnnouncementChannelId', event.target.value)
+                      }
+                      helperText="Channel to announce birthdays."
+                    />
+                    <ChannelSelector
+                      fullWidth
+                      disabled={loading}
+                      selectedChannel={values.birthdaysHandleChannelId}
+                      setSelectedChannel={(event) =>
+                        setFieldValue('birthdaysHandleChannelId', event.target.value)
+                      }
+                      helperText="Channel to handle birthdays."
+                    />
+                  </Stack>
+                </CardContent>
+                <CardActions>
+                  <Button size="small" onClick={handleSubmit}>
+                    Save
+                  </Button>
+                </CardActions>
+              </>
+            )}
+          </Formik>
         </Card>
       </Grid>
     </Grid>
