@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { Formik } from 'formik'
 import { Button, Card, CardActions, CardContent, Grid, Stack, Typography } from '@mui/material'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import ChannelSelector from '~/components/ChannelSelector'
+import PageSpinner from '~/components/PageSpinner'
 
 const Challenges = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
-  const [selectedChannel, setSelectedChannel] = useState('')
+  const [challengesSettings, setChallengesSettings] = useState({})
   const [loading, setLoading] = useState(true)
 
   const updateChallangesChannelError = (error) => {
@@ -14,14 +16,13 @@ const Challenges = () => {
   }
 
   const updateChallangesChannelSuccess = (response) => {
-    setSelectedChannel(response.data.drawChallangesChannelId)
+    setChallengesSettings(response.data)
   }
 
-  const updateChallangesChannel = (channel) => {
+  const updateChallangesChannel = (values) => {
     setLoading(true)
-    const body = { drawChallangesChannelId: channel }
 
-    agent.GuildSettings.updateSettings(selectedGuild.id, body)
+    return agent.GuildSettings.updateSettings(selectedGuild.id, values)
       .then(updateChallangesChannelSuccess, updateChallangesChannelError)
       .finally(() => setLoading(false))
   }
@@ -31,8 +32,7 @@ const Challenges = () => {
   }
 
   const getGuildSettingsSuccess = (response) => {
-    console.log(response)
-    setSelectedChannel(response.data.drawChallangesChannelId)
+    setChallengesSettings(response.data)
   }
 
   const getGuildSettings = () => {
@@ -47,6 +47,8 @@ const Challenges = () => {
     getGuildSettings()
   }, [])
 
+  if (loading) return <PageSpinner />
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={5}>
@@ -55,42 +57,64 @@ const Challenges = () => {
             Basic settings
           </Typography>
           <Typography component="p" variant="p">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.{' '}
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
           </Typography>
         </Stack>
       </Grid>
       <Grid item xs={7}>
         <Card>
-          <CardContent>
-            <Stack>
-              <ChannelSelector
-                fullWidth
-                disabled={loading}
-                selectedChannel={selectedChannel}
-                setSelectedChannel={(event) => setSelectedChannel(event.target.value)}
-                helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
-              />
-              <ChannelSelector
-                fullWidth
-                disabled={loading}
-                selectedChannel={selectedChannel}
-                setSelectedChannel={(event) => setSelectedChannel(event.target.value)}
-                helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
-              />
-              <ChannelSelector
-                fullWidth
-                disabled={loading}
-                selectedChannel={selectedChannel}
-                setSelectedChannel={(event) => setSelectedChannel(event.target.value)}
-                helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
-              />
-            </Stack>
-          </CardContent>
-          <CardActions>
-            <Button size="small" onClick={() => updateChallangesChannel()}>
-              Save
-            </Button>
-          </CardActions>
+          <Formik
+            initialValues={{
+              drawChallengesWritingHandleChannelId:
+                challengesSettings.drawChallengesWritingHandleChannelId,
+              drawChallengesGraphicHandleChannelId:
+                challengesSettings.drawChallengesGraphicHandleChannelId,
+              drawChallengesMusicHandleChannelId:
+                challengesSettings.drawChallengesMusicHandleChannelId,
+            }}
+            onSubmit={updateChallangesChannel}
+          >
+            {({ values, setFieldValue, handleSubmit }) => (
+              <>
+                <CardContent>
+                  <Stack>
+                    <ChannelSelector
+                      fullWidth
+                      disabled={loading}
+                      selectedChannel={values.drawChallengesWritingHandleChannelId}
+                      setSelectedChannel={(event) =>
+                        setFieldValue('drawChallengesWritingHandleChannelId', event.target.value)
+                      }
+                      helperText="Writing challenges."
+                    />
+                    <ChannelSelector
+                      fullWidth
+                      disabled={loading}
+                      selectedChannel={values.drawChallengesGraphicHandleChannelId}
+                      setSelectedChannel={(event) =>
+                        setFieldValue('drawChallengesGraphicHandleChannelId', event.target.value)
+                      }
+                      helperText="Graphic challenges"
+                    />
+                    <ChannelSelector
+                      fullWidth
+                      disabled={loading}
+                      selectedChannel={values.drawChallengesMusicHandleChannelId}
+                      setSelectedChannel={(event) =>
+                        setFieldValue('drawChallengesMusicHandleChannelId', event.target.value)
+                      }
+                      helperText="Music challenges"
+                    />
+                  </Stack>
+                </CardContent>
+                <CardActions>
+                  <Button size="small" onClick={handleSubmit}>
+                    Save
+                  </Button>
+                </CardActions>
+              </>
+            )}
+          </Formik>
         </Card>
       </Grid>
     </Grid>
