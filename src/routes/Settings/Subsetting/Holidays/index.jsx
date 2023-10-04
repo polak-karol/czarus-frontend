@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Card, CardContent, Grid, Stack, Typography } from '@mui/material'
+import { Formik } from 'formik'
+import { Button, Card, CardActions, CardContent, Grid, Stack, Typography } from '@mui/material'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import ChannelSelector from '~/components/ChannelSelector'
+import PageSpinner from '~/components/PageSpinner'
 
 const Holidays = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
-  const [selectedChannel, setSelectedChannel] = useState('')
+  const [holidaysSettings, setHolidaysSettings] = useState('')
   const [loading, setLoading] = useState(true)
 
   const updateHolidaysChannelError = (error) => {
@@ -14,14 +16,13 @@ const Holidays = () => {
   }
 
   const updateHolidaysChannelSuccess = (response) => {
-    setSelectedChannel(response.data.holidayAnnouncementChannelId)
+    setHolidaysSettings(response.data)
   }
 
-  const updateHolidaysChannel = (channel) => {
+  const updateHolidaysChannel = (values) => {
     setLoading(true)
-    const body = { holidayAnnouncementChannelId: channel }
 
-    agent.GuildSettings.updateSettings(selectedGuild.id, body)
+    agent.GuildSettings.updateSettings(selectedGuild.id, values)
       .then(updateHolidaysChannelSuccess, updateHolidaysChannelError)
       .finally(() => setLoading(false))
   }
@@ -31,8 +32,7 @@ const Holidays = () => {
   }
 
   const getGuildSettingsSuccess = (response) => {
-    console.log(response)
-    setSelectedChannel(response.data.holidayAnnouncementChannelId)
+    setHolidaysSettings(response.data)
   }
 
   const getGuildSettings = () => {
@@ -47,6 +47,8 @@ const Holidays = () => {
     getGuildSettings()
   }, [])
 
+  if (loading) return <PageSpinner />
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={5}>
@@ -55,21 +57,39 @@ const Holidays = () => {
             Basic settings
           </Typography>
           <Typography component="p" variant="p">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.{' '}
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
           </Typography>
         </Stack>
       </Grid>
       <Grid item xs={7}>
         <Card>
-          <CardContent>
-            <ChannelSelector
-              fullWidth
-              disabled={loading}
-              selectedChannel={selectedChannel}
-              setSelectedChannel={(event) => updateHolidaysChannel(event.target.value)}
-              helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
-            />
-          </CardContent>
+          <Formik
+            initialValues={{
+              holidayAnnouncementChannelId: holidaysSettings.holidayAnnouncementChannelId,
+            }}
+            onSubmit={updateHolidaysChannel}
+          >
+            {({ values, setFieldValue, handleSubmit }) => (
+              <>
+                <CardContent>
+                  <ChannelSelector
+                    fullWidth
+                    disabled={loading}
+                    selectedChannel={values.holidayAnnouncementChannelId}
+                    setSelectedChannel={(event) =>
+                      setFieldValue('holidayAnnouncementChannelId', event.target.value)
+                    }
+                    helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
+                  />
+                </CardContent>
+                <CardActions>
+                  <Button size="small" onClick={handleSubmit}>
+                    Save
+                  </Button>
+                </CardActions>
+              </>
+            )}
+          </Formik>
         </Card>
       </Grid>
     </Grid>
