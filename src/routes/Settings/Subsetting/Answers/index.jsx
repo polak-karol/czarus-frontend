@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Formik } from 'formik'
-import { Button, Card, CardActions, CardContent, Grid, Stack, Typography } from '@mui/material'
+import { Grid } from '@mui/material'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
-import ChannelSelector from '~/components/ChannelSelector'
 import PageSpinner from '~/components/PageSpinner'
+import BasicSettings from './BasicSettings'
 
 const Answers = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
@@ -51,47 +50,10 @@ const Answers = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={5}>
-        <Stack>
-          <Typography component="h6" variant="h6">
-            Basic settings
-          </Typography>
-          <Typography component="p" variant="p">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-          </Typography>
-        </Stack>
-      </Grid>
-      <Grid item xs={7}>
-        <Card>
-          <Formik
-            initialValues={{
-              answersChannelId: answersSettings.answersChannelId,
-            }}
-            onSubmit={updateAnswersChannel}
-          >
-            {({ values, setFieldValue, handleSubmit }) => (
-              <>
-                <CardContent>
-                  <ChannelSelector
-                    fullWidth
-                    disabled={loading}
-                    selectedChannel={values.answersChannelId}
-                    setSelectedChannel={(event) =>
-                      setFieldValue('answersChannelId', event.target.value)
-                    }
-                    helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
-                  />
-                </CardContent>
-                <CardActions>
-                  <Button size="small" onClick={handleSubmit}>
-                    Save
-                  </Button>
-                </CardActions>
-              </>
-            )}
-          </Formik>
-        </Card>
-      </Grid>
+      <BasicSettings
+        answersSettings={answersSettings}
+        updateAnswersChannel={updateAnswersChannel}
+      />
     </Grid>
   )
 }
