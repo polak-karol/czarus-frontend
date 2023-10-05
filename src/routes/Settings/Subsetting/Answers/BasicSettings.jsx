@@ -7,7 +7,7 @@ const BasicSettings = ({ answersSettings, updateAnswersChannel }) => (
   <>
     <Grid item xs={5}>
       <Stack>
-        <Typography component="h2" variant="h2">
+        <Typography component="h2" variant="h5">
           Basic settings
         </Typography>
         <Typography component="p" variant="p">

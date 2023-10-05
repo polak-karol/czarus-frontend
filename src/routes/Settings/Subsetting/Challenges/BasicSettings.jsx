@@ -7,7 +7,7 @@ const BasicSettings = ({ challengesSettings, updateChallangesChannel }) => (
   <>
     <Grid item xs={5}>
       <Stack>
-        <Typography component="h6" variant="h6">
+        <Typography component="h2" variant="h5">
           Basic settings
         </Typography>
         <Typography component="p" variant="p">
