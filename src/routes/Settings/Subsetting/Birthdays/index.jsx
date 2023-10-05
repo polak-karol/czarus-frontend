@@ -1,9 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Formik } from 'formik'
-import { Button, Card, CardActions, CardContent, Grid, Stack, Typography } from '@mui/material'
+import { Grid } from '@mui/material'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
-import ChannelSelector from '~/components/ChannelSelector'
 import PageSpinner from '~/components/PageSpinner'
 import BasicSettings from './BasicSettings'
 
