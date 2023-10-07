@@ -8,43 +8,43 @@ import WishesSettings from './WishesSettings'
 
 const Birthdays = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
-  const [birthdaysSettings, setBirthdaysSettings] = useState({})
+  const [birthdaysConfig, setBirthdaysConfig] = useState({})
   const [loading, setLoading] = useState(true)
 
-  const updateBirthdaysChannelError = (error) => {
+  const updateBirthdaysConfigError = (error) => {
     console.log(error)
   }
 
-  const updateBirthdaysChannelSuccess = (response) => {
-    setBirthdaysSettings(response.data)
+  const updateBirthdaysConfigSuccess = (response) => {
+    setBirthdaysConfig(response.data)
   }
 
-  const updateBirthdaysChannel = (values) => {
+  const updateBirthdaysConfig = (values) => {
     setLoading(true)
 
-    agent.GuildSettings.updateSettings(selectedGuild.id, values)
-      .then(updateBirthdaysChannelSuccess, updateBirthdaysChannelError)
+    agent.Birthdays.updateBirthdayConfig(selectedGuild.id, values)
+      .then(updateBirthdaysConfigSuccess, updateBirthdaysConfigError)
       .finally(() => setLoading(false))
   }
 
-  const getGuildSettingsError = (error) => {
+  const getBirthdaysConfigError = (error) => {
     console.log(error)
   }
 
-  const getGuildSettingsSuccess = (response) => {
-    setBirthdaysSettings(response.data)
+  const getBirthdaysConfigSuccess = (response) => {
+    setBirthdaysConfig(response.data)
   }
 
-  const getGuildSettings = () => {
+  const getBirthdaysConfig = () => {
     setLoading(true)
 
-    return agent.GuildSettings.getSettings(selectedGuild.id)
-      .then(getGuildSettingsSuccess, getGuildSettingsError)
+    return agent.Birthdays.getBirthdaysConfig(selectedGuild.id)
+      .then(getBirthdaysConfigSuccess, getBirthdaysConfigError)
       .then(() => setLoading(false))
   }
 
   useEffect(() => {
-    getGuildSettings()
+    getBirthdaysConfig()
   }, [])
 
   if (loading) return <PageSpinner />
@@ -52,8 +52,8 @@ const Birthdays = () => {
   return (
     <Grid container spacing={2}>
       <BasicSettings
-        birthdaysSettings={birthdaysSettings}
-        updateBirthdaysChannel={updateBirthdaysChannel}
+        birthdaysConfig={birthdaysConfig}
+        updateBirthdaysConfig={updateBirthdaysConfig}
       />
       <WishesSettings />
     </Grid>

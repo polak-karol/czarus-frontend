@@ -3,7 +3,7 @@ import { Formik } from 'formik'
 import { Button, Card, CardActions, CardContent, Grid, Stack, Typography } from '@mui/material'
 import ChannelSelector from '~/components/ChannelSelector'
 
-const BasicSettings = ({ birthdaysSettings, updateBirthdaysChannel }) => (
+const BasicSettings = ({ birthdaysConfig, updateBirthdaysConfig }) => (
   <>
     <Grid item xs={5}>
       <Stack>
@@ -19,10 +19,10 @@ const BasicSettings = ({ birthdaysSettings, updateBirthdaysChannel }) => (
       <Card>
         <Formik
           initialValues={{
-            birthdaysAnnouncementChannelId: birthdaysSettings.birthdaysAnnouncementChannelId,
-            birthdaysHandleChannelId: birthdaysSettings.birthdaysHandleChannelId,
+            birthdaysAnnouncementChannelId: birthdaysConfig.birthdaysAnnouncementChannelId,
+            birthdaysHandleChannelId: birthdaysConfig.birthdaysHandleChannelId,
           }}
-          onSubmit={updateBirthdaysChannel}
+          onSubmit={updateBirthdaysConfig}
         >
           {({ values, setFieldValue, handleSubmit }) => (
             <>
