@@ -13,6 +13,7 @@ import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
 
 const BirthdayDeleteModal = ({ open, onClose, selectedBirthday, setBirthdaysList }) => {
   const { enqueueSnackbar } = useSnackbar()
+
   const deleteBirthdaySuccess = () => {
     setBirthdaysList((state) => state.filter((value) => value.id !== selectedBirthday.id))
     onClose()
