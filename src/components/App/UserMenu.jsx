@@ -10,13 +10,9 @@ const UserMenu = () => {
   const [logoutConfirmationModalActive, setLogoutConfirmationModalActive] = useState(false)
   const { user } = useContext(UserContext)
 
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget)
-  }
+  const handleOpenUserMenu = (event) => setAnchorElUser(event.currentTarget)
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null)
-  }
+  const handleCloseUserMenu = () => setAnchorElUser(null)
 
   if (!user?.avatar) return
 
