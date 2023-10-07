@@ -32,8 +32,8 @@ const TopBar = ({ open, setOpen }) => {
             alignItems="center"
             justifyContent="space-between"
           >
-            <Typography variant="h6" noWrap component="div">
-              Czaruś
+            <Typography variant="h6" noWrap component="h1">
+              Czaruś - Discord Bot
             </Typography>
           </Stack>
           <UserMenu />
