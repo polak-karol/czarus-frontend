@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import moment from 'moment'
-import { Alert, AlertTitle, Button, Grid, Stack } from '@mui/material'
+import { SettingsRounded } from '@mui/icons-material'
+import { Alert, AlertTitle, Button, Grid, IconButton, Stack } from '@mui/material'
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton'
 import agent from '~/api/agent'
@@ -11,9 +13,9 @@ import Page from '~/components/Page'
 import UpdateHolidayModal from './UpdateHolidayModal'
 import DayPicker from './DayPicker'
 import HolidayCard from './HolidayCard'
-import ChannelSelector from '~/components/ChannelSelector'
 
 const Holidays = () => {
+  const navigate = useNavigate()
   const { selectedGuild } = useContext(SelectedGuildContext)
   const { enqueueSnackbar } = useSnackbar()
   const [loading, setLoading] = useState(false)
@@ -22,7 +24,6 @@ const Holidays = () => {
   const [message, setMessage] = useState('')
   const [tomorrowHoliday, setTomorrowHoliday] = useState(null)
   const [updateHolidayModalActive, setUpdateHolidayModalActive] = useState(false)
-  const [selectedChannel, setSelectedChannel] = useState('')
 
   const getHolidaysError = (error) => {
     enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
@@ -54,43 +55,9 @@ const Holidays = () => {
       getHolidayForTomorrowError,
     )
 
-  const updateHolidaysChannelError = (error) => {
-    console.log(error)
-  }
-
-  const updateHolidaysChannelSuccess = (response) => {
-    setSelectedChannel(response.data.answers_channel_id)
-  }
-
-  const updateHolidaysChannel = (channel) => {
-    setLoading(true)
-    const body = { holiday_channel_id: channel }
-
-    agent.GuildSettings.updateSettings(selectedGuild.id, body)
-      .then(updateHolidaysChannelSuccess, updateHolidaysChannelError)
-      .finally(() => setLoading(false))
-  }
-
-  const getGuildSettingsError = (error) => {
-    console.log(error)
-  }
-
-  const getGuildSettingsSuccess = (response) => {
-    console.log(response)
-    setSelectedChannel(response.data.holidayChannelId)
-  }
-
-  const getGuildSettings = () => {
-    agent.GuildSettings.getSettings(selectedGuild.id).then(
-      getGuildSettingsSuccess,
-      getGuildSettingsError,
-    )
-  }
-
   useEffect(() => {
     getHolidays(moment())
     getHolidayForTomorrow()
-    getGuildSettings()
   }, [])
 
   const handleMonthChange = (date) => {
@@ -103,10 +70,9 @@ const Holidays = () => {
     <Page
       title="Holidays"
       actions={
-        <ChannelSelector
-          selectedChannel={selectedChannel}
-          setSelectedChannel={(event) => updateHolidaysChannel(event.target.value)}
-        />
+        <IconButton onClick={() => navigate('/settings/holidays')}>
+          <SettingsRounded />
+        </IconButton>
       }
     >
       {!tomorrowHoliday && (

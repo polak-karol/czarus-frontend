@@ -1,82 +1,56 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Button, Card, CardActions, CardContent, Grid, Stack, Typography } from '@mui/material'
+import { Grid } from '@mui/material'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
-import ChannelSelector from '~/components/ChannelSelector'
+import PageSpinner from '~/components/PageSpinner'
+import BasicSettings from './BasicSettings'
 
 const Answers = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
-  const [selectedChannel, setSelectedChannel] = useState('')
+  const [answersConfig, setAnswersConfig] = useState({})
   const [loading, setLoading] = useState(true)
 
-  const updateAnswersChannelError = (error) => {
+  const updateAnswersConfigError = (error) => {
     console.log(error)
   }
 
-  const updateAnswersChannelSuccess = (response) => {
-    console.log(response)
+  const updateAnswersConfigSuccess = (response) => {
+    setAnswersConfig(response.data)
   }
 
-  const updateAnswersChannel = () => {
+  const updateAnswersConfig = (values) => {
     setLoading(true)
-    const body = { answersChannelId: selectedChannel }
 
-    agent.GuildSettings.updateSettings(selectedGuild.id, body)
-      .then(updateAnswersChannelSuccess, updateAnswersChannelError)
+    return agent.Answers.updateAnswerConfig(selectedGuild.id, values)
+      .then(updateAnswersConfigSuccess, updateAnswersConfigError)
       .finally(() => setLoading(false))
   }
 
-  const getGuildSettingsError = (error) => {
+  const getAnswerSettingsError = (error) => {
     console.log(error)
   }
 
-  const getGuildSettingsSuccess = (response) => {
-    console.log(response)
-    setSelectedChannel(response.data.answersChannelId)
+  const getAnswerSettingsSuccess = (response) => {
+    setAnswersConfig(response.data)
   }
 
-  const getGuildSettings = () => {
+  const getAnswerSettings = () => {
     setLoading(true)
 
-    return agent.GuildSettings.getSettings(selectedGuild.id)
-      .then(getGuildSettingsSuccess, getGuildSettingsError)
+    return agent.Answers.getAnswerConfig(selectedGuild.id)
+      .then(getAnswerSettingsSuccess, getAnswerSettingsError)
       .then(() => setLoading(false))
   }
 
   useEffect(() => {
-    getGuildSettings()
+    getAnswerSettings()
   }, [])
+
+  if (loading) return <PageSpinner />
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={5}>
-        <Stack>
-          <Typography component="h6" variant="h6">
-            Basic settings
-          </Typography>
-          <Typography component="p" variant="p">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.{' '}
-          </Typography>
-        </Stack>
-      </Grid>
-      <Grid item xs={7}>
-        <Card>
-          <CardContent>
-            <ChannelSelector
-              fullWidth
-              disabled={loading}
-              selectedChannel={selectedChannel}
-              setSelectedChannel={(event) => setSelectedChannel(event.target.value)}
-              helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
-            />
-          </CardContent>
-          <CardActions>
-            <Button size="small" onClick={() => updateAnswersChannel()}>
-              Save
-            </Button>
-          </CardActions>
-        </Card>
-      </Grid>
+      <BasicSettings answersConfig={answersConfig} updateAnswersConfig={updateAnswersConfig} />
     </Grid>
   )
 }

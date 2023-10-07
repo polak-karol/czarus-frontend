@@ -1,91 +1,61 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Button, Card, CardActions, CardContent, Grid, Stack, Typography } from '@mui/material'
+import { Grid } from '@mui/material'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
-import ChannelSelector from '~/components/ChannelSelector'
+import PageSpinner from '~/components/PageSpinner'
+import BasicSettings from './BasicSettings'
+import WishesSettings from './WishesSettings'
 
 const Birthdays = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
-  const [selectedChannel, setSelectedChannel] = useState('')
+  const [birthdaysConfig, setBirthdaysConfig] = useState({})
   const [loading, setLoading] = useState(true)
 
-  const updateBirthdaysChannelError = (error) => {
+  const updateBirthdaysConfigError = (error) => {
     console.log(error)
   }
 
-  const updateBirthdaysChannelSuccess = (response) => {
-    setSelectedChannel(response.data.birthdaysAnnouncementChannelId)
+  const updateBirthdaysConfigSuccess = (response) => {
+    setBirthdaysConfig(response.data)
   }
 
-  const updateBirthdaysChannel = (channel) => {
+  const updateBirthdaysConfig = (values) => {
     setLoading(true)
-    const body = { birthdaysAnnouncementChannelId: channel }
 
-    agent.GuildSettings.updateSettings(selectedGuild.id, body)
-      .then(updateBirthdaysChannelSuccess, updateBirthdaysChannelError)
+    agent.Birthdays.updateBirthdayConfig(selectedGuild.id, values)
+      .then(updateBirthdaysConfigSuccess, updateBirthdaysConfigError)
       .finally(() => setLoading(false))
   }
 
-  const getGuildSettingsError = (error) => {
+  const getBirthdaysConfigError = (error) => {
     console.log(error)
   }
 
-  const getGuildSettingsSuccess = (response) => {
-    console.log(response)
-    setSelectedChannel(response.data.birthdaysAnnouncementChannelId)
+  const getBirthdaysConfigSuccess = (response) => {
+    setBirthdaysConfig(response.data)
   }
 
-  const getGuildSettings = () => {
+  const getBirthdaysConfig = () => {
     setLoading(true)
 
-    return agent.GuildSettings.getSettings(selectedGuild.id)
-      .then(getGuildSettingsSuccess, getGuildSettingsError)
+    return agent.Birthdays.getBirthdaysConfig(selectedGuild.id)
+      .then(getBirthdaysConfigSuccess, getBirthdaysConfigError)
       .then(() => setLoading(false))
   }
 
   useEffect(() => {
-    getGuildSettings()
+    getBirthdaysConfig()
   }, [])
+
+  if (loading) return <PageSpinner />
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={5}>
-        <Stack>
-          <Typography component="h6" variant="h6">
-            Basic settings
-          </Typography>
-          <Typography component="p" variant="p">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.{' '}
-          </Typography>
-        </Stack>
-      </Grid>
-      <Grid item xs={7}>
-        <Card>
-          <CardContent>
-            <Stack>
-              <ChannelSelector
-                fullWidth
-                disabled={loading}
-                selectedChannel={selectedChannel}
-                setSelectedChannel={(event) => setSelectedChannel(event.target.value)}
-                helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
-              />
-              <ChannelSelector
-                fullWidth
-                disabled={loading}
-                selectedChannel={selectedChannel}
-                setSelectedChannel={(event) => setSelectedChannel(event.target.value)}
-                helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
-              />
-            </Stack>
-          </CardContent>
-          <CardActions>
-            <Button size="small" onClick={() => updateBirthdaysChannel()}>
-              Save
-            </Button>
-          </CardActions>
-        </Card>
-      </Grid>
+      <BasicSettings
+        birthdaysConfig={birthdaysConfig}
+        updateBirthdaysConfig={updateBirthdaysConfig}
+      />
+      <WishesSettings />
     </Grid>
   )
 }

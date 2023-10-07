@@ -1,53 +1,40 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { IconButton } from '@mui/material'
+import { useSnackbar } from 'notistack'
+import { SettingsRounded } from '@mui/icons-material'
 import agent from '~/api/agent'
+import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import Page from '~/components/Page'
-import ChannelSelector from '~/components/ChannelSelector'
 import BirthdaysTable from './BirthdayTable'
 
 const Birthdays = () => {
-  const [selectedChannel, setSelectedChannel] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [pageLoading, setPageLoading] = useState(true)
+  const navigate = useNavigate()
+  const [pageLoading, setPageLoading] = useState(false)
+  const [birthdaysList, setBirthdaysList] = useState([])
+  const [refreshBirthdayList, setRefreshBirthdayList] = useState(false)
+  const { enqueueSnackbar } = useSnackbar()
   const { selectedGuild } = useContext(SelectedGuildContext)
 
-  const updateBirthdayChannelError = (error) => {
-    console.log(error)
+  const getBirthdaysSuccess = (response) => {
+    setBirthdaysList(response.data)
   }
 
-  const updateBirthdayChannelSuccess = (response) => {
-    setSelectedChannel(response.data.birthdays_channel_id)
+  const getBirthdaysError = (error) => {
+    enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
   }
 
-  const updateBirthdayChannel = (channel) => {
-    setLoading(true)
-    const body = { birthdays_channel_id: channel }
-
-    agent.GuildSettings.updateSettings(selectedGuild.id, body)
-      .then(updateBirthdayChannelSuccess, updateBirthdayChannelError)
-      .finally(() => setLoading(false))
-  }
-
-  const getGuildSettingsError = (error) => {
-    console.log(error)
-  }
-
-  const getGuildSettingsSuccess = (response) => {
-    console.log(response)
-    setSelectedChannel(response.data.birthdays_channel_id)
-  }
-
-  const getGuildSettings = () => {
+  const getBirthdays = () => {
     setPageLoading(true)
-
-    agent.GuildSettings.getSettings(selectedGuild.id)
-      .then(getGuildSettingsSuccess, getGuildSettingsError)
+    agent.Birthdays.getBirthdays(selectedGuild.id)
+      .then(getBirthdaysSuccess, getBirthdaysError)
       .finally(() => setPageLoading(false))
   }
 
   useEffect(() => {
-    getGuildSettings()
-  }, [])
+    getBirthdays()
+  }, [refreshBirthdayList])
 
   if (pageLoading) return
 
@@ -55,14 +42,18 @@ const Birthdays = () => {
     <Page
       title="Birthdays"
       actions={
-        <ChannelSelector
-          disabled={loading}
-          selectedChannel={selectedChannel}
-          setSelectedChannel={(event) => updateBirthdayChannel(event.target.value)}
-        />
+        <IconButton onClick={() => navigate('/settings/birthdays')}>
+          <SettingsRounded />
+        </IconButton>
       }
     >
-      <BirthdaysTable />
+      <BirthdaysTable
+        birthdaysList={birthdaysList}
+        setBirthdaysList={setBirthdaysList}
+        setPageLoading={setPageLoading}
+        refreshBirthdayList={refreshBirthdayList}
+        setRefreshBirthdayList={setRefreshBirthdayList}
+      />
     </Page>
   )
 }

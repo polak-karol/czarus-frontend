@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { SettingsRounded } from '@mui/icons-material'
 import { useSnackbar } from 'notistack'
 import _ from 'lodash'
-import { Grid, Stack } from '@mui/material'
+import { Grid, IconButton, Stack } from '@mui/material'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
-import ChannelSelector from '~/components/ChannelSelector'
 import Page from '~/components/Page'
 import { DRAW_CHALLENGES_CATEGORY_SUFFIX } from './config'
 import TopBar from './TopBar'
 import Card from './Card'
 
 const DrawChallenges = () => {
-  const [selectedChannel, setSelectedChannel] = useState('')
+  const navigate = useNavigate()
   const { selectedGuild } = useContext(SelectedGuildContext)
   const { enqueueSnackbar } = useSnackbar()
   const [drawConfigs, setDrawConfigs] = useState({
@@ -90,42 +90,8 @@ const DrawChallenges = () => {
       updateDrawConfigsError,
     )
 
-  const updateDrawChallengesChannelError = (error) => {
-    console.log(error)
-  }
-
-  const updateDrawChallengesChannelSuccess = (response) => {
-    setSelectedChannel(response.data.draw_challenges_channel_id)
-  }
-
-  const updateDrawChallengesChannel = (channel) => {
-    setLoading(true)
-    const body = { draw_challenges_channel_id: channel }
-
-    agent.GuildSettings.updateSettings(selectedGuild.id, body)
-      .then(updateDrawChallengesChannelSuccess, updateDrawChallengesChannelError)
-      .finally(() => setLoading(false))
-  }
-
-  const getGuildSettingsError = (error) => {
-    console.log(error)
-  }
-
-  const getGuildSettingsSuccess = (response) => {
-    console.log(response)
-    setSelectedChannel(response.data.draw_challenges_channel_id)
-  }
-
-  const getGuildSettings = () => {
-    agent.GuildSettings.getSettings(selectedGuild.id).then(
-      getGuildSettingsSuccess,
-      getGuildSettingsError,
-    )
-  }
-
   useEffect(() => {
     getDrawConfigs()
-    getGuildSettings()
   }, [])
 
   useEffect(() => {
@@ -143,11 +109,9 @@ const DrawChallenges = () => {
     <Page
       title="Draw challenges"
       actions={
-        <ChannelSelector
-          disabled={loading}
-          selectedChannel={selectedChannel}
-          setSelectedChannel={(event) => updateDrawChallengesChannel(event.target.value)}
-        />
+        <IconButton onClick={() => navigate('/settings/challenges')}>
+          <SettingsRounded />
+        </IconButton>
       }
     >
       {!_.isEmpty(filteredDrawConfigs) && (

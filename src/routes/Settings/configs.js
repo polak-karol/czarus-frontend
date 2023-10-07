@@ -23,7 +23,7 @@ export const settingsConfig = [
     title: 'Challenges',
     content: 'Lorem, ipsum dolor sit amet consectetur.',
     icon: EmojiEventsRounded,
-    url: '/settings/challanges',
+    url: '/settings/challenges',
   },
   {
     title: 'Holidays',

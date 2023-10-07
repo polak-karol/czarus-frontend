@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import Page from '~/components/Page'
 import Answers from './Answers'
 import Birthdays from './Birthdays'
-import Challanges from './Challanges'
+import Challenges from './Challenges'
 import Holidays from './Holidays'
 import { subPageTitles } from './config'
 
@@ -13,11 +13,18 @@ const Subsetting = () => {
   const options = {
     answers: <Answers />,
     birthdays: <Birthdays />,
-    challanges: <Challanges />,
+    challenges: <Challenges />,
     holidays: <Holidays />,
   }
 
-  return <Page title={subPageTitles[optionName]}>{options[optionName]}</Page>
+  return (
+    <Page
+      breadcrumbs={[{ url: '/settings', name: 'Settings' }, { name: subPageTitles[optionName] }]}
+      title={subPageTitles[optionName]}
+    >
+      {options[optionName]}
+    </Page>
+  )
 }
 
 export default Subsetting
