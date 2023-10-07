@@ -4,6 +4,7 @@ import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import PageSpinner from '~/components/PageSpinner'
 import BasicSettings from './BasicSettings'
+import WishesSettings from './WishesSettings'
 
 const Birthdays = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
@@ -54,6 +55,7 @@ const Birthdays = () => {
         birthdaysSettings={birthdaysSettings}
         updateBirthdaysChannel={updateBirthdaysChannel}
       />
+      <WishesSettings />
     </Grid>
   )
 }

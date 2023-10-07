@@ -7,53 +7,50 @@ import BasicSettings from './BasicSettings'
 
 const Answers = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
-  const [answersSettings, setAnswersSettings] = useState({})
+  const [answersConfig, setAnswersConfig] = useState({})
   const [loading, setLoading] = useState(true)
 
-  const updateAnswersChannelError = (error) => {
+  const updateAnswersConfigError = (error) => {
     console.log(error)
   }
 
-  const updateAnswersChannelSuccess = (response) => {
-    setAnswersSettings(response.data)
+  const updateAnswersConfigSuccess = (response) => {
+    setAnswersConfig(response.data)
   }
 
-  const updateAnswersChannel = (values) => {
+  const updateAnswersConfig = (values) => {
     setLoading(true)
 
-    return agent.GuildSettings.updateSettings(selectedGuild.id, values)
-      .then(updateAnswersChannelSuccess, updateAnswersChannelError)
+    return agent.Answers.updateAnswerConfig(selectedGuild.id, values)
+      .then(updateAnswersConfigSuccess, updateAnswersConfigError)
       .finally(() => setLoading(false))
   }
 
-  const getGuildSettingsError = (error) => {
+  const getAnswerSettingsError = (error) => {
     console.log(error)
   }
 
-  const getGuildSettingsSuccess = (response) => {
-    setAnswersSettings(response.data)
+  const getAnswerSettingsSuccess = (response) => {
+    setAnswersConfig(response.data)
   }
 
-  const getGuildSettings = () => {
+  const getAnswerSettings = () => {
     setLoading(true)
 
-    return agent.GuildSettings.getSettings(selectedGuild.id)
-      .then(getGuildSettingsSuccess, getGuildSettingsError)
+    return agent.Answers.getAnswerConfig(selectedGuild.id)
+      .then(getAnswerSettingsSuccess, getAnswerSettingsError)
       .then(() => setLoading(false))
   }
 
   useEffect(() => {
-    getGuildSettings()
+    getAnswerSettings()
   }, [])
 
   if (loading) return <PageSpinner />
 
   return (
     <Grid container spacing={2}>
-      <BasicSettings
-        answersSettings={answersSettings}
-        updateAnswersChannel={updateAnswersChannel}
-      />
+      <BasicSettings answersConfig={answersConfig} updateAnswersConfig={updateAnswersConfig} />
     </Grid>
   )
 }

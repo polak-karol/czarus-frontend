@@ -3,7 +3,7 @@ import { Button, Card, CardActions, CardContent, Grid, Stack, Typography } from 
 import { Formik } from 'formik'
 import ChannelSelector from '~/components/ChannelSelector'
 
-const BasicSettings = ({ answersSettings, updateAnswersChannel }) => (
+const BasicSettings = ({ answersConfig, updateAnswersConfig }) => (
   <>
     <Grid item xs={5}>
       <Stack>
@@ -19,18 +19,18 @@ const BasicSettings = ({ answersSettings, updateAnswersChannel }) => (
       <Card>
         <Formik
           initialValues={{
-            answersChannelId: answersSettings.answersChannelId,
+            answersHandleChannelId: answersConfig.answersHandleChannelId,
           }}
-          onSubmit={updateAnswersChannel}
+          onSubmit={updateAnswersConfig}
         >
           {({ values, setFieldValue, handleSubmit }) => (
             <>
               <CardContent>
                 <ChannelSelector
                   fullWidth
-                  selectedChannel={values.answersChannelId}
+                  selectedChannel={values.answersHandleChannelId}
                   setSelectedChannel={(event) =>
-                    setFieldValue('answersChannelId', event.target.value)
+                    setFieldValue('answersHandleChannelId', event.target.value)
                   }
                   helperText="Ipsam facere beatae nam tempore voluptas illum facilis."
                 />
