@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import _ from 'lodash'
 import { ThemeProvider } from '@mui/material/styles'
-import { Box, CssBaseline, Paper } from '@mui/material'
+import { Box, CssBaseline } from '@mui/material'
 import UserContext from '~/contexts/UserContext'
 import { customTheme } from '~/utils/theme'
 import agent from '~/api/agent'
@@ -27,19 +27,18 @@ const App = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
-  const getGuildChannelsSuccess = (response) => {
-    setSelectedGuildChannels(response.data)
-  }
+  const getGuildChannelsSuccess = (response) => setSelectedGuildChannels(response.data)
 
-  const getGuildChannelsError = (error) => {
-    console.log(error)
-  }
+  const getGuildChannelsError = (error) =>
+    enqueueSnackbar(error.response.data.message, ERROR_SNACKBAR_CONFIG)
 
   const getCurrentUserError = (error) => {
-    enqueueSnackbar(error.response.data.msg || error.response.data.message, ERROR_SNACKBAR_CONFIG)
+    enqueueSnackbar(error.response.data.message, ERROR_SNACKBAR_CONFIG)
+
     if ((error?.response?.code >= 400 || error.code === 'ERR_NETWORK') && _.isEmpty(user)) {
       return navigate('/')
     }
+
     return error
   }
 
@@ -47,6 +46,7 @@ const App = ({ children }) => {
     setUser(response.data.user)
     setGuilds(response.data.guilds)
     setSelectedGuild(response.data.guilds.find((guild) => guild.id === readCookie('selectedGuild')))
+
     agent.Guild.getGuildChannels(readCookie('selectedGuild')).then(
       getGuildChannelsSuccess,
       getGuildChannelsError,
@@ -60,6 +60,7 @@ const App = ({ children }) => {
 
     if (!readCookie('accessToken')) {
       setLoading(false)
+
       return navigate('/')
     }
 
@@ -69,8 +70,7 @@ const App = ({ children }) => {
   }
 
   const getSelectedGuildChannelsError = (error) => {
-    console.log(error)
-    enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
+    enqueueSnackbar(error.response.data.message, ERROR_SNACKBAR_CONFIG)
   }
 
   const getSelectedGuildChannelsSuccess = (response) => {
@@ -80,7 +80,7 @@ const App = ({ children }) => {
   const getSelectedGuildChannels = () => {
     const selectedGuild = readCookie('selectedGuild')
 
-    if (!selectedGuild) return null
+    if (!selectedGuild) return
 
     return agent.Guild.getGuildChannels(selectedGuild).then(
       getSelectedGuildChannelsSuccess,
