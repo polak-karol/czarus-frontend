@@ -9,6 +9,7 @@ const Settings = () => (
     <Grid container spacing={2}>
       {settingsConfig.map((settingsConfigItem) => (
         <SettingsItem
+          key={settingsConfigItem.title}
           Icon={settingsConfigItem.icon}
           title={settingsConfigItem.title}
           content={settingsConfigItem.content}

@@ -19,7 +19,7 @@ const BasicSettings = ({ holidaysSettings, updateHolidaysChannel }) => (
       <Card>
         <Formik
           initialValues={{
-            holidayAnnouncementChannelId: holidaysSettings.holidayAnnouncementChannelId,
+            holidayAnnouncementChannelId: holidaysSettings.holidayAnnouncementChannelId ?? '',
           }}
           onSubmit={updateHolidaysChannel}
         >

@@ -19,9 +19,11 @@ const BasicSettings = ({ drawConfig, updateDrawConfig }) => (
       <Card>
         <Formik
           initialValues={{
-            drawChallengesWritingHandleChannelId: drawConfig.drawChallengesWritingHandleChannelId,
-            drawChallengesGraphicHandleChannelId: drawConfig.drawChallengesGraphicHandleChannelId,
-            drawChallengesMusicHandleChannelId: drawConfig.drawChallengesMusicHandleChannelId,
+            drawChallengesWritingHandleChannelId:
+              drawConfig.drawChallengesWritingHandleChannelId ?? '',
+            drawChallengesGraphicHandleChannelId:
+              drawConfig.drawChallengesGraphicHandleChannelId ?? '',
+            drawChallengesMusicHandleChannelId: drawConfig.drawChallengesMusicHandleChannelId ?? '',
           }}
           onSubmit={updateDrawConfig}
         >

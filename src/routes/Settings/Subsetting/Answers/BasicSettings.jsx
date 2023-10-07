@@ -19,7 +19,7 @@ const BasicSettings = ({ answersConfig, updateAnswersConfig }) => (
       <Card>
         <Formik
           initialValues={{
-            answersHandleChannelId: answersConfig.answersHandleChannelId,
+            answersHandleChannelId: answersConfig.answersHandleChannelId ?? '',
           }}
           onSubmit={updateAnswersConfig}
         >

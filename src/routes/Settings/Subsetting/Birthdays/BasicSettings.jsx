@@ -19,8 +19,8 @@ const BasicSettings = ({ birthdaysConfig, updateBirthdaysConfig }) => (
       <Card>
         <Formik
           initialValues={{
-            birthdaysAnnouncementChannelId: birthdaysConfig.birthdaysAnnouncementChannelId,
-            birthdaysHandleChannelId: birthdaysConfig.birthdaysHandleChannelId,
+            birthdaysAnnouncementChannelId: birthdaysConfig.birthdaysAnnouncementChannelId ?? '',
+            birthdaysHandleChannelId: birthdaysConfig.birthdaysHandleChannelId ?? '',
           }}
           onSubmit={updateBirthdaysConfig}
         >
