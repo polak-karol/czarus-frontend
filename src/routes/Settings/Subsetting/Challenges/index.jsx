@@ -7,53 +7,50 @@ import BasicSettings from './BasicSettings'
 
 const Challenges = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
-  const [challengesSettings, setChallengesSettings] = useState({})
+  const [drawConfig, setDrawConfig] = useState({})
   const [loading, setLoading] = useState(true)
 
-  const updateChallangesChannelError = (error) => {
+  const updateDrawConfigError = (error) => {
     console.log(error)
   }
 
-  const updateChallangesChannelSuccess = (response) => {
-    setChallengesSettings(response.data)
+  const updateDrawConfigSuccess = (response) => {
+    setDrawConfig(response.data)
   }
 
-  const updateChallangesChannel = (values) => {
+  const updateDrawConfig = (values) => {
     setLoading(true)
 
-    return agent.GuildSettings.updateSettings(selectedGuild.id, values)
-      .then(updateChallangesChannelSuccess, updateChallangesChannelError)
+    return agent.Draws.updateDrawConfigs(selectedGuild.id, values)
+      .then(updateDrawConfigSuccess, updateDrawConfigError)
       .finally(() => setLoading(false))
   }
 
-  const getGuildSettingsError = (error) => {
+  const getDrawConfigError = (error) => {
     console.log(error)
   }
 
-  const getGuildSettingsSuccess = (response) => {
-    setChallengesSettings(response.data)
+  const getDrawConfigSuccess = (response) => {
+    setDrawConfig(response.data)
   }
 
-  const getGuildSettings = () => {
+  const getDrawConfig = () => {
     setLoading(true)
 
-    return agent.GuildSettings.getSettings(selectedGuild.id)
-      .then(getGuildSettingsSuccess, getGuildSettingsError)
+    return agent.Draws.getDrawConfigs(selectedGuild.id)
+      .then(getDrawConfigSuccess, getDrawConfigError)
       .then(() => setLoading(false))
   }
 
   useEffect(() => {
-    getGuildSettings()
+    getDrawConfig()
   }, [])
 
   if (loading) return <PageSpinner />
 
   return (
     <Grid container spacing={2}>
-      <BasicSettings
-        challengesSettings={challengesSettings}
-        updateChallangesChannel={updateChallangesChannel}
-      />
+      <BasicSettings drawConfig={drawConfig} updateDrawConfig={updateDrawConfig} />
     </Grid>
   )
 }
