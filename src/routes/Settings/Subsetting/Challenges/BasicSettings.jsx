@@ -3,7 +3,7 @@ import { Formik } from 'formik'
 import { Button, Card, CardActions, CardContent, Grid, Stack, Typography } from '@mui/material'
 import ChannelSelector from '~/components/ChannelSelector'
 
-const BasicSettings = ({ challengesSettings, updateChallangesChannel }) => (
+const BasicSettings = ({ drawConfig, updateDrawConfig }) => (
   <>
     <Grid item xs={5}>
       <Stack>
@@ -19,14 +19,11 @@ const BasicSettings = ({ challengesSettings, updateChallangesChannel }) => (
       <Card>
         <Formik
           initialValues={{
-            drawChallengesWritingHandleChannelId:
-              challengesSettings.drawChallengesWritingHandleChannelId,
-            drawChallengesGraphicHandleChannelId:
-              challengesSettings.drawChallengesGraphicHandleChannelId,
-            drawChallengesMusicHandleChannelId:
-              challengesSettings.drawChallengesMusicHandleChannelId,
+            drawChallengesWritingHandleChannelId: drawConfig.drawChallengesWritingHandleChannelId,
+            drawChallengesGraphicHandleChannelId: drawConfig.drawChallengesGraphicHandleChannelId,
+            drawChallengesMusicHandleChannelId: drawConfig.drawChallengesMusicHandleChannelId,
           }}
-          onSubmit={updateChallangesChannel}
+          onSubmit={updateDrawConfig}
         >
           {({ values, setFieldValue, handleSubmit }) => (
             <>
