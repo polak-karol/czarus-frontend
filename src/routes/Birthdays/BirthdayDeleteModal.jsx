@@ -20,7 +20,7 @@ const BirthdayDeleteModal = ({ open, onClose, selectedBirthday, setBirthdaysList
   }
 
   const deleteBirthdayError = (error) => {
-    enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
+    enqueueSnackbar(error.response.data.message, ERROR_SNACKBAR_CONFIG)
   }
 
   const deleteBirthday = () => {
