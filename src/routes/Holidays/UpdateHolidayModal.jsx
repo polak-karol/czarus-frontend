@@ -30,7 +30,7 @@ const UpdateHolidayModal = ({
   const [loading, setLoading] = useState(false)
 
   const updateHolidayError = (error) => {
-    enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
+    enqueueSnackbar(error.response.data.message, ERROR_SNACKBAR_CONFIG)
   }
 
   const updateHolidaySuccess = (response) => {
@@ -38,12 +38,14 @@ const UpdateHolidayModal = ({
       setHolidaysData((state) =>
         state.map((item) => {
           if (item.id !== response.data.id) return item
+
           return response.data
         }),
       )
     } else {
       setHolidaysData((state) => {
         state.push(response.data)
+
         return state
       })
     }

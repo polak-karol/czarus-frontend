@@ -22,7 +22,7 @@ const AddNewCategoryModal = ({ open, onClose, drawConfigs, setDrawConfigs }) => 
   const { tab } = useParams()
 
   const updateDrawConfigsError = (error) => {
-    enqueueSnackbar(error.response.data.msg, ERROR_SNACKBAR_CONFIG)
+    enqueueSnackbar(error.response.data.message, ERROR_SNACKBAR_CONFIG)
   }
 
   const updateDrawConfigsSuccess = (response) => {

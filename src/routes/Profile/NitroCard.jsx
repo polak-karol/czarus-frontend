@@ -8,11 +8,11 @@ const NitroCard = () => {
 
   return (
     <Card sx={{ flex: 1, padding: '2rem' }}>
-      <Typography component="h6" variant="h6">
+      <Typography component="h3" variant="h6">
         Nitro type
       </Typography>
       <Typography component="span" variant="body1">
-        {nitroMap[user.premium_type]}
+        {nitroMap[user.premiumType]}
       </Typography>
     </Card>
   )

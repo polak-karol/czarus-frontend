@@ -7,7 +7,7 @@ const EmailCard = () => {
 
   return (
     <Card sx={{ flex: 1, padding: '2rem' }}>
-      <Typography component="h6" variant="h6">
+      <Typography component="h3" variant="h6">
         Email
       </Typography>
       <Typography component="span" variant="body1">

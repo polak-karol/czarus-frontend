@@ -67,9 +67,9 @@ const MainCard = () => {
       <CardContent>
         <Container sx={{ width: `calc(80% - ${avatarHeight}px)` }}>
           <Typography variant="h3" component="h3">
-            {user.global_name}
+            {user.globalName}
           </Typography>
-          <Typography variant="h5" component="h5">
+          <Typography variant="h4" component="h5">
             {user.username}
           </Typography>
           <Stack sx={{ marginTop: '1.5rem' }} alignItems="flex-start">
