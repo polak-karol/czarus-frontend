@@ -7,15 +7,9 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material'
-import { deleteCookie } from '~/utils/global-functions'
+import { handleLogout } from './utils'
 
 const LogoutConfirmationModal = ({ open, onClose }) => {
-  const handleLogout = () => {
-    deleteCookie('accessToken')
-    deleteCookie('refreshToken')
-    window.location.reload()
-  }
-
   if (!open) return
 
   return (
