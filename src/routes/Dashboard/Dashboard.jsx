@@ -1,10 +1,6 @@
 import React from 'react'
-import { Button } from '@mui/material'
+import Page from '~/components/Page'
 
-const Dashboard = () => (
-  <div>
-    <Button variant="contained">Hello World</Button>
-  </div>
-)
+const Dashboard = () => <Page title="Dashboard" />
 
 export default Dashboard
