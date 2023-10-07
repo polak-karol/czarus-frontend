@@ -26,24 +26,24 @@ const Holidays = () => {
       .finally(() => setLoading(false))
   }
 
-  const getGuildSettingsError = (error) => {
+  const getHolidaysConfigError = (error) => {
     console.log(error)
   }
 
-  const getGuildSettingsSuccess = (response) => {
+  const getHolidaysConfigSuccess = (response) => {
     setHolidaysSettings(response.data)
   }
 
-  const getGuildSettings = () => {
+  const getHolidaysConfig = () => {
     setLoading(true)
 
-    return agent.GuildSettings.getSettings(selectedGuild.id)
-      .then(getGuildSettingsSuccess, getGuildSettingsError)
+    return agent.Holidays.getHolidayConfig(selectedGuild.id)
+      .then(getHolidaysConfigSuccess, getHolidaysConfigError)
       .then(() => setLoading(false))
   }
 
   useEffect(() => {
-    getGuildSettings()
+    getHolidaysConfig()
   }, [])
 
   if (loading) return <PageSpinner />
