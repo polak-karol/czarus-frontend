@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { useSnackbar } from 'notistack'
 import { Grid } from '@mui/material'
 import agent from '~/api/agent'
+import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import PageSpinner from '~/components/PageSpinner'
 import BasicSettings from './BasicSettings'
@@ -9,9 +11,10 @@ const Challenges = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
   const [drawConfig, setDrawConfig] = useState({})
   const [loading, setLoading] = useState(true)
+  const { enqueueSnackbar } = useSnackbar()
 
   const updateDrawConfigError = (error) => {
-    console.log(error)
+    enqueueSnackbar(error.response.data.message, ERROR_SNACKBAR_CONFIG)
   }
 
   const updateDrawConfigSuccess = (response) => {
@@ -27,7 +30,7 @@ const Challenges = () => {
   }
 
   const getDrawConfigError = (error) => {
-    console.log(error)
+    enqueueSnackbar(error.response.data.message, ERROR_SNACKBAR_CONFIG)
   }
 
   const getDrawConfigSuccess = (response) => {
