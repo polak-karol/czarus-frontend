@@ -69,29 +69,9 @@ const App = ({ children }) => {
       .finally(() => setLoading(false))
   }
 
-  const getSelectedGuildChannelsError = (error) => {
-    enqueueSnackbar(error.response.data.message, ERROR_SNACKBAR_CONFIG)
-  }
-
-  const getSelectedGuildChannelsSuccess = (response) => {
-    console.log(response)
-  }
-
-  const getSelectedGuildChannels = () => {
-    const selectedGuild = readCookie('selectedGuild')
-
-    if (!selectedGuild) return
-
-    return agent.Guild.getGuildChannels(selectedGuild).then(
-      getSelectedGuildChannelsSuccess,
-      getSelectedGuildChannelsError,
-    )
-  }
-
   useEffect(() => {
     if (isRestrictedPath()) {
       getCurrentUser()
-      getSelectedGuildChannels()
     } else {
       setLoading(false)
     }

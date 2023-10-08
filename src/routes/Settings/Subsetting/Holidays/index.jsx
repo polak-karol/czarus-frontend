@@ -24,7 +24,7 @@ const Holidays = () => {
   const updateHolidaysChannel = (values) => {
     setLoading(true)
 
-    agent.GuildSettings.updateSettings(selectedGuild.id, values)
+    return agent.GuildSettings.updateSettings(selectedGuild.id, values)
       .then(updateHolidaysChannelSuccess, updateHolidaysChannelError)
       .finally(() => setLoading(false))
   }

@@ -38,7 +38,7 @@ const DrawChallenges = () => {
       character: [],
       place: [],
     },
-    paintingConfig: {},
+    graphicConfig: {},
   })
   const [filteredDrawConfigs, setFilteredDrawConfigs] = useState({})
   const [loading, setLoading] = useState(true)
@@ -49,15 +49,14 @@ const DrawChallenges = () => {
 
   const getDrawConfigsError = (error) => {
     if (error.response.status === 404) {
-      setFilteredDrawConfigs(
+      return setFilteredDrawConfigs(
         Object.entries({ ...drawConfigs }).filter(([key]) =>
           key.endsWith(DRAW_CHALLENGES_CATEGORY_SUFFIX),
         ),
       )
-      return
     }
 
-    enqueueSnackbar(error.response.data.message, ERROR_SNACKBAR_CONFIG)
+    return enqueueSnackbar(error.response.data.message, ERROR_SNACKBAR_CONFIG)
   }
 
   const getDrawCofnigsSuccess = (response) => {
