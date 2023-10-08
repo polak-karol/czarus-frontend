@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { useSnackbar } from 'notistack'
 import { Grid } from '@mui/material'
 import agent from '~/api/agent'
+import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import PageSpinner from '~/components/PageSpinner'
 import BasicSettings from './BasicSettings'
@@ -9,9 +11,10 @@ const Holidays = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
   const [holidaysSettings, setHolidaysSettings] = useState('')
   const [loading, setLoading] = useState(true)
+  const { enqueueSnackbar } = useSnackbar()
 
   const updateHolidaysChannelError = (error) => {
-    console.log(error)
+    enqueueSnackbar(error.response.data.message, ERROR_SNACKBAR_CONFIG)
   }
 
   const updateHolidaysChannelSuccess = (response) => {
@@ -27,7 +30,7 @@ const Holidays = () => {
   }
 
   const getHolidaysConfigError = (error) => {
-    console.log(error)
+    enqueueSnackbar(error.response.data.message, ERROR_SNACKBAR_CONFIG)
   }
 
   const getHolidaysConfigSuccess = (response) => {
