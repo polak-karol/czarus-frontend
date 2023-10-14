@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { useSnackbar } from 'notistack'
 import { Grid } from '@mui/material'
 import agent from '~/api/agent'
+import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import PageSpinner from '~/components/PageSpinner'
 import BasicSettings from './BasicSettings'
@@ -10,9 +12,10 @@ const Birthdays = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
   const [birthdaysConfig, setBirthdaysConfig] = useState({})
   const [loading, setLoading] = useState(true)
+  const { enqueueSnackbar } = useSnackbar()
 
   const updateBirthdaysConfigError = (error) => {
-    console.log(error)
+    enqueueSnackbar(error.response.data.message, ERROR_SNACKBAR_CONFIG)
   }
 
   const updateBirthdaysConfigSuccess = (response) => {
@@ -28,7 +31,7 @@ const Birthdays = () => {
   }
 
   const getBirthdaysConfigError = (error) => {
-    console.log(error)
+    enqueueSnackbar(error.response.data.message, ERROR_SNACKBAR_CONFIG)
   }
 
   const getBirthdaysConfigSuccess = (response) => {

@@ -12,7 +12,7 @@ const SideBar = ({ open, setOpen }) => {
   const theme = useTheme()
   const { user } = useContext(UserContext)
 
-  if (isSideBarHidden(user)) return null
+  if (isSideBarHidden(user)) return
 
   return (
     <Drawer variant="permanent" open={open}>

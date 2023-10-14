@@ -45,6 +45,7 @@ const ChannelSelector = ({
               ({ parentId, type }) =>
                 parentId === channel.id && GUILD_CHANNELS_TO_SELECT.includes(type),
             )
+
             if (!childChannels.length) return
 
             const menuItems = childChannels.map((childChannel) => (

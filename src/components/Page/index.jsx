@@ -28,7 +28,7 @@ const Page = ({ title, children, actions, breadcrumbs = [] }) => {
             </Breadcrumbs>
           )}
           <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <Typography variant="h3" component="h3">
+            <Typography variant="h2" component="h2">
               {title}
             </Typography>
             {actions}
