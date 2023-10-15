@@ -1,16 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { useSnackbar } from 'notistack'
 import { Grid } from '@mui/material'
 import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
+import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
 import BasicSettings from './BasicSettings'
 
 const General = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
   const [loading, setLoading] = useState(true)
   const [guildSettings, setGuildSettings] = useState({})
+  const { enqueueSnackbar } = useSnackbar()
 
   const updateGuildSettingsError = (error) => {
-    console.log(error)
+    enqueueSnackbar(error.response.data.message, ERROR_SNACKBAR_CONFIG)
   }
 
   const updateGuildSettingsSuccess = (response) => {
@@ -24,7 +27,7 @@ const General = () => {
     )
 
   const getGuildSettingsError = (error) => {
-    console.log(error)
+    enqueueSnackbar(error.response.data.message, ERROR_SNACKBAR_CONFIG)
   }
 
   const getGuildSettingsSuccess = (response) => {
