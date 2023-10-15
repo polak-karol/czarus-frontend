@@ -6,11 +6,13 @@ import Birthdays from './Birthdays'
 import Challenges from './Challenges'
 import Holidays from './Holidays'
 import { subPageTitles } from './config'
+import General from './General'
 
 const Subsetting = () => {
   const { optionName } = useParams()
 
   const options = {
+    general: <General />,
     answers: <Answers />,
     birthdays: <Birthdays />,
     challenges: <Challenges />,
