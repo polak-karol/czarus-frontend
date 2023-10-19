@@ -146,3 +146,6 @@ export const formatCardTitle = (title) => {
   const [firstLetter, ...rest] = title.replaceAll('_', ' ').split('')
   return [firstLetter.toUpperCase(), ...rest].join('')
 }
+
+export const filterDrawChallenges = (data) =>
+  Object.entries({ ...data }).filter(([key]) => key.endsWith(DRAW_CHALLENGES_CATEGORY_SUFFIX))

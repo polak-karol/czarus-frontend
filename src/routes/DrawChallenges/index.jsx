@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { Grid, IconButton, Stack } from '@mui/material'
 import { SettingsRounded } from '@mui/icons-material'
 import { useSnackbar } from 'notistack'
 import _ from 'lodash'
-import { Grid, IconButton, Stack } from '@mui/material'
-import agent from '~/api/agent'
 import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
+import agent from '~/api/agent'
 import Page from '~/components/Page'
-import { DRAW_CHALLENGES_CATEGORY_SUFFIX } from './config'
+import { DRAW_CHALLENGES_CATEGORY_SUFFIX, defaultDrawChallengesValue } from './config'
+import { filterDrawChallenges } from './utils'
 import TopBar from './TopBar'
 import Card from './Card'
 
@@ -16,31 +17,10 @@ const DrawChallenges = () => {
   const navigate = useNavigate()
   const { selectedGuild } = useContext(SelectedGuildContext)
   const { enqueueSnackbar } = useSnackbar()
-  const [drawConfigs, setDrawConfigs] = useState({
-    musicConfig: {
-      rate: [],
-      rhythm: [],
-      key: [],
-      requiredKey: [],
-      forbiddenKey: [],
-      genre: [],
-      requiredInstrument: [],
-      forbiddenInstrument: [],
-      mood: [],
-    },
-    writingConfig: {
-      genre: [],
-      narration: [],
-      theme: [],
-      wordsRange: [],
-      requiredWord: [],
-      forbiddenWord: [],
-      character: [],
-      place: [],
-    },
-    graphicConfig: {},
-  })
-  const [filteredDrawConfigs, setFilteredDrawConfigs] = useState({})
+  const [drawConfigs, setDrawConfigs] = useState(defaultDrawChallengesValue)
+  const [filteredDrawConfigs, setFilteredDrawConfigs] = useState(
+    filterDrawChallenges(defaultDrawChallengesValue),
+  )
   const [loading, setLoading] = useState(true)
   const [selectedDrawConfigIndex, setSelectedDrawConfigIndex] = useState(null)
   const [selectedDrawConfigType, setSelectedDrawConfigType] = useState(null)
@@ -48,24 +28,16 @@ const DrawChallenges = () => {
   const { tab } = useParams()
 
   const getDrawConfigsError = (error) => {
-    if (error.response.status === 404) {
-      return setFilteredDrawConfigs(
-        Object.entries({ ...drawConfigs }).filter(([key]) =>
-          key.endsWith(DRAW_CHALLENGES_CATEGORY_SUFFIX),
-        ),
-      )
-    }
+    if (error.response.status === 404) return error
 
     return enqueueSnackbar(error.response.data.message, ERROR_SNACKBAR_CONFIG)
   }
 
   const getDrawCofnigsSuccess = (response) => {
+    if (_.isEmpty(response?.data)) return response
+
     setDrawConfigs({ ...response.data })
-    setFilteredDrawConfigs(
-      Object.entries({ ...response.data }).filter(([key]) =>
-        key.endsWith(DRAW_CHALLENGES_CATEGORY_SUFFIX),
-      ),
-    )
+    return setFilteredDrawConfigs(filterDrawChallenges(response.data))
   }
 
   const getDrawConfigs = () => {
