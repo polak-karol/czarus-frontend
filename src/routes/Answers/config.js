@@ -10,3 +10,14 @@ export const answersTitle = {
 }
 
 export const ANSWERS_CATEGORY_SUFFIX = 'Answers'
+
+export const defaultAnswersValue = {
+  doesAnswers: [],
+  howAnswers: [],
+  whatAnswers: [],
+  whatDoYouThinkAnswers: [],
+  whatIsAnswers: [],
+  whenAnswers: [],
+  whoAnswers: [],
+  whyAnswers: [],
+}

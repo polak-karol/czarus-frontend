@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
+import _ from 'lodash'
 import { Grid, IconButton } from '@mui/material'
 import { SettingsRounded } from '@mui/icons-material'
 import { useSnackbar } from 'notistack'
@@ -8,24 +9,16 @@ import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import { ERROR_SNACKBAR_CONFIG } from '~/utils/config'
 import Page from '~/components/Page'
 import AnswersList from './AnswersList'
-import { ANSWERS_CATEGORY_SUFFIX } from './config'
+import { ANSWERS_CATEGORY_SUFFIX, defaultAnswersValue } from './config'
+import { filterAnswers } from './utils'
 
 const Answers = () => {
   const navigate = useNavigate()
   const { selectedGuild } = useContext(SelectedGuildContext)
   const { enqueueSnackbar } = useSnackbar()
   const [loading, setLoading] = useState(true)
-  const [answers, setAnswers] = useState({
-    doesAnswers: [],
-    howAnswers: [],
-    whatAnswers: [],
-    whatDoYouThinkAnswers: [],
-    whatIsAnswers: [],
-    whenAnswers: [],
-    whoAnswers: [],
-    whyAnswers: [],
-  })
-  const [filteredAnswers, setFilteredAnswers] = useState([])
+  const [answers, setAnswers] = useState(defaultAnswersValue)
+  const [filteredAnswers, setFilteredAnswers] = useState(filterAnswers(defaultAnswersValue))
 
   const getAnswersError = (error) => {
     if (error.response.status === 404) {
@@ -38,16 +31,10 @@ const Answers = () => {
   }
 
   const getAnswersSuccess = (response) => {
-    setAnswers({ ...response.data })
-    setFilteredAnswers(
-      Object.entries({ ...response.data })
-        .filter(([key]) => key.endsWith(ANSWERS_CATEGORY_SUFFIX))
-        .map(([key, value]) => {
-          if (!value) return [key, value]
+    if (_.isEmpty(response)) return
 
-          return [key, [...value]]
-        }),
-    )
+    setAnswers({ ...response.data })
+    return setFilteredAnswers(filteredAnswers(response.data))
   }
 
   const getAnswers = () => {
