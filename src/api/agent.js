@@ -74,9 +74,14 @@ const GuildSettings = {
   getSettings: (guildId) => requests.get(`/guild-settings/${guildId}`),
 }
 
+const Dashboard = {
+  getDashboardData: (guildId) => requests.get(`/dashboard/${guildId}`),
+}
+
 const agent = {
   Answers,
   Birthdays,
+  Dashboard,
   Draws,
   Holidays,
   User,

@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import _ from 'lodash'
 import {
   Card,
   CardContent,
@@ -12,7 +13,7 @@ import {
 } from '@mui/material'
 import { toDo } from './config'
 
-const ToDoList = () => {
+const ToDoList = ({ dashboardData }) => {
   const navigate = useNavigate()
 
   return (
@@ -25,8 +26,11 @@ const ToDoList = () => {
           <List sx={{ width: '100%' }} aria-label="contacts">
             {toDo.map((item) => (
               <ListItem disablePadding>
-                <ListItemButton onClick={() => navigate(item.url)}>
-                  <ListItemText inset primary={item.name} />
+                <ListItemButton
+                  disabled={_.isEmpty(dashboardData[item.name])}
+                  onClick={() => navigate(item.url)}
+                >
+                  <ListItemText inset primary={item.content} />
                 </ListItemButton>
               </ListItem>
             ))}

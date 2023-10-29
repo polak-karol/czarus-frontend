@@ -1,11 +1,9 @@
 export const toDo = [
-  { url: '/answers', name: 'Answers' },
-  { url: '/settings/answers', name: 'Answers config' },
-  { url: '/birthdays', name: 'Birthdays' },
-  { url: '/settings/birthdays', name: 'Birthdays config' },
-  { url: '/draw-challenges/writing', name: 'Challenges' },
-  { url: '/settings/challenges', name: 'Challenges config' },
-  { url: '/holidays', name: 'Holidays' },
-  { url: '/settings/holidays', name: 'Holidays config' },
-  { url: '/settings/general', name: 'General settings' },
+  { url: '/answers', name: 'answers', content: 'Set answers' },
+  { url: '/settings/answers', name: 'answersConfig', content: 'Set config for answers' },
+  { url: '/settings/birthdays', name: 'birthdaysConfig', content: 'Set config for birthdays' },
+  { url: '/draw-challenges/writing', name: 'challenges', content: 'Set challenges' },
+  { url: '/settings/challenges', name: 'drawConfig', content: 'Set challlenges config' },
+  { url: '/settings/holidays', name: 'holidaysConfig', content: 'Set config for holidays' },
+  { url: '/settings/general', name: 'guildSettings', content: 'Set general settings' },
 ]
