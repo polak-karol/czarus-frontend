@@ -17,7 +17,7 @@ const ToDoList = ({ dashboardData }) => {
   const navigate = useNavigate()
 
   return (
-    <Grid item xs={5}>
+    <Grid item xs={4}>
       <Card>
         <CardContent>
           <Typography component="h2" variant="h6">
@@ -25,7 +25,7 @@ const ToDoList = ({ dashboardData }) => {
           </Typography>
           <List sx={{ width: '100%' }} aria-label="contacts">
             {toDo.map((item) => (
-              <ListItem disablePadding>
+              <ListItem key={item.name} disablePadding>
                 <ListItemButton
                   disabled={_.isEmpty(dashboardData[item.name])}
                   onClick={() => navigate(item.url)}

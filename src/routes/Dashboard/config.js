@@ -7,3 +7,16 @@ export const toDo = [
   { url: '/settings/holidays', name: 'holidaysConfig', content: 'Set config for holidays' },
   { url: '/settings/general', name: 'guildSettings', content: 'Set general settings' },
 ]
+
+export const answersTitle = {
+  doesAnswers: 'Does',
+  howAnswers: 'How',
+  whatAnswers: 'What',
+  whatDoYouThinkAnswers: 'What do you think',
+  whatIsAnswers: 'What is',
+  whenAnswers: 'When',
+  whoAnswers: 'Who',
+  whyAnswers: 'Why',
+}
+
+export const ANSWERS_CATEGORY_SUFFIX = 'Answers'

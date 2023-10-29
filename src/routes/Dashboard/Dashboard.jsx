@@ -4,6 +4,7 @@ import SelectedGuildContext from '~/contexts/SelectedGuildContext'
 import agent from '~/api/agent'
 import Page from '~/components/Page'
 import ToDoList from './ToDoList'
+import AnswersCounter from './AnswersCounter'
 
 const Dashboard = () => {
   const { selectedGuild } = useContext(SelectedGuildContext)
@@ -33,8 +34,9 @@ const Dashboard = () => {
 
   return (
     <Page title="Dashboard">
-      <Grid container>
+      <Grid container gap={2}>
         <ToDoList dashboardData={dashboardData} />
+        <AnswersCounter dashboardData={dashboardData} />
       </Grid>
     </Page>
   )
