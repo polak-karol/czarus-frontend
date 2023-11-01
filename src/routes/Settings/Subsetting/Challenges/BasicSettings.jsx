@@ -11,7 +11,8 @@ const BasicSettings = ({ drawConfig, updateDrawConfig }) => (
           Basic settings
         </Typography>
         <Typography component="p" variant="p">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+          Designate specific channels for challenge-related discussions and submissions, ensuring a
+          well-organized experience.
         </Typography>
       </Stack>
     </Grid>
