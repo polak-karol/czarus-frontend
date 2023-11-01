@@ -11,7 +11,8 @@ const BasicSettings = ({ answersConfig, updateAnswersConfig }) => (
           Basic settings
         </Typography>
         <Typography component="p" variant="p">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+          Specify the channels in which the bot should engage in conversations, allowing you to
+          control where these interactions occur.
         </Typography>
       </Stack>
     </Grid>

@@ -7,9 +7,9 @@ const SettingsItem = ({ Icon, title, content, url }) => {
 
   return (
     <Grid item xs={4}>
-      <Card>
-        <CardActionArea onClick={() => navigate(url)}>
-          <CardContent>
+      <Card style={{ height: '100%' }}>
+        <CardActionArea style={{ height: '100%' }} onClick={() => navigate(url)}>
+          <CardContent style={{ height: '100%' }}>
             <Stack gap="1rem" flexDirection="row">
               <Avatar sx={{ bgcolor: 'smoke', color: 'white' }} variant="rounded">
                 <Icon />

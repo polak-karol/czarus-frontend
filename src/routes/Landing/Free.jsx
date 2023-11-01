@@ -8,12 +8,11 @@ const Free = () => (
     <MoneyOffRoundedIcon sx={{ fontSize: '16rem', color: 'green' }} />
     <Stack gap="1.5rem" sx={{ height: 'fit-content', marginTop: '1rem' }}>
       <Typography component="h3" variant="h3">
-        Free
+        Absolutely free
       </Typography>
       <Typography component="p" variant="p">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime ducimus atque provident
-        enim in beatae nemo incidunt? Fuga, dolores voluptatibus praesentium molestias dolore vero!
-        Quis doloribus rem et voluptatum modi?
+        The best part? Czaruś is completely free to use! You can enjoy all these amazing features
+        without any cost or subscriptions.
       </Typography>
     </Stack>
   </FreeSection>

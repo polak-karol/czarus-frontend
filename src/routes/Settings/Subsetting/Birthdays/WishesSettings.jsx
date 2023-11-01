@@ -10,7 +10,8 @@ const WishesSettings = () => (
           Wishes settings
         </Typography>
         <Typography component="p" variant="p">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+          Craft personalized birthday messages for your server members, adding a heartfelt touch to
+          their special day.
         </Typography>
       </Stack>
     </Grid>

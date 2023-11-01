@@ -13,9 +13,9 @@ const Main = () => (
         Czaruś - Discord Bot
       </Typography>
       <Typography component="p" variant="p">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis auctor sed erat in
-        condimentum. Nullam maximus tellus eget nibh lobortis, a porttitor purus suscipit. Phasellus
-        vel porttitor ipsum.
+        Looking to bring more excitement and functionality to your Discord server? Look no further!
+        Czaruś is here to take your server to the next level. With a wide range of features, it's
+        your go-to solution for enhancing your server's experience.
       </Typography>
       <Stack gap={5} flexDirection="row">
         <Button href={import.meta.env.VITE_DISCORD_INVITE_URL} variant="contained">

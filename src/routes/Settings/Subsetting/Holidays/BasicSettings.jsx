@@ -11,7 +11,7 @@ const BasicSettings = ({ holidaysSettings, updateHolidaysChannel }) => (
           Basic settings
         </Typography>
         <Typography component="p" variant="p">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+          Set up channel announcements for holiday celebrations.
         </Typography>
       </Stack>
     </Grid>

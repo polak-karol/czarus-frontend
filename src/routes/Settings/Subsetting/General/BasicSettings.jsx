@@ -24,7 +24,8 @@ const BasicSettings = ({ guildSettings, updateGuildSettings }) => (
           Basic settings
         </Typography>
         <Typography component="p" variant="p">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+          Tailor the bot's language settings to match your server's preferred language, ensuring a
+          consistent and comfortable user experience for all members.
         </Typography>
       </Stack>
     </Grid>
