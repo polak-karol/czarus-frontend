@@ -7,7 +7,7 @@ const FeatureSlide = ({ slide }) => (
       <Grid key={slideElement.title} item xs={4}>
         <Card style={{ height: '100%' }}>
           <CardContent style={{ height: '100%' }}>
-            <Stack style={{ justifyContent: 'space-between', height: '100%' }} gap={4}>
+            <Stack style={{ height: '100%' }} justifyContent="space-between" gap={4}>
               <Typography component="h3" variant="h3">
                 {slideElement.title}
               </Typography>
