@@ -1,6 +1,5 @@
 import React from 'react'
-import { Formik } from 'formik'
-import { Button, Card, CardActions, CardContent, Grid, Stack, Typography } from '@mui/material'
+import { Button, Card, CardContent, Container, Grid, Stack, Typography } from '@mui/material'
 
 const WishesSettings = () => (
   <>
@@ -17,20 +16,30 @@ const WishesSettings = () => (
     </Grid>
     <Grid item xs={7}>
       <Card>
-        <Formik initialValues={{}} onSubmit={() => {}}>
-          {({ values, setFieldValue, handleSubmit }) => (
-            <>
-              <CardContent>
-                <Stack></Stack>
-              </CardContent>
-              <CardActions>
-                <Button size="small" onClick={handleSubmit}>
-                  Save
-                </Button>
-              </CardActions>
-            </>
-          )}
-        </Formik>
+        <CardContent style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <Stack flexDirection="row" gap={2}>
+            <Container>
+              <Typography component="span" variant="subtitle2">
+                Wishes singular
+              </Typography>
+              <Typography component="p" variant="caption">
+                Modify wishes for a single birthday.
+              </Typography>
+            </Container>
+            <Button>Modify</Button>
+          </Stack>
+          <Stack flexDirection="row" gap={2}>
+            <Container>
+              <Typography component="span" variant="subtitle2">
+                Wishes plural
+              </Typography>
+              <Typography component="p" variant="caption">
+                Modify wishes for many birthdays.
+              </Typography>
+            </Container>
+            <Button>Modify</Button>
+          </Stack>
+        </CardContent>
       </Card>
     </Grid>
   </>
