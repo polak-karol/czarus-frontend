@@ -13,6 +13,7 @@ import {
   Typography,
 } from '@mui/material'
 import { Close } from '@mui/icons-material'
+import CreateOrEditWishModal from './CreateOrEditWishModal'
 
 const ModifyWishesModal = ({ active, onClose }) => (
   <Dialog fullScreen open={active} onClose={onClose}>
@@ -80,6 +81,7 @@ const ModifyWishesModal = ({ active, onClose }) => (
         </Card>
       </Grid>
     </Grid>
+    <CreateOrEditWishModal active={true} onClose={() => {}} />
   </Dialog>
 )
 
